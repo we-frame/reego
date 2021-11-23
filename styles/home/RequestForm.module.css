@@ -1,0 +1,55 @@
+.form {
+  background: #ffffff;
+  box-shadow: 0px 3.16521px 11.0782px 2.37391px rgba(0, 0, 0, 0.29);
+  border-radius: 18.2285px;
+  padding: 1rem;
+}
+
+.input {
+  background: #ffffff;
+  box-shadow: 2.22803px 2.22803px 7.24108px 5.57006px rgba(0, 0, 0, 0.05);
+  border-radius: 8.35509px;
+  padding: 1rem;
+  border: 0;
+  margin: 1rem 0;
+  outline: 0;
+  width: 100%;
+}
+
+.select {
+  background: #ffffff;
+  box-shadow: 2.22803px 2.22803px 7.24108px 5.57006px rgba(0, 0, 0, 0.05);
+  border-radius: 8.35509px;
+  padding: 1rem;
+  border: 0;
+  margin: 1rem 0;
+  outline: 0;
+  width: 45%;
+  cursor: pointer;
+  color: var(--prim-clr);
+}
+
+.back {
+  margin-right: 1rem;
+  font-size: 2rem;
+  color: var(--prim-clr);
+  cursor: pointer;
+}
+
+.input::placeholder {
+  color: var(--prim-clr);
+}
+
+.card {
+  background: #ffffff;
+  box-shadow: 2.22803px 2.22803px 7.24108px 5.57006px rgba(0, 0, 0, 0.09);
+  border-radius: 8.35509px;
+  padding: 1rem;
+  margin: 1rem 0;
+  text-align: center;
+  cursor: pointer;
+}
+
+.border {
+  border: 1px solid var(--prim-clr);
+}

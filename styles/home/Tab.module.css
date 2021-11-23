@@ -1,0 +1,52 @@
+.tab {
+  background-color: #fff;
+  box-shadow: 0px 3.92187px 17.6484px 2.9414px rgba(0, 0, 0, 0.25);
+  border-radius: 45px;
+  margin: 5rem 0;
+  padding: 1rem;
+}
+
+.tabBtnGroup {
+  position: relative;
+  bottom: 2.5rem;
+}
+
+.tabBtn {
+  background: #ffffff;
+  box-shadow: 0px 4.90546px 25.7537px 17.1691px rgba(0, 0, 0, 0.07);
+  color: var(--prim-clr);
+  border: 0;
+  width: 100%;
+  margin: auto;
+  padding: 1rem;
+}
+
+.tabBtn1 {
+  border-top-left-radius: 25px;
+}
+.tabBtn2 {
+  border-top-right-radius: 25px;
+}
+.tabBtn3 {
+  border-top-right-radius: 25px;
+  border-top-left-radius: 25px;
+}
+
+.active {
+  color: #fff;
+  background-color: var(--prim-clr);
+}
+
+@media (max-width: 600px) {
+  .tabBtn1 {
+    border-top-left-radius: 0;
+    border-radius: 10px;
+  }
+  .tabBtn2 {
+    border-top-right-radius: 0;
+    border-radius: 10px;
+  }
+  .tabBtn {
+    margin: 0.3rem 0;
+  }
+}

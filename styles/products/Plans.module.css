@@ -1,0 +1,71 @@
+.card {
+  background: #ffffff;
+  box-shadow: 0px 48.5088px 39.269px rgba(82, 67, 194, 0.295755);
+  border-radius: 30.0293px;
+  padding: 1rem;
+  height: 33rem;
+  position: relative;
+  width: 60%;
+  margin: auto;
+}
+
+.form {
+  background: #ffffff;
+  box-shadow: 0px 2.45736px 25.6109px 16.391px rgba(0, 0, 0, 0.06);
+  border-radius: 10.2444px;
+  padding: 1.5rem;
+  width: 70%;
+  margin: auto;
+}
+
+.card2 {
+  text-align: center;
+  background: #ffffff;
+  box-shadow: 0px 2.45736px 25.6109px 16.391px rgba(0, 0, 0, 0.06);
+  border-radius: 10.2444px;
+  padding: 1.5rem;
+  width: 70%;
+  margin: auto;
+}
+
+.input {
+  background: #ffffff;
+  box-shadow: 2.22803px 2.22803px 7.24108px 5.57006px rgba(0, 0, 0, 0.05);
+  border-radius: 8.35509px;
+  padding: 1rem;
+  border: 0;
+  margin: 1rem 0;
+  outline: 0;
+  width: 100%;
+}
+
+.li {
+  list-style: none;
+  list-style-image: url('../../public/images/tick.png') !important;
+  margin: 1.5rem 1rem;
+}
+
+.highlight {
+  border-radius: 24px;
+  background-color: var(--prim-clr);
+  color: #fff;
+  padding: 1rem;
+  width: 25%;
+  margin: 1rem auto;
+}
+
+@media (max-width: 600px) {
+  .card {
+    width: 85%;
+    margin: 1rem auto;
+  }
+  .form {
+    width: 85%;
+  }
+  .card2 {
+    width: 90%;
+  }
+  .highlight {
+    width: initial;
+  }
+}

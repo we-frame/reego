@@ -1,0 +1,56 @@
+.card {
+  background: #ffffff;
+  box-shadow: 0px 48.5088px 39.269px rgba(82, 67, 194, 0.295755);
+  border-radius: 30.0293px;
+  padding: 1rem;
+  height: 35rem;
+  position: relative;
+  width: 85%;
+  margin: auto;
+  color: #181059;
+}
+
+.card2 {
+  height: 38rem;
+}
+
+.li {
+  list-style: none;
+  list-style-image: url('../../public/images/tick1.png') !important;
+  margin: 1.5rem 1rem;
+}
+
+.button {
+  display: inline-block;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  border-radius: 5px;
+  padding: 7px 35px;
+  background-color: #f8f4ff;
+  color: #8645ff !important;
+  font-weight: 600;
+  position: absolute;
+  bottom: 1rem;
+}
+
+.button1 {
+  display: inline-block;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  border-radius: 5px;
+  padding: 7px 35px;
+  background-color: #f8f4ff;
+  color: #8645ff !important;
+  font-weight: 600;
+  position: absolute;
+  bottom: 4rem;
+}
+
+@media (max-width: 600px) {
+  .card {
+    width: 95%;
+    margin: 1rem auto;
+  }
+}
