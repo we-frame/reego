@@ -8,10 +8,8 @@ SwiperCore.use([Navigation, Pagination, A11y]);
 const Testimonials = () => {
   return (
     <section className='mt-5'>
-      <h1 className='text-center w-50 mx-auto'>
-        Trusted by Thousands of Happy Customer
-      </h1>
-      <p className='text-center w-50 mx-auto'>
+      <h1 className={styles.myWidth}>Trusted by Thousands of Happy Customer</h1>
+      <p className={styles.myWidth}>
         These are the stories of our customers who have joined us with great
         pleasure when using this crazy feature.
       </p>

@@ -6,3 +6,15 @@
   /* height: 15rem; */
   min-height: 14rem;
 }
+
+.myWidth {
+  width: 50%;
+  text-align: center;
+  margin: 1rem auto;
+}
+
+@media (max-width: 600px) {
+  .myWidth {
+    width: 100%;
+  }
+}

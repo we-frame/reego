@@ -36,8 +36,6 @@ iframe {
   color: #f53855;
   border-radius: 84.7917px;
   font-weight: 600;
-  position: relative;
-  bottom: 0.45rem;
 }
 .button-rounded {
   display: inline-block;
@@ -64,28 +62,6 @@ iframe {
   background-color: #f53838;
   border-radius: 10;
   font-weight: 600;
-}
-
-/* NAVBAR! */
-.my-links {
-  color: #4f5665 !important;
-  text-decoration: none;
-  margin: 0 2rem;
-}
-
-.my-links:hover {
-  color: #4f5665;
-}
-
-.my-links-container {
-  position: relative;
-  top: 0.5rem;
-}
-
-.dropdown {
-  position: relative;
-  bottom: 0.45rem;
-  margin: 0rem 2rem;
 }
 
 /* CAROUSEL! */
@@ -147,18 +123,23 @@ iframe {
 }
 
 @media (max-width: 600px) {
-  .my-links {
-    color: #4f5665 !important;
-    text-decoration: none;
-    margin: 1rem 0rem;
+  .nav-links {
+    height: 0;
+    overflow: hidden;
+    transition: 0.3s ease-in-out all;
   }
-  .dropdown {
-    position: relative;
-    bottom: 0rem;
-    margin: 0rem 0rem;
+
+  .show-links {
+    height: 20rem;
   }
+
   .button-outline {
     text-align: center;
+  }
+
+  .dot {
+    width: 10px !important;
+    height: 10px !important;
   }
 
   /* SWIPER! */

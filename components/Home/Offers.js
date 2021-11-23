@@ -6,7 +6,7 @@ const Offers = () => {
   return (
     <section>
       <h1 className='color text-center'>Offers</h1>
-      <p className='text-center w-50 mx-auto'>
+      <p className={styles.myWidth}>
         typesetting industry. Lorem Ipsum has been the industrys standard dummy
         text ever since the 1500s, when an unknown
       </p>

@@ -48,9 +48,18 @@
   bottom: 4rem;
 }
 
+.myWidth {
+  width: 50%;
+  text-align: center;
+  margin: 1rem auto;
+}
+
 @media (max-width: 600px) {
   .card {
     width: 95%;
     margin: 1rem auto;
+  }
+  .myWidth {
+    width: 100%;
   }
 }
