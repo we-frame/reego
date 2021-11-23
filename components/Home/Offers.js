@@ -7,7 +7,7 @@ const Offers = () => {
     <section>
       <h1 className='color text-center'>Offers</h1>
       <p className='text-center w-50 mx-auto'>
-        typesetting industry. Lorem Ipsum has been the industry's standard dummy
+        typesetting industry. Lorem Ipsum has been the industrys standard dummy
         text ever since the 1500s, when an unknown
       </p>
       <Row className='my-3'>
