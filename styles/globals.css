@@ -122,6 +122,14 @@ iframe {
   top: 90% !important;
 }
 
+.account-container {
+  background: #ffffff;
+  box-shadow: 0px 4px 25px 16px rgba(0, 0, 0, 0.06);
+  border-radius: 24px;
+  padding: 1rem;
+  margin: 1rem 0;
+}
+
 @media (max-width: 600px) {
   .nav-links {
     height: 0;
@@ -130,7 +138,7 @@ iframe {
   }
 
   .show-links {
-    height: 20rem;
+    height: 24rem;
   }
 
   .button-outline {

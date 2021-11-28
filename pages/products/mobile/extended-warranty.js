@@ -1,10 +1,10 @@
-import React from 'react';
 import { Container } from 'react-bootstrap';
 import Seo from '@/components/Utils/Seo';
 import DownloadApp from '@/components/Home/DownloadApp';
 import Testimonials from '@/components/Home/Testimonials';
 import Plans from '@/components/products/Plans';
 import TableInfo from '@/components/products/TableInfo';
+import Faqs from '@/components/products/Faqs';
 
 const ExtendedWarrantyPage = () => {
   return (
@@ -26,6 +26,7 @@ const ExtendedWarrantyPage = () => {
           ]}
         />
         <TableInfo />
+        <Faqs />
         <Testimonials />
         <DownloadApp />
       </Container>

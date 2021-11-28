@@ -1,9 +1,9 @@
 import DownloadApp from '@/components/Home/DownloadApp';
 import Testimonials from '@/components/Home/Testimonials';
+import Faqs from '@/components/products/Faqs';
 import Plans from '@/components/products/Plans';
 import TableInfo from '@/components/products/TableInfo';
 import Seo from '@/components/Utils/Seo';
-import React from 'react';
 import { Container } from 'react-bootstrap';
 
 const ScreenProtectionPage = () => {
@@ -21,6 +21,7 @@ const ScreenProtectionPage = () => {
           ]}
         />
         <TableInfo />
+        <Faqs />
         <Testimonials />
         <DownloadApp />
       </Container>
