@@ -3,10 +3,13 @@ import Link from 'next/link';
 import logo from '/public/images/logo.png';
 import { Container, NavDropdown } from 'react-bootstrap';
 import { FiAlignJustify } from 'react-icons/fi';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import styles from '@/styles/utils/Header.module.css';
+import { StateContext } from 'context/StateProvider';
 
 const Header = () => {
+  const { isLoggedIn } = useContext(StateContext);
+
   const [show, setShow] = useState(false);
 
   return (
@@ -105,30 +108,43 @@ const Header = () => {
                   </a>
                 </Link>
               </li>
-              <li>
-                <Link href='/account/dashboard'>
-                  <a className={styles.myLinks} onClick={() => setShow(false)}>
-                    Account
-                  </a>
-                </Link>
-              </li>
-              <li>
-                <Link href='/login'>
-                  <a className={styles.myLinks} onClick={() => setShow(false)}>
-                    Sign in
-                  </a>
-                </Link>
-              </li>
-              <li>
-                <Link href='/login'>
-                  <a
-                    className='my-links button-outline'
-                    onClick={() => setShow(false)}
-                  >
-                    Sign up
-                  </a>
-                </Link>
-              </li>
+              {isLoggedIn && (
+                <li>
+                  <Link href='/account/dashboard'>
+                    <a
+                      className={styles.myLinks}
+                      onClick={() => setShow(false)}
+                    >
+                      Account
+                    </a>
+                  </Link>
+                </li>
+              )}
+              {!isLoggedIn && (
+                <>
+                  {' '}
+                  <li>
+                    <Link href='/account/login'>
+                      <a
+                        className={styles.myLinks}
+                        onClick={() => setShow(false)}
+                      >
+                        Log in
+                      </a>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href='/account/register'>
+                      <a
+                        className='my-links button-outline'
+                        onClick={() => setShow(false)}
+                      >
+                        Sign up
+                      </a>
+                    </Link>
+                  </li>
+                </>
+              )}
             </ul>
           </div>
         </div>

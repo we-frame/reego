@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import styles from '@/styles/contact/ContactForm.module.css';
+import { API_URL } from 'config';
 
 const ContactForm = () => {
   const [values, setValues] = useState({
     name: '',
     email: '',
-    number: '',
+    mobile: '',
     message: 'Enter your message',
   });
 
@@ -14,8 +15,23 @@ const ContactForm = () => {
     setValues({ ...values, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
+    try {
+      const res = await fetch(`${API_URL}/postContactUs.php`, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(values),
+      });
+      const data = await res.json();
+      console.log(data);
+    } catch (err) {
+      alert(err);
+    }
   };
 
   return (
@@ -43,10 +59,10 @@ const ContactForm = () => {
       <div>
         <input
           type='number'
-          name='number'
+          name='mobile'
           placeholder='Your Mobile'
           className={styles.input}
-          value={values.number}
+          value={values.mobile}
           onChange={handleInputChange}
         />
       </div>

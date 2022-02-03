@@ -4,7 +4,7 @@ import { Row, Col } from 'react-bootstrap';
 import RequestForm from '@/components/Home/RequestForm';
 import Tracker from './Tracker';
 
-const Tab = () => {
+const Tab = ({ brandList,problems }) => {
   const [index, setIndex] = useState(0);
 
   return (
@@ -33,7 +33,7 @@ const Tab = () => {
       </Row>
       {index === 0 ? (
         <>
-          <RequestForm />
+          <RequestForm brandList={brandList} problems={problems}/>
         </>
       ) : (
         <>

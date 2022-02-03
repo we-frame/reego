@@ -130,6 +130,90 @@ iframe {
   margin: 1rem 0;
 }
 
+/* ORDER TRACKING! */
+
+.root::-webkit-scrollbar {
+  width: 7px;
+}
+
+.root::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.root::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 30px;
+}
+
+.check-icon {
+  position: relative;
+  left: 0.4rem;
+  top: 0.35rem;
+  color: #fff;
+  font-size: 1.3rem;
+}
+
+.root {
+  padding: 3rem 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0px 4px 16px 20px rgba(0, 0, 0, 0.06);
+  height: 35rem;
+  overflow-y: scroll;
+}
+
+.order-track {
+  padding: 0 1rem;
+  display: flex;
+  flex-direction: column;
+}
+.order-track-step {
+  display: flex;
+  height: 7rem;
+}
+.order-track-step:last-child {
+  overflow: hidden;
+  height: 4rem;
+}
+.order-track-step:last-child .order-track-status span:last-of-type {
+  display: none;
+}
+.order-track-status {
+  margin-right: 1.5rem;
+  position: relative;
+}
+.order-track-status-dot {
+  display: block;
+  width: 2.2rem;
+  height: 2.2rem;
+  border-radius: 50%;
+  background: var(--prim-clr);
+}
+
+.dot-faded {
+  background-color: #f1a1a5;
+}
+
+.order-track-status-line {
+  display: block;
+  margin: 0 auto;
+  width: 2px;
+  height: 7rem;
+  background: #f05a00;
+}
+.order-track-text-stat {
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin-bottom: 3px;
+}
+.order-track-text-sub {
+  font-size: 1rem;
+  font-weight: 300;
+}
+.order-track {
+  transition: all 0.3s height 0.3s;
+  transform-origin: top center;
+}
+
 @media (max-width: 600px) {
   .nav-links {
     height: 0;

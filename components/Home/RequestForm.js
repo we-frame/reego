@@ -4,9 +4,11 @@ import illustration from '/public/images/form.png';
 import { Container, Row, Col } from 'react-bootstrap';
 import styles from '@/styles/home/RequestForm.module.css';
 import { IoIosArrowBack } from 'react-icons/io';
+import { API_URL } from 'config';
 
-const RequestForm = () => {
+const RequestForm = ({ brandList, problems }) => {
   const [index, setIndex] = useState(0);
+  const [mobileModel, setMobileModel] = useState([]);
 
   //   AFTER CLICKING ON SUBMIT!
   //   const [choice,setChoice] = useState(null)
@@ -15,6 +17,9 @@ const RequestForm = () => {
     name: '',
     number: '',
     email: '',
+    brand: '',
+    model: '',
+    issue: '',
     comments: 'Comments',
     pincode: '',
     address: '',
@@ -27,8 +32,19 @@ const RequestForm = () => {
     setValues({ ...values, [name]: value });
   };
 
+  const handleModelSelection = async (e) => {
+    setValues({ ...values, brand: e.target.value });
+
+    const res = await fetch(
+      `${API_URL}/getModelsList.php?brand_id=${e.target.value}`
+    );
+    const data = await res.json();
+    setMobileModel(data.data);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log(values);
   };
 
   return (
@@ -69,11 +85,39 @@ const RequestForm = () => {
                   />
                 </div>
                 <div className='d-flex justify-content-around'>
-                  <select className={styles.select}>
-                    <option defaultValue='Brand'>Select Brand</option>
+                  <select
+                    name='brand'
+                    value={values.brand}
+                    onChange={handleModelSelection}
+                    className={styles.select}
+                  >
+                    <option value='' disabled>
+                      Select Brand
+                    </option>
+                    {brandList.map((brand) => {
+                      return (
+                        <option value={brand.brand_id} key={brand.brand_id}>
+                          {brand.brand_name}
+                        </option>
+                      );
+                    })}
                   </select>
-                  <select className={styles.select}>
-                    <option defaultValue='Brand'>Select Model</option>
+                  <select
+                    name='model'
+                    value={values.model}
+                    onChange={handleInputChange}
+                    className={styles.select}
+                  >
+                    <option value='' disabled>
+                      Select Model
+                    </option>
+                    {mobileModel?.map((model) => {
+                      return (
+                        <option value={model.name} key={model.id}>
+                          {model.name}
+                        </option>
+                      );
+                    })}
                   </select>
                 </div>
                 <div className='text-center'>
@@ -86,8 +130,25 @@ const RequestForm = () => {
             {index === 1 && (
               <>
                 <div>
-                  <select className={styles.input}>
-                    <option defaultValue='Brand'>Issue</option>
+                  <select
+                    name='issue'
+                    value={values.issue}
+                    onChange={handleInputChange}
+                    className={styles.select2}
+                  >
+                    <option value='' disabled>
+                      Select Issue
+                    </option>
+                    {problems.map((problem) => {
+                      return (
+                        <option
+                          value={problem.deviceProblem}
+                          key={problem.problemId}
+                        >
+                          {problem.deviceProblem}
+                        </option>
+                      );
+                    })}
                   </select>
                 </div>
                 <div>

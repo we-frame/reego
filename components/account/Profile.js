@@ -3,7 +3,7 @@ import Link from 'next/link';
 import profilePic from '/public/images/profile-pic.png';
 import styles from '@/styles/account/Profile.module.css';
 
-const Profile = () => {
+const Profile = ({ profile }) => {
   return (
     <section>
       <div className={styles.circle}>
@@ -13,11 +13,7 @@ const Profile = () => {
       <div>
         <div className={styles.profile}>
           <p>Full Name</p>
-          <p>Thammaiah</p>
-        </div>
-        <div className={styles.profile}>
-          <p>Full Name</p>
-          <p>Thammaiah</p>
+          <p>{profile[0]?.custName}</p>
         </div>
         <div className={styles.profile}>
           <p>Mobile Number</p>
@@ -25,19 +21,19 @@ const Profile = () => {
         </div>
         <div className={styles.profile}>
           <p>Email ID</p>
-          <p className={styles.specialP}>kechamadavipul@gmail.com</p>
+          <p className={styles.specialP}>{profile[0]?.custEmail}</p>
         </div>
         <div className={styles.profile}>
           <p>Gender</p>
-          <p>MALE</p>
+          <p>{profile[0]?.custGender}</p>
         </div>
         <div className={styles.profile}>
           <p>Date of Birth</p>
-          <p> - not added -</p>
+          <p>{profile[0]?.dateOfBirth}</p>
         </div>
         <div className={styles.profile}>
           <p>Location</p>
-          <p> - not added -</p>
+          <p>{profile[0]?.custAddress}</p>
         </div>
         <div className={styles.profile}>
           <p>Alternate Mobile </p>
@@ -45,7 +41,7 @@ const Profile = () => {
         </div>
       </div>
       <div className='text-center my-3'>
-        <Link href='/account/edit'>
+        <Link href='/account/edit' passHref>
           <button className='button'>Edit</button>
         </Link>
       </div>

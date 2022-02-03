@@ -4,13 +4,12 @@ import { useRouter } from 'next/dist/client/router';
 
 const SideNav = () => {
   const { pathname } = useRouter();
-  console.log(pathname);
 
   return (
     <aside className={styles.aside}>
       <ul className={styles.mygrid}>
         <li>
-          <Link href='/account/dashboard'>
+          <Link href='/account/dashboard' passHref>
             <button
               className={`${styles.button} ${
                 pathname.includes('dashboard') ? `${styles.border}` : ''
@@ -21,7 +20,7 @@ const SideNav = () => {
           </Link>
         </li>
         <li>
-          <Link href='/account/orders'>
+          <Link href='/account/orders' passHref>
             <button
               className={`${styles.button} ${
                 pathname.includes('orders') ? `${styles.border}` : ''
@@ -32,7 +31,7 @@ const SideNav = () => {
           </Link>
         </li>
         <li>
-          <Link href='/account/profile'>
+          <Link href='/account/profile' passHref>
             <button
               className={`${styles.button} ${
                 pathname.includes('profile') ? `${styles.border}` : ''
@@ -43,7 +42,7 @@ const SideNav = () => {
           </Link>
         </li>
         <li>
-          <Link href='/account/redeem'>
+          <Link href='/account/redeem' passHref>
             <button
               className={`${styles.button} ${
                 pathname.includes('redeem') ? `${styles.border}` : ''

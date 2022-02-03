@@ -1,12 +1,17 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styles from '@/styles/products/Plans.module.css';
 import { Col, Row } from 'react-bootstrap';
-
-const handleSubmit = (e) => {
-  e.preventDefault();
-};
+import { StateContext } from 'context/StateProvider';
 
 const Plans = ({ short, title, points }) => {
+  const { products, testFunc } = useContext(StateContext);
+
+  console.log(products);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+  };
+
   return (
     <section className='my-5'>
       <Row className='align-items-center'>
@@ -65,7 +70,9 @@ const Plans = ({ short, title, points }) => {
         </p>
       </div>
       <div className='text-center my-4'>
-        <button className='button'>Add to Cart</button>
+        <button className='button' onClick={testFunc}>
+          Add to Cart
+        </button>
       </div>
     </section>
   );

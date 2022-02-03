@@ -17,16 +17,27 @@
 }
 
 .select {
-  background: #ffffff;
-  box-shadow: 2.22803px 2.22803px 7.24108px 5.57006px rgba(0, 0, 0, 0.05);
-  border-radius: 8.35509px;
-  padding: 1rem;
-  border: 0;
-  margin: 1rem 0;
-  outline: 0;
+  background: #ffffff !important;
+  box-shadow: 2.22803px 2.22803px 7.24108px 5.57006px rgba(0, 0, 0, 0.05) !important;
+  border-radius: 8.35509px !important;
+  padding: 1rem !important;
+  border: 0 !important;
+  margin: 1rem 0 !important;
   width: 45%;
-  cursor: pointer;
-  color: var(--prim-clr);
+  cursor: pointer !important;
+  color: var(--prim-clr) !important;
+}
+
+.select2 {
+  background: #ffffff !important;
+  box-shadow: 2.22803px 2.22803px 7.24108px 5.57006px rgba(0, 0, 0, 0.05) !important;
+  border-radius: 8.35509px !important;
+  padding: 1rem !important;
+  border: 0 !important;
+  margin: 1rem 0 !important;
+  cursor: pointer !important;
+  color: var(--prim-clr) !important;
+  width: 100%;
 }
 
 .back {

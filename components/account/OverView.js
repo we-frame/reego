@@ -7,8 +7,20 @@ import ew from '/public/images/ew.png';
 import reedem from '/public/images/reedem.png';
 import profile from '/public/images/profile.png';
 import profilePic from '/public/images/profile-pic.png';
+import { useContext } from 'react';
+import { StateContext } from 'context/StateProvider';
+import { useRouter } from 'next/dist/client/router';
 
 const OverView = () => {
+  const { logout } = useContext(StateContext);
+
+  const router = useRouter();
+
+  const handleLogOut = () => {
+    logout();
+    router.push('/');
+  };
+
   return (
     <section>
       <div className={styles.accountDet}>
@@ -60,7 +72,9 @@ const OverView = () => {
         </div>
       </div>
       <div className='mt-5 text-center'>
-        <button className='button'>Logout</button>
+        <button className='button' onClick={handleLogOut}>
+          Logout
+        </button>
       </div>
     </section>
   );

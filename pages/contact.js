@@ -8,8 +8,8 @@ import DownloadApp from '@/components/Home/DownloadApp';
 const contact = () => {
   return (
     <>
+      <Seo title='Contact us' />
       <Container>
-        <Seo title='Contact us' />
         <ContactForm />
       </Container>
       <Map />
