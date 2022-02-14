@@ -9,9 +9,9 @@ const RedeemPage = ({ myData }) => {
     <Layout2>
       <Seo title='Redeem' />
       <section>
-        {myData?.map((item) => {
+        {myData?.map((item, i) => {
           return (
-            <div className={styles.redeemCard}>
+            <div className={styles.redeemCard} key={i}>
               <p>Device : {item?.brandName}</p>
               <p>Validity : 1 Year</p>
               {item?.isRedeem === '0' ? (
