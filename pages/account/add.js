@@ -87,6 +87,7 @@ const AddPage = ({ token, id, brandList, famData }) => {
           onClick={() => setModalShow(true)}
         />
       </div>
+      {famData.length === 0 && <h4>No family members to show</h4>}
       {familyDetails?.map((item) => {
         return (
           <div className={styles.ordersComp} key={item.id}>
@@ -246,7 +247,7 @@ export const getServerSideProps = async ({ req }) => {
 
   return {
     props: {
-      famData,
+      famData: famData ? famData : [],
       brandList: brandData.data,
       token,
       id,

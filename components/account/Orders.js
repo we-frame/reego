@@ -18,8 +18,6 @@ const Orders = ({ token, id, orders }) => {
 
   const [infos, setInfos] = useState({});
 
-  console.log(infos);
-
   const router = useRouter();
 
   const handleSubmit = async (e) => {
@@ -60,6 +58,7 @@ const Orders = ({ token, id, orders }) => {
       <h4>My Orders</h4>
       <hr />
       <div>
+        {orders.length === 0 && <h4>No orders to show</h4>}
         {orders?.map((order, i) => {
           return (
             <div className={styles.ordersComp} key={i}>

@@ -70,6 +70,7 @@ const InsurancePage = ({ token, id, insuranceData }) => {
     <Layout2>
       <Seo title='Insurance' />
       <div className='d-flex flex-column justify-content-center align-items-center'>
+        {insuranceData.length === 0 && <h4>No data to show</h4>}
         {insuranceData.map((data, i) => {
           return (
             <section className={styles.insuranceCard} key={i}>
@@ -228,7 +229,7 @@ export const getServerSideProps = async ({ req }) => {
 
   return {
     props: {
-      insuranceData: data.data,
+      insuranceData: data.data ? data.data : [],
       token,
       id,
     },

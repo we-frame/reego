@@ -9,6 +9,7 @@ const RedeemPage = ({ myData }) => {
     <Layout2>
       <Seo title='Redeem' />
       <section>
+        {myData.length === 0 && <h4>No data to show</h4>}
         {myData?.map((item, i) => {
           return (
             <div className={styles.redeemCard} key={i}>
@@ -50,7 +51,7 @@ export const getServerSideProps = async ({ req }) => {
 
   return {
     props: {
-      myData: data?.data,
+      myData: data?.data ? data?.data : [],
       token,
       id,
     },
