@@ -1,16 +1,43 @@
-import React, { useContext } from 'react';
 import styles from '@/styles/products/Plans.module.css';
 import { Col, Row } from 'react-bootstrap';
-import { StateContext } from 'context/StateProvider';
+import { useState } from 'react';
+import { API_URL } from 'config';
 
-const Plans = ({ short, title, points }) => {
-  const { products, testFunc } = useContext(StateContext);
+const Plans = ({ brandList, short, title, points }) => {
+  const [values, setValues] = useState({
+    price: '',
+    date: '',
+    brand: '',
+    gadget: '1', // harcoded to 1 because this is a mobile page
+  });
 
-  console.log(products);
+  console.log(values.date);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const [detailsData, setDetailsData] = useState(null);
+
+  const handleModelSelection = async (e) => {
+    setValues({ ...values, brand: e.target.value });
   };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setValues({ ...values, [name]: value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const res = await fetch(
+      `${API_URL}/getDevicePlanList.php?devicePrice=${values.price}&devicePurchase=${values.date}&brandId=${values.brand}&gadgetId=1`
+    );
+    const data = await res.json();
+
+    if (res.ok) {
+      setDetailsData(data?.data[0]?.spackPrice);
+    }
+  };
+
+  console.log(detailsData);
 
   return (
     <section className='my-5'>
@@ -36,12 +63,48 @@ const Plans = ({ short, title, points }) => {
           <>
             <h4 className='my-4 text-center'>Explore Plans for your device</h4>
             <form className={styles.form} onSubmit={handleSubmit}>
+              <select
+                name='brand'
+                value={values.brand}
+                onChange={handleModelSelection}
+                className={styles.select}
+              >
+                <option value='' disabled>
+                  Select Brand
+                </option>
+                {brandList?.map((brand) => {
+                  return (
+                    <option value={brand.brand_id} key={brand.brand_id}>
+                      {brand.brand_name}
+                    </option>
+                  );
+                })}
+              </select>
+              {/* <select
+                name='model'
+                value={values.model}
+                onChange={handleInputChange}
+                className={styles.select}
+              >
+                <option value='' disabled>
+                  Select Model
+                </option>
+                {mobileModel?.map((model) => {
+                  return (
+                    <option value={model.id} key={model.id}>
+                      {model.name}
+                    </option>
+                  );
+                })}
+              </select> */}
               <div>
                 <input
-                  type='text'
+                  type='date'
                   name='date'
-                  placeholder='Date of Purchase'
+                  placeholder='2022-02-01'
                   className={styles.input}
+                  value={values.date}
+                  onChange={handleInputChange}
                 />
               </div>
               <div>
@@ -50,6 +113,8 @@ const Plans = ({ short, title, points }) => {
                   name='price'
                   placeholder='Device Price'
                   className={styles.input}
+                  value={values.price}
+                  onChange={handleInputChange}
                 />
               </div>
               <div className='d-grid gap-2'>
@@ -59,21 +124,23 @@ const Plans = ({ short, title, points }) => {
           </>
         </Col>
       </Row>
-      <h2 className='my-5 text-center fw-bold'>Plans for your device</h2>
-      <div className={styles.card2}>
-        <h3>Device Price</h3>
-        <h4>₹10,000</h4>
-        <div className={styles.highlight}>₹1,000/year</div>
-        <p>
-          Note: These plans only covers Mobile Phones that have been purchased
-          on 12th November 2021.
-        </p>
-      </div>
-      <div className='text-center my-4'>
-        <button className='button' onClick={testFunc}>
-          Add to Cart
-        </button>
-      </div>
+      {detailsData && (
+        <>
+          <h2 className='my-5 text-center fw-bold'>Plans for your device</h2>
+          <div className={styles.card2}>
+            <h3>Device Price</h3>
+            <h4>₹{detailsData}</h4>
+            <div className={styles.highlight}>₹1,000/year</div>
+            <p>
+              Note: These plans only covers Mobile Phones that have been
+              purchased on 12th November 2021.
+            </p>
+          </div>
+          <div className='text-center my-4'>
+            <button className='button'>Buy Now</button>
+          </div>
+        </>
+      )}
     </section>
   );
 };

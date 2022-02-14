@@ -1,4 +1,4 @@
-import { API_URL, NEXT_URL } from 'config';
+import { NEXT_URL } from 'config';
 import { useRouter } from 'next/dist/client/router';
 import React, { createContext, useEffect, useReducer } from 'react';
 import { initialState, reducer } from './reducer';
@@ -8,13 +8,46 @@ export const StateContext = createContext();
 const StateProvider = ({ children }) => {
   const router = useRouter();
 
+  const { query } = useRouter();
+
   const [state, dispatch] = useReducer(reducer, initialState);
 
   useEffect(() => checkUserLoggedIn(), []);
 
+  // REGISTER!
+  const register = async (registerData) => {
+    dispatch({ type: 'LOADING' });
+
+    try {
+      const res = await fetch(`${NEXT_URL}/api/signup`, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(registerData),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        dispatch({ type: 'ERROR', payload: data.message });
+      } else {
+        dispatch({ type: 'LOGIN_VIA_PASSWORD', payload: data });
+        if (query.redirect) {
+          router.push('/');
+        } else {
+          router.push('/account/dashboard');
+        }
+      }
+    } catch (err) {
+      dispatch({ type: 'ERROR', payload: err.message });
+    }
+  };
+
   // LOGIN!
   const login = async (loginData) => {
     try {
+      dispatch({ type: 'LOADING' });
+
       const res = await fetch(`${NEXT_URL}/api/login`, {
         method: 'POST',
         headers: {
@@ -28,7 +61,11 @@ const StateProvider = ({ children }) => {
         dispatch({ type: 'ERROR', payload: data.message });
       } else {
         dispatch({ type: 'LOGIN_VIA_PASSWORD', payload: data });
-        router.push('/account/dashboard');
+        if (query.redirect) {
+          router.push('/');
+        } else {
+          router.push('/account/dashboard');
+        }
       }
     } catch (err) {
       dispatch({ type: 'ERROR', payload: err.message });
@@ -38,6 +75,8 @@ const StateProvider = ({ children }) => {
   // GENERATE OTP!
   const generateOTP = async (loginData) => {
     try {
+      dispatch({ type: 'LOADING' });
+
       const res = await fetch(`${NEXT_URL}/api/generateOTP`, {
         method: 'POST',
         headers: {
@@ -80,7 +119,9 @@ const StateProvider = ({ children }) => {
   };
 
   return (
-    <StateContext.Provider value={{ ...state, login, generateOTP, logout }}>
+    <StateContext.Provider
+      value={{ ...state, register, login, generateOTP, logout }}
+    >
       {children}
     </StateContext.Provider>
   );

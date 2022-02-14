@@ -214,6 +214,15 @@ iframe {
   transform-origin: top center;
 }
 
+/* SHOW PASSWORD ICOM! */
+
+.my-pos {
+  position: relative !important;
+  left: 25rem !important;
+  bottom: 2rem !important;
+  cursor: pointer;
+}
+
 @media (max-width: 600px) {
   .nav-links {
     height: 0;
@@ -242,5 +251,12 @@ iframe {
   .swiper-button-next,
   .swiper-rtl {
     left: 200px !important;
+  }
+
+  .my-pos {
+    position: initial !important;
+    left: 15rem !important;
+    bottom: 2rem !important;
+    cursor: pointer;
   }
 }

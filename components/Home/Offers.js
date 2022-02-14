@@ -25,9 +25,6 @@ const Offers = () => {
               <Link href='/'>
                 <a className={styles.button1}>BUY NOW</a>
               </Link>
-              <Link href='/'>
-                <a className={styles.button}>Add to cart</a>
-              </Link>
             </div>
           </div>
         </Col>
@@ -45,9 +42,6 @@ const Offers = () => {
             <div className='d-flex justify-content-center'>
               <Link href='/'>
                 <a className={styles.button1}>BUY NOW</a>
-              </Link>
-              <Link href='/'>
-                <a className={styles.button}>Add to cart</a>
               </Link>
             </div>
           </div>
@@ -67,9 +61,6 @@ const Offers = () => {
             <div className='d-flex justify-content-center'>
               <Link href='/'>
                 <a className={styles.button1}>BUY NOW</a>
-              </Link>
-              <Link href='/'>
-                <a className={styles.button}>Add to cart</a>
               </Link>
             </div>
           </div>

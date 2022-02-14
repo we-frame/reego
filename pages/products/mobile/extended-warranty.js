@@ -5,13 +5,15 @@ import Testimonials from '@/components/Home/Testimonials';
 import Plans from '@/components/products/Plans';
 import TableInfo from '@/components/products/TableInfo';
 import Faqs from '@/components/products/Faqs';
+import { API_URL } from 'config';
 
-const ExtendedWarrantyPage = () => {
+const ExtendedWarrantyPage = ({ brandList }) => {
   return (
     <>
       <Seo title='Extended Warranty' />
       <Container>
         <Plans
+          brandList={brandList}
           short='EW'
           title='Extended Warranty'
           points={[
@@ -32,6 +34,18 @@ const ExtendedWarrantyPage = () => {
       </Container>
     </>
   );
+};
+
+export const getServerSideProps = async ({ req }) => {
+  // BRAND LIST
+  const brandRes = await fetch(`${API_URL}/getBrandList.php`);
+  const brandData = await brandRes.json();
+
+  return {
+    props: {
+      brandList: brandData.data,
+    },
+  };
 };
 
 export default ExtendedWarrantyPage;

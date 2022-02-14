@@ -1,14 +1,16 @@
 import Seo from '@/components/Utils/Seo';
-import { useContext, useState } from 'react';
-import 'react-toastify/dist/ReactToastify.css';
+import { useContext, useEffect, useState } from 'react';
 import styles from '@/styles/account/AuthForm.module.css';
 import { Container } from 'react-bootstrap';
 import { StateContext } from 'context/StateProvider';
 import Error from '@/components/Utils/Error';
+import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
 
 const LoginPage = () => {
-  const { login, generateOTP, OTPgen, error, errorOTP } =
+  const { login, generateOTP, OTPgen, error, errorOTP, loading } =
     useContext(StateContext);
+
+  const [passwordShown, setPasswordShown] = useState(false);
 
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
@@ -50,13 +52,19 @@ const LoginPage = () => {
                   />
                 </div>
 
-                <input type='submit' value='Login' className='button' />
+                {loading ? (
+                  <button className='button w-100 opacity-50' disabled>
+                    Loading...
+                  </button>
+                ) : (
+                  <input type='submit' value='Login' className='button' />
+                )}
               </form>
             </div>
           </>
         ) : (
           <div className={styles.auth}>
-            <h2 className='my-3 fw-bold text-center'>Log In</h2>
+            <h2 className='my-3 fw-bold text-center'>LOG IN</h2>
             <form onSubmit={handleSubmit}>
               {loginVia === 1 ? (
                 <>
@@ -74,16 +82,35 @@ const LoginPage = () => {
                   <div>
                     <label htmlFor='password'>Password</label>
                     <input
-                      type='password'
+                      type={passwordShown ? 'text' : 'password'}
                       id='password'
                       name='password'
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       required
                     />
+                    {passwordShown ? (
+                      <AiFillEye
+                        fontSize='1.3rem'
+                        className=' my-pos'
+                        onClick={() => setPasswordShown(!passwordShown)}
+                      />
+                    ) : (
+                      <AiFillEyeInvisible
+                        fontSize='1.3rem'
+                        className=' my-pos'
+                        onClick={() => setPasswordShown(!passwordShown)}
+                      />
+                    )}
                   </div>
                   {error && <Error error={error} />}
-                  <input type='submit' value='Login' className='button' />
+                  {loading ? (
+                    <button className='button w-100 opacity-50' disabled>
+                      Loading...
+                    </button>
+                  ) : (
+                    <input type='submit' value='Login' className='button' />
+                  )}
                 </>
               ) : (
                 <>
@@ -99,7 +126,13 @@ const LoginPage = () => {
                     />
                   </div>
                   {errorOTP ? <Error error={error} /> : ''}
-                  <input type='submit' value='Send OTP' className='button' />
+                  {loading ? (
+                    <button className='button w-100 opacity-50' disabled>
+                      Loading...
+                    </button>
+                  ) : (
+                    <input type='submit' value='Send OTP' className='button' />
+                  )}
                 </>
               )}
             </form>

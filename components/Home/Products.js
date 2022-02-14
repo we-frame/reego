@@ -16,7 +16,7 @@ const Products = () => {
             <li className={styles.li}>Repair or replacement guaranteed</li>
           </ul>
           <div className='d-flex justify-content-center'>
-            <Link href='/'>
+            <Link href='/products/mobile/screen-protection'>
               <a className={styles.buttonRounded}>Read More</a>
             </Link>
           </div>
@@ -37,7 +37,7 @@ const Products = () => {
             </li>
           </ul>
           <div className='d-flex justify-content-center'>
-            <Link href='/'>
+            <Link href='/products/mobile/accidental-damage-and-liquid-damage'>
               <a className={styles.buttonRounded}>Read More</a>
             </Link>
           </div>
@@ -55,7 +55,7 @@ const Products = () => {
             <li className={styles.li}>Free Pick & Drop</li>
           </ul>
           <div className='d-flex justify-content-center'>
-            <Link href='/'>
+            <Link href='/products/mobile/extended-warranty'>
               <a className={styles.buttonRounded}>Read More</a>
             </Link>
           </div>

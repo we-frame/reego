@@ -1,37 +1,82 @@
 import Image from 'next/image';
-import { useState } from 'react';
+import Link from 'next/link';
+import { useContext, useState } from 'react';
 import illustration from '/public/images/form.png';
 import { Container, Row, Col } from 'react-bootstrap';
 import styles from '@/styles/home/RequestForm.module.css';
 import { IoIosArrowBack } from 'react-icons/io';
 import { API_URL } from 'config';
+import { AiFillHome } from 'react-icons/ai';
+import { GoLocation } from 'react-icons/go';
+import { StateContext } from 'context/StateProvider';
 
-const RequestForm = ({ brandList, problems }) => {
+const RequestForm = ({ brandList, gadgetList, problems, token, id }) => {
+  const { isLoggedIn } = useContext(StateContext);
+
   const [index, setIndex] = useState(0);
   const [mobileModel, setMobileModel] = useState([]);
+  const [brandModel, setBrandModel] = useState([]);
 
-  //   AFTER CLICKING ON SUBMIT!
-  //   const [choice,setChoice] = useState(null)
+  const [dropAddress, setDropAddress] = useState(null);
+
+  // Add to values object at submit!
+  const [plan, setPlan] = useState(
+    JSON.parse(
+      typeof window !== 'undefined' && localStorage.getItem('requestform')
+    )?.plan || 0
+  );
+  const [dropPoint, setDropPoint] = useState(0);
 
   const [values, setValues] = useState({
-    name: '',
-    number: '',
-    email: '',
-    brand: '',
-    model: '',
-    issue: '',
-    comments: 'Comments',
-    pincode: '',
-    address: '',
+    name:
+      JSON.parse(
+        typeof window !== 'undefined' && localStorage.getItem('requestform')
+      )?.name || '',
+    mobile:
+      JSON.parse(
+        typeof window !== 'undefined' && localStorage.getItem('requestform')
+      )?.mobile || '',
+    email:
+      JSON.parse(
+        typeof window !== 'undefined' && localStorage.getItem('requestform')
+      )?.email || '',
+    gadget:
+      JSON.parse(
+        typeof window !== 'undefined' && localStorage.getItem('requestform')
+      )?.gadget || '',
+    brand:
+      JSON.parse(
+        typeof window !== 'undefined' && localStorage.getItem('requestform')
+      )?.brand || '',
+    model:
+      JSON.parse(
+        typeof window !== 'undefined' && localStorage.getItem('requestform')
+      )?.model || '',
+    deviceIssues:
+      JSON.parse(
+        typeof window !== 'undefined' && localStorage.getItem('requestform')
+      )?.deviceIssues || '',
+    comments:
+      JSON.parse(
+        typeof window !== 'undefined' && localStorage.getItem('requestform')
+      )?.comments || '',
+    pincode:
+      JSON.parse(
+        typeof window !== 'undefined' && localStorage.getItem('requestform')
+      )?.pincode || '',
+    address:
+      JSON.parse(
+        typeof window !== 'undefined' && localStorage.getItem('requestform')
+      )?.address || '',
   });
 
-  const [plan, setPlan] = useState(0);
-
+  // HANDLING ALL INPUTS
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setValues({ ...values, [name]: value });
   };
 
+  // HANDLING MODEL SELECTION
   const handleModelSelection = async (e) => {
     setValues({ ...values, brand: e.target.value });
 
@@ -42,9 +87,30 @@ const RequestForm = ({ brandList, problems }) => {
     setMobileModel(data.data);
   };
 
-  const handleSubmit = (e) => {
+  // HANDLING BRAND SELECTION
+  const handleBrandSelection = async (e) => {
+    setValues({ ...values, gadget: e.target.value });
+
+    const res = await fetch(
+      `${API_URL}/getBrandList.php?gadget_id=${e.target.value}`
+    );
+    const data = await res.json();
+    setBrandModel(data.data);
+  };
+
+  // FINAL SUBMIT
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(values);
+    const res = await fetch(
+      `${API_URL}/getDropPoint.php?pincode=${values.pincode}`
+    );
+    const data = await res.json();
+
+    if (res.ok) {
+      setIndex(3);
+      setDropAddress(data?.data);
+      localStorage.setItem('requestform', JSON.stringify({ ...values, plan }));
+    }
   };
 
   return (
@@ -67,10 +133,10 @@ const RequestForm = ({ brandList, problems }) => {
                 <div>
                   <input
                     type='number'
-                    name='number'
+                    name='mobile'
                     placeholder='Mobile'
                     className={styles.input}
-                    value={values.number}
+                    value={values.mobile}
                     onChange={handleInputChange}
                   />
                 </div>
@@ -84,6 +150,25 @@ const RequestForm = ({ brandList, problems }) => {
                     onChange={handleInputChange}
                   />
                 </div>
+                <div>
+                  <select
+                    name='gadget'
+                    value={values.gadget}
+                    onChange={handleBrandSelection}
+                    className={styles.select2}
+                  >
+                    <option value='' disabled>
+                      Select Gadget
+                    </option>
+                    {gadgetList.map((gadget) => {
+                      return (
+                        <option value={gadget.gadgetId} key={gadget.gadgetId}>
+                          {gadget.gadgetType}
+                        </option>
+                      );
+                    })}
+                  </select>
+                </div>
                 <div className='d-flex justify-content-around'>
                   <select
                     name='brand'
@@ -94,7 +179,7 @@ const RequestForm = ({ brandList, problems }) => {
                     <option value='' disabled>
                       Select Brand
                     </option>
-                    {brandList.map((brand) => {
+                    {brandModel?.map((brand) => {
                       return (
                         <option value={brand.brand_id} key={brand.brand_id}>
                           {brand.brand_name}
@@ -113,7 +198,7 @@ const RequestForm = ({ brandList, problems }) => {
                     </option>
                     {mobileModel?.map((model) => {
                       return (
-                        <option value={model.name} key={model.id}>
+                        <option value={model.id} key={model.id}>
                           {model.name}
                         </option>
                       );
@@ -131,8 +216,8 @@ const RequestForm = ({ brandList, problems }) => {
               <>
                 <div>
                   <select
-                    name='issue'
-                    value={values.issue}
+                    name='deviceIssues'
+                    value={values.deviceIssues}
                     onChange={handleInputChange}
                     className={styles.select2}
                   >
@@ -157,6 +242,7 @@ const RequestForm = ({ brandList, problems }) => {
                     className={styles.input}
                     value={values.comments}
                     onChange={handleInputChange}
+                    placeholder='Comments'
                   ></textarea>
                 </div>
                 <div>
@@ -219,6 +305,78 @@ const RequestForm = ({ brandList, problems }) => {
                 </div>
               </>
             )}
+            {index === 3 && (
+              <>
+                {dropAddress ? (
+                  <>
+                    <div
+                      className={`${styles.card} ${
+                        dropPoint === 0 && styles.border
+                      }`}
+                      onClick={() => setDropPoint(0)}
+                    >
+                      <GoLocation color='#f53855' fontSize='2rem' />
+                      <h1>Pincode : {values.pincode}</h1>
+                      <h4>Drop your device at</h4>
+                      <p>
+                        {dropAddress[0]?.dropPointName}{' '}
+                        {dropAddress[0]?.dropPointAddress}
+                      </p>
+                    </div>
+                    <div
+                      className={`${styles.card} ${
+                        dropPoint === 1 && styles.border
+                      }`}
+                      onClick={() => setDropPoint(1)}
+                    >
+                      <AiFillHome color='#f53855' fontSize='2rem' />
+
+                      <h4>Doorstep</h4>
+                      <p>{values.address}</p>
+                    </div>
+                    <div className='text-center'>
+                      <IoIosArrowBack
+                        onClick={() => setIndex(1)}
+                        className={styles.back}
+                      />
+                      <button className='button' type='submit'>
+                        Procced to Payment
+                      </button>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div
+                      className={`${styles.card} ${
+                        dropPoint === 1 && styles.border
+                      }`}
+                      onClick={() => setDropPoint(1)}
+                    >
+                      <AiFillHome color='#f53855' fontSize='2rem' />
+                      <h4>Doorstep</h4>
+                      <p>{values.address}</p>
+                    </div>
+                    <div className='text-center'>
+                      <IoIosArrowBack
+                        onClick={() => setIndex(1)}
+                        className={styles.back}
+                      />
+                      {isLoggedIn ? (
+                        <button className='button' type='submit'>
+                          Procced to Payment
+                        </button>
+                      ) : (
+                        <Link href='/account/login?redirect=requestform'>
+                          <a className='button text-white' type='submit'>
+                            Log in
+                          </a>
+                        </Link>
+                      )}
+                    </div>
+                  </>
+                )}
+              </>
+            )}
           </form>
         </Col>
         <Col lg={6}>
@@ -229,6 +387,18 @@ const RequestForm = ({ brandList, problems }) => {
       </Row>
     </Container>
   );
+};
+
+export const getServerSideProps = async ({ req }) => {
+  const { token } = parseCookies(req);
+  const { id } = parseCookies(req);
+
+  return {
+    props: {
+      token,
+      id,
+    },
+  };
 };
 
 export default RequestForm;

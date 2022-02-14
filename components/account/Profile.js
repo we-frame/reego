@@ -15,10 +15,10 @@ const Profile = ({ profile }) => {
           <p>Full Name</p>
           <p>{profile[0]?.custName}</p>
         </div>
-        <div className={styles.profile}>
+        {/* <div className={styles.profile}>
           <p>Mobile Number</p>
           <p>8105434634</p>
-        </div>
+        </div> */}
         <div className={styles.profile}>
           <p>Email ID</p>
           <p className={styles.specialP}>{profile[0]?.custEmail}</p>
@@ -33,12 +33,15 @@ const Profile = ({ profile }) => {
         </div>
         <div className={styles.profile}>
           <p>Location</p>
-          <p>{profile[0]?.custAddress}</p>
+          <p>
+            {profile[0]?.custAddress}, {profile[0]?.custCity},{' '}
+            {profile[0]?.custState}
+          </p>
         </div>
-        <div className={styles.profile}>
+        {/* <div className={styles.profile}>
           <p>Alternate Mobile </p>
           <p> - not added -</p>
-        </div>
+        </div> */}
       </div>
       <div className='text-center my-3'>
         <Link href='/account/edit' passHref>

@@ -25,6 +25,15 @@ export const getServerSideProps = async ({ req }) => {
   });
   const data = await res.json();
 
+  if (!token) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
+  }
+
   return {
     props: {
       profile: data.data,

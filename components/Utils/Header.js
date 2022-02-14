@@ -101,13 +101,13 @@ const Header = () => {
                   </a>
                 </Link>
               </li>
-              <li>
+              {/* <li>
                 <Link href='/cart'>
                   <a className={styles.myLinks} onClick={() => setShow(false)}>
                     Cart
                   </a>
                 </Link>
-              </li>
+              </li> */}
               {isLoggedIn && (
                 <li>
                   <Link href='/account/dashboard'>

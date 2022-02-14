@@ -2,7 +2,7 @@ export const initialState = {
   user: null,
   isLoggedIn: false,
   OTPgen: false,
-  products: [],
+  loading: false,
   error: null,
   errorOTP: null,
 };
@@ -14,18 +14,21 @@ export const reducer = (state, action) => {
         ...state,
         error: null,
         isLoggedIn: true,
+        loading: false,
       };
     case 'GENERATE_OTP':
       return {
         ...state,
         OTPgen: true,
         errorOTP: null,
+        loading: false,
       };
     case 'USER_PERSISTENCE':
       return {
         ...state,
         user: action.payload,
         isLoggedIn: true,
+        loading: false,
       };
     case 'USER_NULL':
       return {
@@ -33,18 +36,26 @@ export const reducer = (state, action) => {
         user: null,
         error: null,
         isLoggedIn: false,
+        loading: false,
+      };
+    case 'LOADING':
+      return {
+        ...state,
+        loading: true,
       };
     case 'ERROR':
       return {
         ...state,
         error: action.payload,
         OTPgen: false,
+        loading: false,
       };
     case 'ERROR_OTP':
       return {
         ...state,
         errorOTP: action.payload,
         OTPgen: false,
+        loading: false,
       };
   }
 };

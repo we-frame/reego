@@ -4,14 +4,16 @@ import Faqs from '@/components/products/Faqs';
 import Plans from '@/components/products/Plans';
 import TableInfo from '@/components/products/TableInfo';
 import Seo from '@/components/Utils/Seo';
+import { API_URL } from 'config';
 import { Container } from 'react-bootstrap';
 
-const ScreenProtectionPage = () => {
+const ScreenProtectionPage = ({ brandList }) => {
   return (
     <>
       <Seo title='Screen Protection' />
       <Container>
         <Plans
+          brandList={brandList}
           short='SDI'
           title='Screen Damage Insurance'
           points={[
@@ -27,6 +29,18 @@ const ScreenProtectionPage = () => {
       </Container>
     </>
   );
+};
+
+export const getServerSideProps = async ({ req }) => {
+  // BRAND LIST
+  const brandRes = await fetch(`${API_URL}/getBrandList.php`);
+  const brandData = await brandRes.json();
+
+  return {
+    props: {
+      brandList: brandData.data,
+    },
+  };
 };
 
 export default ScreenProtectionPage;

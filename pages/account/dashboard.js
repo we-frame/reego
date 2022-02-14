@@ -1,23 +1,43 @@
 import OverView from '@/components/account/OverView';
 import Layout2 from '@/components/Utils/Layout2';
 import Seo from '@/components/Utils/Seo';
-import cookie from 'cookie';
+import { API_URL } from 'config';
+import { parseCookies } from 'helpers';
 
-const DashBoardPage = () => {
+const DashBoardPage = ({ data }) => {
   return (
     <Layout2>
       <Seo title='Dashboard' />
-      <OverView />
+      <OverView data={data} />
     </Layout2>
   );
 };
 
 export const getServerSideProps = async ({ req }) => {
-  const token = cookie.parse(req ? req.headers.cookie || '' : '');
+  const { token } = parseCookies(req);
+  const { id } = parseCookies(req);
+
+  const res = await fetch(`${API_URL}/getUserDetails.php`, {
+    headers: {
+      Authorization: `${token}`,
+      'API-KEY': `${id}`,
+    },
+  });
+  const { data } = await res.json();
+
+  if (!token) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
+  }
 
   return {
     props: {
       token,
+      data,
     },
   };
 };

@@ -8,15 +8,27 @@ import family from '/public/images/Family.png';
 import styles from '@/styles/account/Orders.module.css';
 import styles2 from '@/styles/home/RequestForm.module.css';
 import { Modal } from 'react-bootstrap';
+import { API_URL } from 'config';
+import { parseCookies } from 'helpers';
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from 'react-toastify';
+import { useRouter } from 'next/dist/client/router';
 
-const AddPage = () => {
+const AddPage = ({ token, id, brandList, famData }) => {
   const [modalShow, setModalShow] = useState(false);
+  const [mobileModel, setMobileModel] = useState([]);
+
+  const [familyDetails, setFamilyDetails] = useState(famData.data);
+
+  const router = useRouter();
 
   const [values, setValues] = useState({
     name: '',
-    number: '',
-    purchase: '',
+    mobile: '',
+    dop: '',
     relation: '',
+    brandId: '',
+    model: '',
   });
 
   const handleInputChange = (e) => {
@@ -24,8 +36,43 @@ const AddPage = () => {
     setValues({ ...values, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleModelSelection = async (e) => {
+    setValues({ ...values, brandId: e.target.value });
+
+    const res = await fetch(
+      `${API_URL}/getModelsList.php?brand_id=${e.target.value}`
+    );
+    const data = await res.json();
+    setMobileModel(data.data);
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
+    try {
+      const res = await fetch(`${API_URL}/postAddFamilyDevice.php`, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: `${token}`,
+          'API-KEY': `${id}`,
+        },
+        body: JSON.stringify(values),
+      });
+      const data = await res.json();
+
+      if (res.ok) {
+        setModalShow(false);
+        router.reload();
+        // setFamilyDetails([data.data, ...familyDetails]);
+        toast.success('Member added successfully');
+      } else {
+        toast.error('Something went wrong');
+      }
+    } catch (err) {
+      toast.error('Something went wrong');
+    }
   };
 
   return (
@@ -40,48 +87,33 @@ const AddPage = () => {
           onClick={() => setModalShow(true)}
         />
       </div>
-      <div className={styles.ordersComp}>
-        <h4>Tharun</h4>
-        <hr />
-        <div className='d-flex align-items-center justify-content-between'>
-          <div className='d-flex align-items-center'>
-            <FaMobile size='3rem' color='#F53838' />
-            <div className='ms-4'>
-              <h4 className='my-3'>Iphone - 13</h4>
-              <h6>My Brother</h6>
-              <p>20th november</p>
+      {familyDetails?.map((item) => {
+        return (
+          <div className={styles.ordersComp} key={item.id}>
+            <h4>{item.memberName}</h4>
+            <hr />
+            <div className='d-flex align-items-center justify-content-between'>
+              <div className='d-flex align-items-center'>
+                <FaMobile size='3rem' color='#F53838' />
+                <div className='ms-4'>
+                  <h4 className='my-3'>
+                    {item.brand} {item.model}
+                  </h4>
+                  <h6>{item.relation}</h6>
+                  <p>{item.dop}</p>
+                </div>
+              </div>
+              <Image
+                src={family}
+                alt='family'
+                placeholder='blur'
+                width={200}
+                height={200}
+              />
             </div>
           </div>
-          <Image
-            src={family}
-            alt='family'
-            placeholder='blur'
-            width={200}
-            height={200}
-          />
-        </div>
-      </div>
-      <div className={styles.ordersComp}>
-        <h4>Tharun</h4>
-        <hr />
-        <div className='d-flex align-items-center justify-content-between'>
-          <div className='d-flex align-items-center'>
-            <FaMobile size='3rem' color='#F53838' />
-            <div className='ms-4'>
-              <h4 className='my-3'>Iphone - 13</h4>
-              <h6>My Brother</h6>
-              <p>20th november</p>
-            </div>
-          </div>
-          <Image
-            src={family}
-            alt='family'
-            placeholder='blur'
-            width={200}
-            height={200}
-          />
-        </div>
-      </div>
+        );
+      })}
       <Modal
         onHide={() => setModalShow(false)}
         show={modalShow}
@@ -112,20 +144,56 @@ const AddPage = () => {
             <div>
               <input
                 type='number'
-                name='number'
-                placeholder='Mobile'
+                name='mobile'
+                placeholder='Mobile Number'
                 className={styles2.input}
-                value={values.number}
+                value={values.mobile}
                 onChange={handleInputChange}
               />
             </div>
+            <div className='d-flex justify-content-around'>
+              <select
+                name='brandId'
+                value={values.brandId}
+                onChange={handleModelSelection}
+                className={styles2.select}
+              >
+                <option value='' disabled>
+                  Select Brand
+                </option>
+                {brandList?.map((brand) => {
+                  return (
+                    <option value={brand.brand_id} key={brand.brand_id}>
+                      {brand.brand_name}
+                    </option>
+                  );
+                })}
+              </select>
+              <select
+                name='model'
+                value={values.model}
+                onChange={handleInputChange}
+                className={styles2.select}
+              >
+                <option value='' disabled>
+                  Select Model
+                </option>
+                {mobileModel?.map((model) => {
+                  return (
+                    <option value={model.id} key={model.id}>
+                      {model.name}
+                    </option>
+                  );
+                })}
+              </select>
+            </div>
             <div>
               <input
-                type='text'
-                name='purchase'
+                type='date'
+                name='dop'
                 placeholder='Date Of Purchase'
                 className={styles2.input}
-                value={values.purchase}
+                value={values.dop}
                 onChange={handleInputChange}
               />
             </div>
@@ -145,8 +213,45 @@ const AddPage = () => {
           </form>
         </Modal.Body>
       </Modal>
+      <ToastContainer />
     </Layout2>
   );
+};
+
+export const getServerSideProps = async ({ req }) => {
+  const { token } = parseCookies(req);
+  const { id } = parseCookies(req);
+
+  // BRAND LIST!
+  const brandRes = await fetch(`${API_URL}/getBrandList.php`);
+  const brandData = await brandRes.json();
+
+  // FAMILY DETAILS!
+  const famDet = await fetch(`${API_URL}/getFamilyDetails.php`, {
+    headers: {
+      Authorization: `${token}`,
+      'API-KEY': `${id}`,
+    },
+  });
+  const famData = await famDet.json();
+
+  if (!token) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {
+      famData,
+      brandList: brandData.data,
+      token,
+      id,
+    },
+  };
 };
 
 export default AddPage;

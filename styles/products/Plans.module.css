@@ -39,6 +39,18 @@
   width: 100%;
 }
 
+.select {
+  background: #ffffff !important;
+  box-shadow: 2.22803px 2.22803px 7.24108px 5.57006px rgba(0, 0, 0, 0.05) !important;
+  border-radius: 8.35509px !important;
+  padding: 1rem !important;
+  border: 0 !important;
+  margin: 1rem 0 !important;
+  cursor: pointer !important;
+  color: var(--prim-clr) !important;
+  width: 100%;
+}
+
 .li {
   list-style: none;
   list-style-image: url('../../public/images/tick.png') !important;

@@ -11,13 +11,14 @@ import { useContext } from 'react';
 import { StateContext } from 'context/StateProvider';
 import { useRouter } from 'next/dist/client/router';
 
-const OverView = () => {
+const OverView = ({ data }) => {
   const { logout } = useContext(StateContext);
 
   const router = useRouter();
 
   const handleLogOut = () => {
     logout();
+    localStorage.removeItem('requestform');
     router.push('/');
   };
 
@@ -27,8 +28,8 @@ const OverView = () => {
         <div className='d-flex flex-column flex-lg-row text-center text-lg-start align-items-center'>
           <Image src={profilePic} alt='profilePic' width={100} height={100} />
           <div className='ms-0 my-3 my-lg-0 ms-lg-4'>
-            <h5>Vipul Uthaiah</h5>
-            <p>kechamadavipul@gmail.com</p>
+            <h5>{data[0]?.custName}</h5>
+            <p>{data[0]?.custEmail}</p>
           </div>
         </div>
         <Link href='/account/edit'>
@@ -67,9 +68,6 @@ const OverView = () => {
             <p>Profile Details</p>
           </a>
         </Link>
-        <div className={styles.accountOption}>
-          <p>Addresses</p>
-        </div>
       </div>
       <div className='mt-5 text-center'>
         <button className='button' onClick={handleLogOut}>
