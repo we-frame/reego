@@ -12,7 +12,7 @@ const Profile = ({ profile }) => {
       <hr />
       <div>
         <div className={styles.profile}>
-          <p>Full Name</p>
+          <p className='my-bold'>Full Name</p>
           <p>{profile[0]?.custName}</p>
         </div>
         {/* <div className={styles.profile}>
@@ -20,19 +20,19 @@ const Profile = ({ profile }) => {
           <p>8105434634</p>
         </div> */}
         <div className={styles.profile}>
-          <p>Email ID</p>
+          <p className='my-bold'>Email ID</p>
           <p className={styles.specialP}>{profile[0]?.custEmail}</p>
         </div>
         <div className={styles.profile}>
-          <p>Gender</p>
+          <p className='my-bold'>Gender</p>
           <p>{profile[0]?.custGender}</p>
         </div>
         <div className={styles.profile}>
-          <p>Date of Birth</p>
+          <p className='my-bold'>Date of Birth</p>
           <p>{profile[0]?.dateOfBirth}</p>
         </div>
         <div className={styles.profile}>
-          <p>Location</p>
+          <p className='my-bold'>Location</p>
           <p>
             {profile[0]?.custAddress}, {profile[0]?.custCity},{' '}
             {profile[0]?.custState}

@@ -223,6 +223,11 @@ iframe {
   cursor: pointer;
 }
 
+/* BOLDNESS! */
+.my-bold {
+  font-weight: normal;
+}
+
 @media (max-width: 600px) {
   .nav-links {
     height: 0;
@@ -231,7 +236,7 @@ iframe {
   }
 
   .show-links {
-    height: 14rem;
+    height: 18rem;
   }
 
   .button-outline {
@@ -258,5 +263,8 @@ iframe {
     left: 15rem !important;
     bottom: 2rem !important;
     cursor: pointer;
+  }
+  .my-bold {
+    font-weight: bold;
   }
 }

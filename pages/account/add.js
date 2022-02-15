@@ -93,7 +93,7 @@ const AddPage = ({ token, id, brandList, famData }) => {
           <div className={styles.ordersComp} key={item.id}>
             <h4>{item.memberName}</h4>
             <hr />
-            <div className='d-flex align-items-center justify-content-between'>
+            <div className='d-flex align-items-center justify-content-between flex-wrap'>
               <div className='d-flex align-items-center'>
                 <FaMobile size='3rem' color='#F53838' />
                 <div className='ms-4'>

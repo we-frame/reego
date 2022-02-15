@@ -5,7 +5,6 @@ import insta from '/public/images/insta.png';
 import twitter from '/public/images/twitter.png';
 import fb from '/public/images/fb.png';
 import ps from '/public/images/play-store.png';
-
 import styles from '@/styles/utils/Footer.module.css';
 
 const Footer = () => {
@@ -25,7 +24,7 @@ const Footer = () => {
             <Image src={twitter} alt='twitter' width={50} height={50} />
           </a>
         </div>
-        <div className='me-4'>
+        <div className='me-0 lg:me-4'>
           <a href='#'>
             <Image src={fb} alt='fb' width={50} height={50} />
           </a>
