@@ -5,7 +5,7 @@ import illustration from '/public/images/form.png';
 import { Container, Row, Col } from 'react-bootstrap';
 import styles from '@/styles/home/RequestForm.module.css';
 import { IoIosArrowBack } from 'react-icons/io';
-import { API_URL } from 'config';
+import { API_URL } from '../../config';
 import { AiFillHome } from 'react-icons/ai';
 import { GoLocation } from 'react-icons/go';
 import { StateContext } from 'context/StateProvider';
@@ -19,10 +19,7 @@ const RequestForm = ({
   id,
   profileData,
 }) => {
-  console.log(profileData);
-
   const router = useRouter();
-
   const initializeRazorpay = () => {
     return new Promise((resolve) => {
       const script = document.createElement('script');
@@ -37,22 +34,19 @@ const RequestForm = ({
     });
   };
   const makePayment = async (amt) => {
-    console.log('here...');
     const res = await initializeRazorpay();
-
     if (!res) {
       alert('Razorpay SDK Failed to load');
       return;
     }
 
-    // Make API call to the serverless API
     const data = await fetch('/api/razorpay', {
       method: 'POST',
       body: JSON.stringify({ amount: amt }),
     }).then((t) => t.json());
     console.log(data);
     var options = {
-      key: process.env.RAZORPAY_KEY, // Enter the Key ID generated from the Dashboard
+      key: process.env.RAZORPAY_KEY, 
       name: 'Reego',
       currency: data.currency,
       amount: data.amount,
@@ -60,16 +54,50 @@ const RequestForm = ({
       description: 'Reego Description',
       image:
         'https://kaudible.kodagu.today/assets/ff06665a-af2c-4f10-b5d5-111af6832d13',
-      handler: function (response) {
-        router.push('/success');
-        // alert(response.razorpay_payment_id);
-        // alert(response.razorpay_order_id);
-        // alert(response.razorpay_signature);
+      handler: async function (response) {
+        console.log(dropAddress);
+        var ss = JSON.stringify({
+          "name": values.name,
+          "email": values.email,
+          "mobile": values.mobile,
+          "brand": values.brand,
+          "model": values.model,
+          "address": values.address,
+          "otherComments": values.comments,
+          "packType": plan.toString(),
+          "deviceIssues": values.deviceIssues,
+          "pincode": values.pincode,
+          "gadgetId": gadgetId.toString(),
+          "paymentId": response.razorpay_payment_id.toString(),
+          "paymentRequest": JSON.stringify(options),
+          "paymentResponse": JSON.stringify(response),
+          "paymentStatus": "success",
+          "isRedirect": 0,
+          "dropType": dropPoint.toString(),
+          "dropPointId": dropPoint.toString(),
+          "transactionCode": response.razorpay_signature.toString(),
+        });
+        const res22 = await fetch(`${API_URL}/postRaiseRequest.php`, {
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `${token}`,
+            'API-KEY': `${id}`,
+          },
+          method: 'POST',
+          body: ss,
+        });
+        const data22 = await res22.json();
+        if (data22.status) {
+          router.push('/success');
+        } else {
+          router.push('/fail');
+        }
       },
       prefill: {
-        name: 'Weframe Tech',
-        email: 'weframe@gmail.com',
-        contact: '9999999999',
+        name: values.name,
+        email: values.email,
+        contact: values.mobile,
       },
     };
     var paymentObject = new window.Razorpay(options);
@@ -81,6 +109,7 @@ const RequestForm = ({
   const { isLoggedIn } = useContext(StateContext);
 
   const [index, setIndex] = useState(0);
+  const [gadgetId, setGadgetId] = useState(0);
   const [mobileModel, setMobileModel] = useState([]);
   const [brandModel, setBrandModel] = useState([]);
 
@@ -157,7 +186,7 @@ const RequestForm = ({
   // HANDLING BRAND SELECTION
   const handleBrandSelection = async (e) => {
     setValues({ ...values, gadget: e.target.value });
-
+    setGadgetId(e.target.value);
     const res = await fetch(
       `${API_URL}/getBrandList.php?gadget_id=${e.target.value}`
     );
@@ -377,9 +406,8 @@ const RequestForm = ({
                 {dropAddress ? (
                   <>
                     <div
-                      className={`${styles.card} ${
-                        dropPoint === 0 && styles.border
-                      }`}
+                      className={`${styles.card} ${dropPoint === 0 && styles.border
+                        }`}
                       onClick={() => setDropPoint(0)}
                     >
                       <GoLocation color='#f53855' fontSize='2rem' />
@@ -391,9 +419,8 @@ const RequestForm = ({
                       </p>
                     </div>
                     <div
-                      className={`${styles.card} ${
-                        dropPoint === 1 && styles.border
-                      }`}
+                      className={`${styles.card} ${dropPoint === 1 && styles.border
+                        }`}
                       onClick={() => setDropPoint(1)}
                     >
                       <AiFillHome color='#f53855' fontSize='2rem' />
@@ -420,9 +447,8 @@ const RequestForm = ({
                 ) : (
                   <>
                     <div
-                      className={`${styles.card} ${
-                        dropPoint === 1 && styles.border
-                      }`}
+                      className={`${styles.card} ${dropPoint === 1 && styles.border
+                        }`}
                       onClick={() => setDropPoint(1)}
                     >
                       <AiFillHome color='#f53855' fontSize='2rem' />

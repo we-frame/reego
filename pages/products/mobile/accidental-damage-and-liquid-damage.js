@@ -8,7 +8,7 @@ import { API_URL } from 'config';
 import { parseCookies } from 'helpers';
 import { Container } from 'react-bootstrap';
 
-const AccidentalPage = ({ brandList, profileData }) => {
+const AccidentalPage = ({ brandList, profileData, token, id }) => {
   return (
     <>
       <Seo title='Accidental Damage and Liquid Damage' />
@@ -56,6 +56,8 @@ export const getServerSideProps = async ({ req }) => {
     props: {
       brandList: brandData.data,
       profileData: data.data ? data.data : [],
+      token: token,
+      id: id
     },
   };
 };

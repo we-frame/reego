@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { API_URL } from 'config';
 import { useRouter } from 'next/dist/client/router';
 
-const Plans = ({ brandList, short, title, points, profileData }) => {
+const Plans = ({ brandList, short, title, points, profileData, token, id }) => {
   console.log(profileData);
 
   const router = useRouter();
@@ -46,28 +46,44 @@ const Plans = ({ brandList, short, title, points, profileData }) => {
       description: 'Reego Description',
       image:
         'https://kaudible.kodagu.today/assets/ff06665a-af2c-4f10-b5d5-111af6832d13',
-      handler: function (response) {
-        router.push('/success');
-        // alert(response.razorpay_payment_id);
-        // alert(response.razorpay_order_id);
-        // alert(response.razorpay_signature);
-      },
-      prefill: {
-        name: 'Weframe Tech',
-        email: 'weframe@gmail.com',
-        contact: '9999999999',
+      handler: async function (response) {
+        // var ss = JSON.stringify({
+        //   "name": profileData[0].custName,
+        //   "email": profileData[0].custEmail,
+        //   "brand": "1",
+        //   "model": "1",
+        //   "imeiNo": "mum",
+        //   "packType": "1",
+        //   "gadgetId": "1",
+        //   "paymentId": response.razorpay_payment_id.toString(),
+        //   "paymentRequest": JSON.stringify(options),
+        //   "paymentResponse": JSON.stringify(response),
+        //   "paymentStatus": "success",
+        //   "purchaseDate": values.date.toString(),
+        //   "imgInvoice": "",
+        // });
+        // const res22 = await fetch(`${API_URL}/postPurchasePacks.php`, {
+        //   headers: {
+        //     Accept: 'application/json',
+        //     'Content-Type': 'application/json',
+        //     Authorization: `${token}`,
+        //     'API-KEY': `${id}`,
+        //   },
+        //   method: 'POST',
+        //   body: ss,
+        // });
+        // const data22 = await res22.json();
+        // console.log(data22);
+        // if (data22.status) {
+          router.push('/success');
+        // } else {
+        //   router.push('/fail');
+        // }
       },
     };
     var paymentObject = new window.Razorpay(options);
     paymentObject.on('payment.failed', function (response) {
       router.push('/fail');
-      // alert(response.error.code);
-      // alert(response.error.description);
-      // alert(response.error.source);
-      // alert(response.error.step);
-      // alert(response.error.reason);
-      // alert(response.error.metadata.order_id);
-      // alert(response.error.metadata.payment_id);
     });
     paymentObject.open();
   };
@@ -100,6 +116,7 @@ const Plans = ({ brandList, short, title, points, profileData }) => {
     if (res.ok) {
       setDetailsData(data?.data[0]?.spackPrice);
     }
+    console.log(detailsData);
   };
 
   return (

@@ -8,28 +8,28 @@ import { GiCancel } from 'react-icons/gi';
 import { useState } from 'react';
 
 const CartPage = () => {
-  // const [values, setValues] = useState({
-  //   name: '',
-  //   email: '',
-  //   imei: '',
-  //   brand: '',
-  //   model: '',
-  // });
+  const [values, setValues] = useState({
+    name: '',
+    email: '',
+    imei: '',
+    brand: '',
+    model: '',
+  });
 
-  // const handleInputChange = (e) => {
-  //   const { name, value } = e.target;
-  //   setValues({ ...values, [name]: value });
-  // };
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setValues({ ...values, [name]: value });
+  };
 
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  // };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+  };
 
   return (
     <>
       <Seo title='Cart' />
       <Container className='my-4'>
-        {/* <div className={styles.cartComp}>
+        <div className={styles.cartComp}>
           <Row className='justify-content-center align-items-center'>
             <Col lg={2}></Col>
             <Col lg={2}>
@@ -136,7 +136,7 @@ const CartPage = () => {
               </div>
             </form>
           </div>
-        </div> */}
+        </div>
       </Container>
     </>
   );
