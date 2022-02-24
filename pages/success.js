@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 const success = () => {
     return (
         <>
@@ -5,7 +7,7 @@ const success = () => {
                 <h1 className="display-3">Thank You!</h1>
                 <p className="lead"><strong>Please check orders</strong> for to track your orders.</p>
                 <p className="lead">
-                    <a className="btn btn-primary btn-sm bg-success text-light btn-outline-success" href="/account/orders" role="button" >Continue to Orders</a>
+                    <Link className="btn btn-primary btn-sm bg-success text-light btn-outline-success" href="/account/orders" role="button" >Continue to Orders</Link>
                 </p>
             </div>
         </>
