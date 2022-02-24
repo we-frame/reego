@@ -2,8 +2,100 @@ import styles from '@/styles/products/Plans.module.css';
 import { Col, Row } from 'react-bootstrap';
 import { useState } from 'react';
 import { API_URL } from 'config';
+import { useRouter } from 'next/dist/client/router';
+import { parseCookies } from 'helpers';
+
+export const getServerSideProps = async ({ req }) => {
+  const { token } = parseCookies(req);
+  console.log(!token);
+  const { id } = parseCookies(req);
+
+  const res = await fetch(`${API_URL}/getUserDetails.php`, {
+    headers: {
+      Authorization: `${token}`,
+      'API-KEY': `${id}`,
+    },
+  });
+  const data = await res.json();
+
+  if (!token) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {
+      profile: data.data,
+    },
+  };
+};
 
 const Plans = ({ brandList, short, title, points }) => {
+  const router = useRouter();
+  const initializeRazorpay = () => {
+    return new Promise((resolve) => {
+      const script = document.createElement("script");
+      script.src = "https://checkout.razorpay.com/v1/checkout.js";
+      script.onload = () => {
+        resolve(true);
+      };
+      script.onerror = () => {
+        resolve(false);
+      };
+      document.body.appendChild(script);
+    });
+  };
+  const makePayment = async (amt) => {
+    console.log("here...");
+    const res = await initializeRazorpay();
+
+    if (!res) {
+      alert("Razorpay SDK Failed to load");
+      return;
+    }
+
+    // Make API call to the serverless API
+    const data = await fetch("/api/razorpay", { method: "POST", body: JSON.stringify({ amount: amt }) }).then((t) =>
+      t.json()
+    );
+    console.log(data);
+    var options = {
+      key: process.env.RAZORPAY_KEY, // Enter the Key ID generated from the Dashboard
+      name: "Reego",
+      currency: data.currency,
+      amount: data.amount,
+      order_id: data.id,
+      description: "Reego Description",
+      image: "https://kaudible.kodagu.today/assets/ff06665a-af2c-4f10-b5d5-111af6832d13",
+      handler: function (response) {
+        router.push("/success");
+        // alert(response.razorpay_payment_id);
+        // alert(response.razorpay_order_id);
+        // alert(response.razorpay_signature);
+      },
+      prefill: {
+        name: "Weframe Tech",
+        email: "weframe@gmail.com",
+        contact: "9999999999",
+      },
+    };
+    var paymentObject = new window.Razorpay(options);
+    paymentObject.on('payment.failed', function (response) {
+      router.push("/fail");
+      // alert(response.error.code);
+      // alert(response.error.description);
+      // alert(response.error.source);
+      // alert(response.error.step);
+      // alert(response.error.reason);
+      // alert(response.error.metadata.order_id);
+      // alert(response.error.metadata.payment_id);
+    });
+    paymentObject.open();
+  };
   const [values, setValues] = useState({
     price: '',
     date: '',
@@ -137,7 +229,7 @@ const Plans = ({ brandList, short, title, points }) => {
             </p>
           </div>
           <div className='text-center my-4'>
-            <button className='button'>Buy Now</button>
+            <button className='button' onClick={() => { makePayment(parseInt(detailsData)) }}>Buy Now</button>
           </div>
         </>
       )}

@@ -11,6 +11,59 @@ import { GoLocation } from 'react-icons/go';
 import { StateContext } from 'context/StateProvider';
 
 const RequestForm = ({ brandList, gadgetList, problems, token, id }) => {
+  const initializeRazorpay = () => {
+    return new Promise((resolve) => {
+      const script = document.createElement("script");
+      script.src = "https://checkout.razorpay.com/v1/checkout.js";
+      script.onload = () => {
+        resolve(true);
+      };
+      script.onerror = () => {
+        resolve(false);
+      };
+      document.body.appendChild(script);
+    });
+  };
+  const makePayment = async (amt) => {
+    console.log("here...");
+    const res = await initializeRazorpay();
+
+    if (!res) {
+      alert("Razorpay SDK Failed to load");
+      return;
+    }
+
+    // Make API call to the serverless API
+    const data = await fetch("/api/razorpay", { method: "POST", body: JSON.stringify({ amount: amt }) }).then((t) =>
+      t.json()
+    );
+    console.log(data);
+    var options = {
+      key: process.env.RAZORPAY_KEY, // Enter the Key ID generated from the Dashboard
+      name: "Reego",
+      currency: data.currency,
+      amount: data.amount,
+      order_id: data.id,
+      description: "Reego Description",
+      image: "https://kaudible.kodagu.today/assets/ff06665a-af2c-4f10-b5d5-111af6832d13",
+      handler: function (response) {
+        router.push("/success");
+        // alert(response.razorpay_payment_id);
+        // alert(response.razorpay_order_id);
+        // alert(response.razorpay_signature);
+      },
+      prefill: {
+        name: "Weframe Tech",
+        email: "weframe@gmail.com",
+        contact: "9999999999",
+      },
+    };
+    var paymentObject = new window.Razorpay(options);
+    paymentObject.on('payment.failed', function (response) {
+      router.push("/fail");
+    });
+    paymentObject.open();
+  };
   const { isLoggedIn } = useContext(StateContext);
 
   const [index, setIndex] = useState(0);
@@ -310,9 +363,8 @@ const RequestForm = ({ brandList, gadgetList, problems, token, id }) => {
                 {dropAddress ? (
                   <>
                     <div
-                      className={`${styles.card} ${
-                        dropPoint === 0 && styles.border
-                      }`}
+                      className={`${styles.card} ${dropPoint === 0 && styles.border
+                        }`}
                       onClick={() => setDropPoint(0)}
                     >
                       <GoLocation color='#f53855' fontSize='2rem' />
@@ -324,9 +376,8 @@ const RequestForm = ({ brandList, gadgetList, problems, token, id }) => {
                       </p>
                     </div>
                     <div
-                      className={`${styles.card} ${
-                        dropPoint === 1 && styles.border
-                      }`}
+                      className={`${styles.card} ${dropPoint === 1 && styles.border
+                        }`}
                       onClick={() => setDropPoint(1)}
                     >
                       <AiFillHome color='#f53855' fontSize='2rem' />
@@ -339,7 +390,7 @@ const RequestForm = ({ brandList, gadgetList, problems, token, id }) => {
                         onClick={() => setIndex(1)}
                         className={styles.back}
                       />
-                      <button className='button' type='submit'>
+                      <button className='button' type='submit' onClick={() => { plan === 0 ? makePayment(99) : makePayment(395) }}>
                         Procced to Payment
                       </button>
                     </div>
@@ -347,9 +398,8 @@ const RequestForm = ({ brandList, gadgetList, problems, token, id }) => {
                 ) : (
                   <>
                     <div
-                      className={`${styles.card} ${
-                        dropPoint === 1 && styles.border
-                      }`}
+                      className={`${styles.card} ${dropPoint === 1 && styles.border
+                        }`}
                       onClick={() => setDropPoint(1)}
                     >
                       <AiFillHome color='#f53855' fontSize='2rem' />
@@ -362,7 +412,7 @@ const RequestForm = ({ brandList, gadgetList, problems, token, id }) => {
                         className={styles.back}
                       />
                       {isLoggedIn ? (
-                        <button className='button' type='submit'>
+                        <button className='button' type='submit' onClick={() => { plan === 0 ? makePayment(99) : makePayment(395) }}>
                           Procced to Payment
                         </button>
                       ) : (
