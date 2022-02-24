@@ -9,8 +9,10 @@ import { API_URL } from 'config';
 import { AiFillHome } from 'react-icons/ai';
 import { GoLocation } from 'react-icons/go';
 import { StateContext } from 'context/StateProvider';
+import { useRouter } from 'next/dist/client/router';
 
 const RequestForm = ({ brandList, gadgetList, problems, token, id }) => {
+  const router = useRouter();
   const initializeRazorpay = () => {
     return new Promise((resolve) => {
       const script = document.createElement("script");
