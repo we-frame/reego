@@ -1,49 +1,19 @@
-import Link from 'next/link';
 import { Row, Col } from 'react-bootstrap';
 import styles from '@/styles/home/Offers.module.css';
 import { useRouter } from 'next/dist/client/router';
-import { parseCookies } from 'helpers';
 import { useContext, useState } from 'react';
 import { StateContext } from 'context/StateProvider';
+import Link from 'next/link';
 
-export const getServerSideProps = async ({ req }) => {
-  const { token } = parseCookies(req);
-  const { id } = parseCookies(req);
-  console.log(!token);
-  console.log(token);
-  console.log(id);
+const Offers = ({ profileData }) => {
+  console.log(profileData);
 
-  const res = await fetch(`${API_URL}/getUserDetails.php`, {
-    headers: {
-      Authorization: `${token}`,
-      'API-KEY': `${id}`,
-    },
-  });
-  const data = await res.json();
-
-  if (!token) {
-    return {
-      redirect: {
-        destination: '/',
-        permanent: false,
-      },
-    };
-  }
-
-  return {
-    props: {
-      profile: data.data,
-    },
-  };
-};
-
-const Offers = () => {
   const router = useRouter();
   const { isLoggedIn } = useContext(StateContext);
   const initializeRazorpay = () => {
     return new Promise((resolve) => {
-      const script = document.createElement("script");
-      script.src = "https://checkout.razorpay.com/v1/checkout.js";
+      const script = document.createElement('script');
+      script.src = 'https://checkout.razorpay.com/v1/checkout.js';
       script.onload = () => {
         resolve(true);
       };
@@ -54,42 +24,44 @@ const Offers = () => {
     });
   };
   const makePayment = async (amt) => {
-    console.log("here...");
+    console.log('here...');
     const res = await initializeRazorpay();
 
     if (!res) {
-      alert("Razorpay SDK Failed to load");
+      alert('Razorpay SDK Failed to load');
       return;
     }
 
     // Make API call to the serverless API
-    const data = await fetch("/api/razorpay", { method: "POST", body: JSON.stringify({ amount: amt }) }).then((t) =>
-      t.json()
-    );
+    const data = await fetch('/api/razorpay', {
+      method: 'POST',
+      body: JSON.stringify({ amount: amt }),
+    }).then((t) => t.json());
     console.log(data);
     var options = {
       key: process.env.RAZORPAY_KEY, // Enter the Key ID generated from the Dashboard
-      name: "Reego",
+      name: 'Reego',
       currency: data.currency,
       amount: data.amount,
       order_id: data.id,
-      description: "Reego Description",
-      image: "https://kaudible.kodagu.today/assets/ff06665a-af2c-4f10-b5d5-111af6832d13",
+      description: 'Reego Description',
+      image:
+        'https://kaudible.kodagu.today/assets/ff06665a-af2c-4f10-b5d5-111af6832d13',
       handler: function (response) {
-        router.push("/success");
+        router.push('/success');
         // alert(response.razorpay_payment_id);
         // alert(response.razorpay_order_id);
         // alert(response.razorpay_signature);
       },
       prefill: {
-        name: "Weframe Tech",
-        email: "weframe@gmail.com",
-        contact: "9999999999",
+        name: 'Weframe Tech',
+        email: 'weframe@gmail.com',
+        contact: '9999999999',
       },
     };
     var paymentObject = new window.Razorpay(options);
     paymentObject.on('payment.failed', function (response) {
-      router.push("/fail");
+      router.push('/fail');
       // alert(response.error.code);
       // alert(response.error.description);
       // alert(response.error.source);
@@ -119,7 +91,20 @@ const Offers = () => {
             </ul>
             <h3 className='text-center'>₹99</h3>
             <div className='d-flex justify-content-center'>
-              <button className={styles.button1} onClick={() => { makePayment(99) }}>BUY NOW</button>
+              {isLoggedIn ? (
+                <button
+                  className={styles.button1}
+                  onClick={() => {
+                    makePayment(99);
+                  }}
+                >
+                  BUY NOW
+                </button>
+              ) : (
+                <Link href='/account/login?redirect=offers'>
+                  <a className={styles.button1}>Log in</a>
+                </Link>
+              )}
             </div>
           </div>
         </Col>
@@ -135,7 +120,20 @@ const Offers = () => {
             </ul>
             <h3 className='text-center'>₹450</h3>
             <div className='d-flex justify-content-center'>
-              <button className={styles.button1} onClick={() => { makePayment(450) }}>BUY NOW</button>
+              {isLoggedIn ? (
+                <button
+                  className={styles.button1}
+                  onClick={() => {
+                    makePayment(450);
+                  }}
+                >
+                  BUY NOW
+                </button>
+              ) : (
+                <Link href='/account/login?redirect=offers'>
+                  <a className={styles.button1}>Log in</a>
+                </Link>
+              )}
             </div>
           </div>
         </Col>
@@ -152,7 +150,20 @@ const Offers = () => {
             </ul>
             <h3 className='text-center'>₹99</h3>
             <div className='d-flex justify-content-center'>
-              <button className={styles.button1} onClick={() => { makePayment(99) }}>BUY NOW</button>
+              {isLoggedIn ? (
+                <button
+                  className={styles.button1}
+                  onClick={() => {
+                    makePayment(99);
+                  }}
+                >
+                  BUY NOW
+                </button>
+              ) : (
+                <Link href='/account/login?redirect=offers'>
+                  <a className={styles.button1}>Log in</a>
+                </Link>
+              )}
             </div>
           </div>
         </Col>

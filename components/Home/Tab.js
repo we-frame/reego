@@ -5,7 +5,7 @@ import RequestForm from '@/components/Home/RequestForm';
 import Tracker from './Tracker';
 import { StateContext } from 'context/StateProvider';
 
-const Tab = ({ brandList, gadgetList, problems, token, id }) => {
+const Tab = ({ brandList, gadgetList, problems, token, id, profileData }) => {
   const [index, setIndex] = useState(0);
 
   const { isLoggedIn } = useContext(StateContext);
@@ -57,6 +57,7 @@ const Tab = ({ brandList, gadgetList, problems, token, id }) => {
             problems={problems}
             token={token}
             id={id}
+            profileData={profileData}
           />
         </>
       ) : (

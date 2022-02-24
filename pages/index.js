@@ -10,7 +10,14 @@ import Testimonials from '@/components/Home/Testimonials';
 import { API_URL } from 'config';
 import { parseCookies } from 'helpers';
 
-const HomePage = ({ brandList, problems, token, id, gadgetList }) => {
+const HomePage = ({
+  brandList,
+  problems,
+  token,
+  id,
+  gadgetList,
+  profileData,
+}) => {
   return (
     <>
       <Seo title='Home' />
@@ -22,9 +29,10 @@ const HomePage = ({ brandList, problems, token, id, gadgetList }) => {
           token={token}
           id={id}
           gadgetList={gadgetList}
+          profileData={profileData}
         />
         <DevicePlans />
-        <Offers />
+        <Offers profileData={profileData} />
         <Ads />
         <Testimonials />
         <DownloadApp />
@@ -36,6 +44,15 @@ const HomePage = ({ brandList, problems, token, id, gadgetList }) => {
 export const getServerSideProps = async ({ req }) => {
   const { token } = parseCookies(req);
   const { id } = parseCookies(req);
+
+  // USER DATA
+  const res = await fetch(`${API_URL}/getUserDetails.php`, {
+    headers: {
+      Authorization: `${token}`,
+      'API-KEY': `${id}`,
+    },
+  });
+  const data = await res.json();
 
   // BRAND LIST
   const brandRes = await fetch(`${API_URL}/getBrandList.php`);
@@ -51,6 +68,7 @@ export const getServerSideProps = async ({ req }) => {
 
   return {
     props: {
+      profileData: data.data ? data.data : [],
       brandList: brandData.data,
       gadgetList: gadgetData.data,
       problems: problemData.data,

@@ -3,43 +3,16 @@ import { Col, Row } from 'react-bootstrap';
 import { useState } from 'react';
 import { API_URL } from 'config';
 import { useRouter } from 'next/dist/client/router';
-import { parseCookies } from 'helpers';
 
-export const getServerSideProps = async ({ req }) => {
-  const { token } = parseCookies(req);
-  console.log(!token);
-  const { id } = parseCookies(req);
+const Plans = ({ brandList, short, title, points, profileData }) => {
+  console.log(profileData);
 
-  const res = await fetch(`${API_URL}/getUserDetails.php`, {
-    headers: {
-      Authorization: `${token}`,
-      'API-KEY': `${id}`,
-    },
-  });
-  const data = await res.json();
-
-  if (!token) {
-    return {
-      redirect: {
-        destination: '/',
-        permanent: false,
-      },
-    };
-  }
-
-  return {
-    props: {
-      profile: data.data,
-    },
-  };
-};
-
-const Plans = ({ brandList, short, title, points }) => {
   const router = useRouter();
+
   const initializeRazorpay = () => {
     return new Promise((resolve) => {
-      const script = document.createElement("script");
-      script.src = "https://checkout.razorpay.com/v1/checkout.js";
+      const script = document.createElement('script');
+      script.src = 'https://checkout.razorpay.com/v1/checkout.js';
       script.onload = () => {
         resolve(true);
       };
@@ -50,42 +23,44 @@ const Plans = ({ brandList, short, title, points }) => {
     });
   };
   const makePayment = async (amt) => {
-    console.log("here...");
+    console.log('here...');
     const res = await initializeRazorpay();
 
     if (!res) {
-      alert("Razorpay SDK Failed to load");
+      alert('Razorpay SDK Failed to load');
       return;
     }
 
     // Make API call to the serverless API
-    const data = await fetch("/api/razorpay", { method: "POST", body: JSON.stringify({ amount: amt }) }).then((t) =>
-      t.json()
-    );
+    const data = await fetch('/api/razorpay', {
+      method: 'POST',
+      body: JSON.stringify({ amount: amt }),
+    }).then((t) => t.json());
     console.log(data);
     var options = {
       key: process.env.RAZORPAY_KEY, // Enter the Key ID generated from the Dashboard
-      name: "Reego",
+      name: 'Reego',
       currency: data.currency,
       amount: data.amount,
       order_id: data.id,
-      description: "Reego Description",
-      image: "https://kaudible.kodagu.today/assets/ff06665a-af2c-4f10-b5d5-111af6832d13",
+      description: 'Reego Description',
+      image:
+        'https://kaudible.kodagu.today/assets/ff06665a-af2c-4f10-b5d5-111af6832d13',
       handler: function (response) {
-        router.push("/success");
+        router.push('/success');
         // alert(response.razorpay_payment_id);
         // alert(response.razorpay_order_id);
         // alert(response.razorpay_signature);
       },
       prefill: {
-        name: "Weframe Tech",
-        email: "weframe@gmail.com",
-        contact: "9999999999",
+        name: 'Weframe Tech',
+        email: 'weframe@gmail.com',
+        contact: '9999999999',
       },
     };
     var paymentObject = new window.Razorpay(options);
     paymentObject.on('payment.failed', function (response) {
-      router.push("/fail");
+      router.push('/fail');
       // alert(response.error.code);
       // alert(response.error.description);
       // alert(response.error.source);
@@ -102,8 +77,6 @@ const Plans = ({ brandList, short, title, points }) => {
     brand: '',
     gadget: '1', // harcoded to 1 because this is a mobile page
   });
-
-  console.log(values.date);
 
   const [detailsData, setDetailsData] = useState(null);
 
@@ -128,8 +101,6 @@ const Plans = ({ brandList, short, title, points }) => {
       setDetailsData(data?.data[0]?.spackPrice);
     }
   };
-
-  console.log(detailsData);
 
   return (
     <section className='my-5'>
@@ -229,7 +200,14 @@ const Plans = ({ brandList, short, title, points }) => {
             </p>
           </div>
           <div className='text-center my-4'>
-            <button className='button' onClick={() => { makePayment(parseInt(detailsData)) }}>Buy Now</button>
+            <button
+              className='button'
+              onClick={() => {
+                makePayment(parseInt(detailsData));
+              }}
+            >
+              Buy Now
+            </button>
           </div>
         </>
       )}

@@ -5,14 +5,16 @@ import Plans from '@/components/products/Plans';
 import TableInfo from '@/components/products/TableInfo';
 import Seo from '@/components/Utils/Seo';
 import { API_URL } from 'config';
+import { parseCookies } from 'helpers';
 import { Container } from 'react-bootstrap';
 
-const AccidentalPage = ({ brandList }) => {
+const AccidentalPage = ({ brandList, profileData }) => {
   return (
     <>
       <Seo title='Accidental Damage and Liquid Damage' />
       <Container>
         <Plans
+          profileData={profileData}
           brandList={brandList}
           short='ADLD'
           title='Accidental Damage and Liquid Damage'
@@ -34,6 +36,18 @@ const AccidentalPage = ({ brandList }) => {
 };
 
 export const getServerSideProps = async ({ req }) => {
+  const { token } = parseCookies(req);
+  const { id } = parseCookies(req);
+
+  // USER DATA
+  const res = await fetch(`${API_URL}/getUserDetails.php`, {
+    headers: {
+      Authorization: `${token}`,
+      'API-KEY': `${id}`,
+    },
+  });
+  const data = await res.json();
+
   // BRAND LIST
   const brandRes = await fetch(`${API_URL}/getBrandList.php`);
   const brandData = await brandRes.json();
@@ -41,6 +55,7 @@ export const getServerSideProps = async ({ req }) => {
   return {
     props: {
       brandList: brandData.data,
+      profileData: data.data ? data.data : [],
     },
   };
 };
