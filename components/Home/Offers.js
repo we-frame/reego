@@ -6,8 +6,6 @@ import { StateContext } from 'context/StateProvider';
 import Link from 'next/link';
 
 const Offers = ({ profileData }) => {
-  console.log(profileData);
-
   const router = useRouter();
   const { isLoggedIn } = useContext(StateContext);
   const initializeRazorpay = () => {
@@ -24,18 +22,20 @@ const Offers = ({ profileData }) => {
     });
   };
   const makePayment = async (amt) => {
-    console.log('here...');
+    // console.log('here...');
     const res = await initializeRazorpay();
 
     if (!res) {
       alert('Razorpay SDK Failed to load');
       return;
     }
+
+    // Make API call to the serverless API
     const data = await fetch('/api/razorpay', {
       method: 'POST',
       body: JSON.stringify({ amount: amt }),
     }).then((t) => t.json());
-    console.log(data);
+    // console.log(data);
     var options = {
       key: process.env.RAZORPAY_KEY, // Enter the Key ID generated from the Dashboard
       name: 'Reego',
@@ -45,43 +45,28 @@ const Offers = ({ profileData }) => {
       description: 'Reego Description',
       image:
         'https://kaudible.kodagu.today/assets/ff06665a-af2c-4f10-b5d5-111af6832d13',
-      handler: async function (response) {
-        // var ss = JSON.stringify({
-        //   "name": profileData[0].custName,
-        //   "email": profileData[0].custEmail,
-        //   "brand": "1",
-        //   "model": "1",
-        //   "imeiNo": "mum",
-        //   "packType": "1",
-        //   "gadgetId": "1",
-        //   "paymentId": response.razorpay_payment_id.toString(),
-        //   "paymentRequest": JSON.stringify(options),
-        //   "paymentResponse": JSON.stringify(response),
-        //   "paymentStatus": "success",
-        //   "purchaseDate": Date.now().toString(),
-        //   "imgInvoice": "",
-        // });
-        // const res22 = await fetch(`${API_URL}/postPurchasePacks.php`, {
-        //   headers: {
-        //     Accept: 'application/json',
-        //     'Content-Type': 'application/json',
-        //     Authorization: `${token}`,
-        //     'API-KEY': `${id}`,
-        //   },
-        //   method: 'POST',
-        //   body: ss,
-        // });
-        // const data22 = await res22.json();
-        // if (data22.status) {
-          router.push('/success');
-        // } else {
-        //   router.push('/fail');
-        // }
+      handler: function (response) {
+        router.push('/success');
+        // alert(response.razorpay_payment_id);
+        // alert(response.razorpay_order_id);
+        // alert(response.razorpay_signature);
+      },
+      prefill: {
+        name: 'Weframe Tech',
+        email: 'weframe@gmail.com',
+        contact: '9999999999',
       },
     };
     var paymentObject = new window.Razorpay(options);
     paymentObject.on('payment.failed', function (response) {
       router.push('/fail');
+      // alert(response.error.code);
+      // alert(response.error.description);
+      // alert(response.error.source);
+      // alert(response.error.step);
+      // alert(response.error.reason);
+      // alert(response.error.metadata.order_id);
+      // alert(response.error.metadata.payment_id);
     });
     paymentObject.open();
   };
@@ -106,7 +91,7 @@ const Offers = ({ profileData }) => {
             <div className='d-flex justify-content-center'>
               {isLoggedIn ? (
                 <button
-                  className={styles.button1}
+                  className='button text-white'
                   onClick={() => {
                     makePayment(99);
                   }}
@@ -115,7 +100,7 @@ const Offers = ({ profileData }) => {
                 </button>
               ) : (
                 <Link href='/account/login?redirect=offers'>
-                  <a className={styles.button1}>Log in</a>
+                  <a className='button text-white'>Log in</a>
                 </Link>
               )}
             </div>
@@ -135,7 +120,7 @@ const Offers = ({ profileData }) => {
             <div className='d-flex justify-content-center'>
               {isLoggedIn ? (
                 <button
-                  className={styles.button1}
+                  className='button text-white'
                   onClick={() => {
                     makePayment(450);
                   }}
@@ -144,7 +129,7 @@ const Offers = ({ profileData }) => {
                 </button>
               ) : (
                 <Link href='/account/login?redirect=offers'>
-                  <a className={styles.button1}>Log in</a>
+                  <a className='button text-white'>Log in</a>
                 </Link>
               )}
             </div>
@@ -165,7 +150,7 @@ const Offers = ({ profileData }) => {
             <div className='d-flex justify-content-center'>
               {isLoggedIn ? (
                 <button
-                  className={styles.button1}
+                  className='button text-white'
                   onClick={() => {
                     makePayment(99);
                   }}
@@ -174,7 +159,7 @@ const Offers = ({ profileData }) => {
                 </button>
               ) : (
                 <Link href='/account/login?redirect=offers'>
-                  <a className={styles.button1}>Log in</a>
+                  <a className='button text-white'>Log in</a>
                 </Link>
               )}
             </div>

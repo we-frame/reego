@@ -145,6 +145,7 @@ const InsurancePage = ({ token, id, insuranceData }) => {
                 className={styles2.input}
                 value={values.name}
                 onChange={handleInputChange}
+                required
               />
             </div>
             <div>
@@ -155,6 +156,7 @@ const InsurancePage = ({ token, id, insuranceData }) => {
                 className={styles2.input}
                 value={values.mobile}
                 onChange={handleInputChange}
+                required
               />
             </div>
             <div>
@@ -165,6 +167,7 @@ const InsurancePage = ({ token, id, insuranceData }) => {
                 className={styles2.input}
                 value={values.email}
                 onChange={handleInputChange}
+                required
               />
             </div>
             <div>
@@ -175,6 +178,7 @@ const InsurancePage = ({ token, id, insuranceData }) => {
                 className={styles2.input}
                 value={values.policyNo}
                 onChange={handleInputChange}
+                required
               />
             </div>
             <div>
@@ -185,6 +189,7 @@ const InsurancePage = ({ token, id, insuranceData }) => {
                 className={styles2.input}
                 value={values.insurancePackId}
                 onChange={handleInputChange}
+                required
               />
             </div>
             <div>
@@ -195,6 +200,7 @@ const InsurancePage = ({ token, id, insuranceData }) => {
                 className={styles2.input}
                 value={values.problem}
                 onChange={handleInputChange}
+                required
               />
             </div>
             <button className='button'>SUBMIT</button>

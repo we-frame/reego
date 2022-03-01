@@ -34,7 +34,7 @@ const ContactForm = () => {
       });
       const data = await res.json();
 
-      if (data.ok) {
+      if (res.ok) {
         toast.success('Will contact soon');
         router.push('/thank-you');
       } else {
@@ -56,7 +56,7 @@ const ContactForm = () => {
             className={styles.input}
             value={values.name}
             onChange={handleInputChange}
-            readOnly
+            required
           />
         </div>
         <div>
@@ -67,7 +67,7 @@ const ContactForm = () => {
             className={styles.input}
             value={values.email}
             onChange={handleInputChange}
-            readOnly
+            required
           />
         </div>
         <div>
@@ -78,7 +78,7 @@ const ContactForm = () => {
             className={styles.input}
             value={values.mobile}
             onChange={handleInputChange}
-            readOnly
+            required
           />
         </div>
         <div>
@@ -88,7 +88,7 @@ const ContactForm = () => {
             value={values.message}
             onChange={handleInputChange}
             placeholder='Enter your message'
-            readOnly
+            required
           ></textarea>
         </div>
         <div className='text-center'>

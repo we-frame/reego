@@ -13,6 +13,7 @@ import { parseCookies } from 'helpers';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer, toast } from 'react-toastify';
 import { useRouter } from 'next/dist/client/router';
+import moment from 'moment';
 
 const AddPage = ({ token, id, brandList, famData }) => {
   const [modalShow, setModalShow] = useState(false);
@@ -140,6 +141,7 @@ const AddPage = ({ token, id, brandList, famData }) => {
                 className={styles2.input}
                 value={values.name}
                 onChange={handleInputChange}
+                required
               />
             </div>
             <div>
@@ -150,6 +152,7 @@ const AddPage = ({ token, id, brandList, famData }) => {
                 className={styles2.input}
                 value={values.mobile}
                 onChange={handleInputChange}
+                required
               />
             </div>
             <div className='d-flex justify-content-around'>
@@ -158,6 +161,7 @@ const AddPage = ({ token, id, brandList, famData }) => {
                 value={values.brandId}
                 onChange={handleModelSelection}
                 className={styles2.select}
+                required
               >
                 <option value='' disabled>
                   Select Brand
@@ -175,6 +179,7 @@ const AddPage = ({ token, id, brandList, famData }) => {
                 value={values.model}
                 onChange={handleInputChange}
                 className={styles2.select}
+                required
               >
                 <option value='' disabled>
                   Select Model
@@ -191,11 +196,13 @@ const AddPage = ({ token, id, brandList, famData }) => {
             <div>
               <input
                 type='date'
+                max={moment().format('YYYY-MM-DD')}
                 name='dop'
                 placeholder='Date Of Purchase'
                 className={styles2.input}
                 value={values.dop}
                 onChange={handleInputChange}
+                required
               />
             </div>
             <div>
@@ -206,6 +213,7 @@ const AddPage = ({ token, id, brandList, famData }) => {
                 className={styles2.input}
                 value={values.relation}
                 onChange={handleInputChange}
+                required
               />
             </div>
             <div className='text-center'>

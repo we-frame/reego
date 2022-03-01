@@ -5,7 +5,6 @@ import { API_URL } from 'config';
 import { parseCookies } from 'helpers';
 
 const OrdersPage = ({ token, id, orders }) => {
-  console.log(orders);
   return (
     <Layout2>
       <Seo title='Orders' />

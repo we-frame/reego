@@ -10,7 +10,7 @@ const DevicePlans = () => {
     <section>
       <h1 className='color text-center'>DEVICES/PLANS</h1>
       <div className={styles.tab}>
-        <Row className={styles.tabBtnGroup}>
+        <Row className={`g-0 ${styles.tabBtnGroup}`}>
           <Col lg={4}>
             <button
               className={`${styles.tabBtn} ${styles.tabBtn1} ${

@@ -1,13 +1,16 @@
 import styles from '@/styles/products/Plans.module.css';
 import { Col, Row } from 'react-bootstrap';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { API_URL } from 'config';
-import { useRouter } from 'next/dist/client/router';
+import { useRouter } from 'next/router';
+import moment from 'moment';
+import Link from 'next/link';
+import { StateContext } from 'context/StateProvider';
 
 const Plans = ({ brandList, short, title, points, profileData, token, id }) => {
-  console.log(profileData);
-
   const router = useRouter();
+
+  const { isLoggedIn } = useContext(StateContext);
 
   const initializeRazorpay = () => {
     return new Promise((resolve) => {
@@ -23,7 +26,7 @@ const Plans = ({ brandList, short, title, points, profileData, token, id }) => {
     });
   };
   const makePayment = async (amt) => {
-    console.log('here...');
+    // console.log('here...');
     const res = await initializeRazorpay();
 
     if (!res) {
@@ -36,7 +39,7 @@ const Plans = ({ brandList, short, title, points, profileData, token, id }) => {
       method: 'POST',
       body: JSON.stringify({ amount: amt }),
     }).then((t) => t.json());
-    console.log(data);
+    // console.log(data);
     var options = {
       key: process.env.RAZORPAY_KEY, // Enter the Key ID generated from the Dashboard
       name: 'Reego',
@@ -75,7 +78,7 @@ const Plans = ({ brandList, short, title, points, profileData, token, id }) => {
         // const data22 = await res22.json();
         // console.log(data22);
         // if (data22.status) {
-          router.push('/success');
+        router.push('/success');
         // } else {
         //   router.push('/fail');
         // }
@@ -116,7 +119,6 @@ const Plans = ({ brandList, short, title, points, profileData, token, id }) => {
     if (res.ok) {
       setDetailsData(data?.data[0]?.spackPrice);
     }
-    console.log(detailsData);
   };
 
   return (
@@ -179,6 +181,7 @@ const Plans = ({ brandList, short, title, points, profileData, token, id }) => {
               </select> */}
               <div>
                 <input
+                  max={moment().format('YYYY-MM-DD')}
                   type='date'
                   name='date'
                   placeholder='2022-02-01'
@@ -217,14 +220,20 @@ const Plans = ({ brandList, short, title, points, profileData, token, id }) => {
             </p>
           </div>
           <div className='text-center my-4'>
-            <button
-              className='button'
-              onClick={() => {
-                makePayment(parseInt(detailsData));
-              }}
-            >
-              Buy Now
-            </button>
+            {isLoggedIn ? (
+              <button
+                className='button'
+                onClick={() => {
+                  makePayment(parseInt(detailsData));
+                }}
+              >
+                Buy Now
+              </button>
+            ) : (
+              <Link href='/account/login'>
+                <a className='button text-white'>Log in</a>
+              </Link>
+            )}
           </div>
         </>
       )}

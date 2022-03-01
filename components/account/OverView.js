@@ -70,7 +70,14 @@ const OverView = ({ data }) => {
         </Link>
       </div>
       <div className='mt-5 text-center'>
-        <button className='button' onClick={handleLogOut}>
+        <button
+          className='button'
+          onClick={() => {
+            typeof window !== 'undefined' &&
+              localStorage.removeItem('requestform');
+            handleLogOut();
+          }}
+        >
           Logout
         </button>
       </div>

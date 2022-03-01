@@ -10,6 +10,8 @@ import { AiFillHome } from 'react-icons/ai';
 import { GoLocation } from 'react-icons/go';
 import { StateContext } from 'context/StateProvider';
 import { useRouter } from 'next/dist/client/router';
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from 'react-toastify';
 
 const RequestForm = ({
   brandList,
@@ -44,9 +46,9 @@ const RequestForm = ({
       method: 'POST',
       body: JSON.stringify({ amount: amt }),
     }).then((t) => t.json());
-    console.log(data);
+    // console.log(data);
     var options = {
-      key: process.env.RAZORPAY_KEY, 
+      key: process.env.RAZORPAY_KEY,
       name: 'Reego',
       currency: data.currency,
       amount: data.amount,
@@ -55,27 +57,27 @@ const RequestForm = ({
       image:
         'https://kaudible.kodagu.today/assets/ff06665a-af2c-4f10-b5d5-111af6832d13',
       handler: async function (response) {
-        console.log(dropAddress);
+        // console.log(dropAddress);
         var ss = JSON.stringify({
-          "name": values.name,
-          "email": values.email,
-          "mobile": values.mobile,
-          "brand": values.brand,
-          "model": values.model,
-          "address": values.address,
-          "otherComments": values.comments,
-          "packType": plan.toString(),
-          "deviceIssues": values.deviceIssues,
-          "pincode": values.pincode,
-          "gadgetId": gadgetId.toString(),
-          "paymentId": response.razorpay_payment_id.toString(),
-          "paymentRequest": JSON.stringify(options),
-          "paymentResponse": JSON.stringify(response),
-          "paymentStatus": "success",
-          "isRedirect": 0,
-          "dropType": dropPoint.toString(),
-          "dropPointId": dropPoint.toString(),
-          "transactionCode": response.razorpay_signature.toString(),
+          name: values.name,
+          email: values.email,
+          mobile: values.mobile,
+          brand: values.brand,
+          model: values.model,
+          address: values.address,
+          otherComments: values.comments,
+          packType: plan.toString(),
+          deviceIssues: values.deviceIssues,
+          pincode: values.pincode,
+          gadgetId: gadgetId.toString(),
+          paymentId: response.razorpay_payment_id.toString(),
+          paymentRequest: JSON.stringify(options),
+          paymentResponse: JSON.stringify(response),
+          paymentStatus: 'success',
+          isRedirect: 0,
+          dropType: dropPoint.toString(),
+          dropPointId: dropPoint.toString(),
+          transactionCode: response.razorpay_signature.toString(),
         });
         const res22 = await fetch(`${API_URL}/postRaiseRequest.php`, {
           headers: {
@@ -166,6 +168,10 @@ const RequestForm = ({
       )?.address || '',
   });
 
+  // EMAIL VALIDATION!
+
+  let regex = new RegExp('[a-z0-9]+@[a-z]+.[a-z]{2,3}');
+
   // HANDLING ALL INPUTS
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -197,15 +203,27 @@ const RequestForm = ({
   // FINAL SUBMIT
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Validation
+    const hasEmptyFields = Object.values(values).some(
+      (element) => element === ''
+    );
+
+    if (hasEmptyFields) {
+      toast.error('Please fill in all fields');
+    }
+
     const res = await fetch(
       `${API_URL}/getDropPoint.php?pincode=${values.pincode}`
     );
     const data = await res.json();
 
-    if (res.ok) {
-      setIndex(3);
+    if (res.ok && regex.test(values.email)) {
+      !hasEmptyFields && setIndex(3);
       setDropAddress(data?.data);
       localStorage.setItem('requestform', JSON.stringify({ ...values, plan }));
+    } else {
+      toast.error('Invalid email address');
     }
   };
 
@@ -224,6 +242,7 @@ const RequestForm = ({
                     className={styles.input}
                     value={values.name}
                     onChange={handleInputChange}
+                    required
                   />
                 </div>
                 <div>
@@ -234,6 +253,7 @@ const RequestForm = ({
                     className={styles.input}
                     value={values.mobile}
                     onChange={handleInputChange}
+                    required
                   />
                 </div>
                 <div>
@@ -244,6 +264,7 @@ const RequestForm = ({
                     className={styles.input}
                     value={values.email}
                     onChange={handleInputChange}
+                    required
                   />
                 </div>
                 <div>
@@ -252,6 +273,7 @@ const RequestForm = ({
                     value={values.gadget}
                     onChange={handleBrandSelection}
                     className={styles.select2}
+                    required
                   >
                     <option value='' disabled>
                       Select Gadget
@@ -271,6 +293,7 @@ const RequestForm = ({
                     value={values.brand}
                     onChange={handleModelSelection}
                     className={styles.select}
+                    required
                   >
                     <option value='' disabled>
                       Select Brand
@@ -288,6 +311,7 @@ const RequestForm = ({
                     value={values.model}
                     onChange={handleInputChange}
                     className={styles.select}
+                    required
                   >
                     <option value='' disabled>
                       Select Model
@@ -316,6 +340,7 @@ const RequestForm = ({
                     value={values.deviceIssues}
                     onChange={handleInputChange}
                     className={styles.select2}
+                    required
                   >
                     <option value='' disabled>
                       Select Issue
@@ -338,6 +363,7 @@ const RequestForm = ({
                     className={styles.input}
                     value={values.comments}
                     onChange={handleInputChange}
+                    required
                     placeholder='Comments'
                   ></textarea>
                 </div>
@@ -349,6 +375,7 @@ const RequestForm = ({
                     className={styles.input}
                     value={values.pincode}
                     onChange={handleInputChange}
+                    required
                   />
                 </div>
                 <div>
@@ -359,6 +386,7 @@ const RequestForm = ({
                     className={styles.input}
                     value={values.address}
                     onChange={handleInputChange}
+                    required
                   />
                 </div>
                 <div className='text-center'>
@@ -406,8 +434,9 @@ const RequestForm = ({
                 {dropAddress ? (
                   <>
                     <div
-                      className={`${styles.card} ${dropPoint === 0 && styles.border
-                        }`}
+                      className={`${styles.card} ${
+                        dropPoint === 0 && styles.border
+                      }`}
                       onClick={() => setDropPoint(0)}
                     >
                       <GoLocation color='#f53855' fontSize='2rem' />
@@ -419,8 +448,9 @@ const RequestForm = ({
                       </p>
                     </div>
                     <div
-                      className={`${styles.card} ${dropPoint === 1 && styles.border
-                        }`}
+                      className={`${styles.card} ${
+                        dropPoint === 1 && styles.border
+                      }`}
                       onClick={() => setDropPoint(1)}
                     >
                       <AiFillHome color='#f53855' fontSize='2rem' />
@@ -447,8 +477,9 @@ const RequestForm = ({
                 ) : (
                   <>
                     <div
-                      className={`${styles.card} ${dropPoint === 1 && styles.border
-                        }`}
+                      className={`${styles.card} ${
+                        dropPoint === 1 && styles.border
+                      }`}
                       onClick={() => setDropPoint(1)}
                     >
                       <AiFillHome color='#f53855' fontSize='2rem' />
@@ -490,6 +521,7 @@ const RequestForm = ({
           </div>
         </Col>
       </Row>
+      <ToastContainer />
     </Container>
   );
 };

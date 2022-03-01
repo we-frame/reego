@@ -5,6 +5,9 @@ import { Container } from 'react-bootstrap';
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
 import { useContext } from 'react';
 import { StateContext } from 'context/StateProvider';
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from 'react-toastify';
+import moment from 'moment';
 
 const SignupPage = () => {
   const { register } = useContext(StateContext);
@@ -31,7 +34,11 @@ const SignupPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    register(values);
+    if (values) {
+      register(values);
+    } else {
+      toast.error('Please fill all the fields');
+    }
   };
 
   return (
@@ -42,7 +49,7 @@ const SignupPage = () => {
           <h2 className='my-3 fw-bold text-center'>Sign Up</h2>
           <form onSubmit={handleSubmit}>
             <div>
-              <label htmlFor='name'>User name</label>
+              <label htmlFor='name'>Name</label>
               <input
                 type='text'
                 name='name'
@@ -75,6 +82,7 @@ const SignupPage = () => {
               <label htmlFor='dob'>DOB</label>
               <input
                 type='date'
+                max={moment().format('YYYY-MM-DD')}
                 name='dob'
                 value={values.dob}
                 onChange={handleInputChange}
@@ -147,7 +155,7 @@ const SignupPage = () => {
             <div>
               <label htmlFor='pincode'>Pin code</label>
               <input
-                type='text'
+                type='number'
                 name='pincode'
                 value={values.pincode}
                 onChange={handleInputChange}
@@ -181,6 +189,7 @@ const SignupPage = () => {
           </form>
         </div>
       </Container>
+      <ToastContainer />
     </>
   );
 };

@@ -18,19 +18,22 @@
   border: 0;
   width: 100%;
   margin: auto;
-  padding: 1rem;
+  padding: 1.7rem;
+  font-size: 1.5rem;
 }
 
 .tabBtn1 {
   border-top-left-radius: 25px;
+  border-right: 1px solid black;
 }
 .tabBtn2 {
   border-top-right-radius: 25px;
+  border-left: 1px solid black;
 }
-.tabBtn3 {
+/* .tabBtn3 {
   border-top-right-radius: 25px;
   border-top-left-radius: 25px;
-}
+} */
 
 .active {
   color: #fff;

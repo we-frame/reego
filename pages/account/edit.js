@@ -7,6 +7,7 @@ import { useRouter } from 'next/dist/client/router';
 import { parseCookies } from 'helpers';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer, toast } from 'react-toastify';
+import moment from 'moment';
 
 const EditPage = ({ token, id, userData }) => {
   const [values, setValues] = useState({
@@ -82,11 +83,13 @@ const EditPage = ({ token, id, userData }) => {
         <div>
           <label htmlFor='dob'>Date of Birth</label>
           <input
-            type='text'
+            type='date'
+            max={moment().format('YYYY-MM-DD')}
             name='dob'
-            className={styles.input}
             value={values.dob}
             onChange={handleInputChange}
+            placeholder='2000-01-13'
+            className={styles.input}
           />
         </div>
         <div>
@@ -117,6 +120,8 @@ const EditPage = ({ token, id, userData }) => {
             className={styles.input}
             value={values.pincode}
             onChange={handleInputChange}
+            pattern='[1-6]{1}[0-6]{6}'
+            maxLength='6'
           />
         </div>
         <div>

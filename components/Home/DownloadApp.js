@@ -16,7 +16,12 @@ const DownloadApp = () => {
             and scrambled it to make a type specimen book.
           </p>
           <p className='my-3'>Get the App</p>
-          <Image src={ps} alt='play-store' height={50} width={130} />
+       <a
+            href='https://play.google.com/store/apps/details?id=com.reego.consumer'
+            style={{ cursor: 'pointer' }}
+          >
+            <Image src={ps} alt='play-store' height={50} width={130} />
+          </a>
         </Col>
         <Col lg={6} className='d-flex justify-content-end'>
           <Image
