@@ -32,9 +32,9 @@ const Footer = () => {
       </div>
       <div className='d-flex my-3 p-3 flex-column align-items-center flex-lg-row'>
         <div className='me-lg-4 my-2 my-lg-0'>
-          <Link href='/about'>
+          {/* <Link href='/about'>
             <a className='text-white'>About</a>
-          </Link>
+          </Link> */}
         </div>
         <div className='me-lg-4 my-2 my-lg-0'>
           <a className='text-white' href='#'>
@@ -58,7 +58,9 @@ const Footer = () => {
         </div>
       </div>
       <p className='text-white'>Get the App</p>
-      <Image src={ps} alt='play-store' height={50} width={130} />
+      <a href='https://play.google.com/store/apps/details?id=com.reego.consumer'>
+        <Image src={ps} alt='play-store' height={50} width={130} />
+      </a>
       <p className='text-white'>&copy; {new Date().getFullYear()} Reego</p>
     </footer>
   );

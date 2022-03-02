@@ -1,5 +1,4 @@
 import styles from '@/styles/home/Testimonials.module.css';
-
 import '../../node_modules/swiper/swiper-bundle.min.css';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import SwiperCore, { Navigation, Pagination, A11y } from 'swiper';

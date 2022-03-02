@@ -128,6 +128,7 @@ const Orders = ({ token, id, orders }) => {
               value={rating}
               name='rating'
               className={styles2.select2}
+              required
             >
               <option value='' disabled>
                 Select
@@ -148,6 +149,7 @@ const Orders = ({ token, id, orders }) => {
                 className={styles2.input}
                 value={review}
                 onChange={(e) => setReview(e.target.value)}
+                required
               />
             </div>
             <button className='button'>SUBMIT</button>
