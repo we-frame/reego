@@ -17,11 +17,12 @@ const HomePage = ({
   id,
   gadgetList,
   profileData,
+  banner,
 }) => {
   return (
     <>
       <Seo title='Home' />
-      <Slider />
+      <Slider bannerImgs={banner} />
       <Container className='my-4'>
         <Tab
           brandList={brandList}
@@ -66,12 +67,17 @@ export const getServerSideProps = async ({ req }) => {
   const problemRes = await fetch(`${API_URL}/getDeviceProblemList.php`);
   const problemData = await problemRes.json();
 
+  // BANNER!
+  const bannerRes = await fetch(`${API_URL}/getSliderImages.php`);
+  const bannerData = await bannerRes.json();
+
   return {
     props: {
       profileData: data.data ? data.data : [],
       brandList: brandData.data,
       gadgetList: gadgetData.data,
       problems: problemData.data,
+      banner: bannerData.data,
       token: token ? token : null,
       id: id ? id : null,
     },

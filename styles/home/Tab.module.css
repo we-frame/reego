@@ -44,10 +44,12 @@
   .tabBtn1 {
     border-top-left-radius: 0;
     border-radius: 10px;
+    border-right: 0;
   }
   .tabBtn2 {
     border-top-right-radius: 0;
     border-radius: 10px;
+    border-left: 0;
   }
   .tabBtn {
     margin: 0.3rem 0;

@@ -64,7 +64,7 @@ const StateProvider = ({ children }) => {
         if (query.redirect) {
           router.push('/');
         } else {
-          router.push('/account/dashboard');
+          router.push('/');
         }
       }
     } catch (err) {

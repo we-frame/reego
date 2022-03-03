@@ -16,7 +16,7 @@ const EditPage = ({ token, id, userData }) => {
     dob: userData?.data[0]?.dateOfBirth,
     address: userData?.data[0]?.custAddress,
     city: userData?.data[0]?.custCity,
-    pincode: '',
+    pincode: userData?.data[0]?.custPincode,
     gender: 'male',
     state: userData?.data[0]?.custState,
     password: '',

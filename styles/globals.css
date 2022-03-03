@@ -89,7 +89,7 @@ iframe {
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
-  background-image: url('/public/images/arrow-left.png') !important;
+  background-image: url('../public/images/arrow-left.png') !important;
 }
 
 .swiper-button-next,
@@ -101,7 +101,7 @@ iframe {
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
-  background-image: url('/public/images/arrow-right.png') !important;
+  background-image: url('../public/images/arrow-right.png') !important;
 }
 
 .swiper-button-next:after,

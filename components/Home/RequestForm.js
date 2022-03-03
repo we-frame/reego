@@ -1,5 +1,4 @@
 import Image from 'next/image';
-import Link from 'next/link';
 import { useContext, useState } from 'react';
 import illustration from '/public/images/form.png';
 import { Container, Row, Col } from 'react-bootstrap';
@@ -12,6 +11,7 @@ import { StateContext } from 'context/StateProvider';
 import { useRouter } from 'next/dist/client/router';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer, toast } from 'react-toastify';
+import ModalLogin from './ModalLogin';
 
 const RequestForm = ({
   brandList,
@@ -114,8 +114,9 @@ const RequestForm = ({
   const [gadgetId, setGadgetId] = useState(0);
   const [mobileModel, setMobileModel] = useState([]);
   const [brandModel, setBrandModel] = useState([]);
-
   const [dropAddress, setDropAddress] = useState(null);
+
+  const [modalShow, setModalShow] = useState(false);
 
   // Add to values object at submit!
   const [plan, setPlan] = useState(
@@ -218,12 +219,13 @@ const RequestForm = ({
     );
     const data = await res.json();
 
-    if (res.ok && regex.test(values.email)) {
-      !hasEmptyFields && setIndex(3);
-      setDropAddress(data?.data);
-      localStorage.setItem('requestform', JSON.stringify({ ...values, plan }));
-    } else {
+    if (!regex.test(values.email)) {
       toast.error('Invalid email address');
+    }
+    if (res.ok) {
+      !hasEmptyFields && regex.test(values.email) && setIndex(3);
+      setDropAddress(data?.data);
+      // localStorage.setItem('requestform', JSON.stringify({ ...values, plan }));
     }
   };
 
@@ -502,11 +504,12 @@ const RequestForm = ({
                           Procced to Payment
                         </button>
                       ) : (
-                        <Link href='/account/login?redirect=requestform'>
-                          <a className='button text-white' type='submit'>
-                            Log in
-                          </a>
-                        </Link>
+                        <button
+                          onClick={() => setModalShow(true)}
+                          className='button text-white'
+                        >
+                          Log in
+                        </button>
                       )}
                     </div>
                   </>
@@ -521,6 +524,9 @@ const RequestForm = ({
           </div>
         </Col>
       </Row>
+      {modalShow && (
+        <ModalLogin modalShow={modalShow} setModalShow={setModalShow} />
+      )}
       <ToastContainer />
     </Container>
   );

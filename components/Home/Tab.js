@@ -12,7 +12,7 @@ const Tab = ({ brandList, gadgetList, problems, token, id, profileData }) => {
 
   return (
     <section className={styles.tab}>
-      <Row className={styles.tabBtnGroup}>
+      <Row className={`g-0 ${styles.tabBtnGroup}`}>
         {isLoggedIn ? (
           <>
             <Col lg={6}>

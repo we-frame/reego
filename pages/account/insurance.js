@@ -28,7 +28,7 @@ const InsurancePage = ({ token, id, insuranceData }) => {
     mobile: '',
     email: user && user[0]?.custEmail ? user[0]?.custName : '',
     policyNo: '',
-    insurancePackId: '',
+    insurancePackId: 1, // HARDCODED AS PER THE DUMMY DATA!
     problem: '',
   });
 
@@ -74,48 +74,54 @@ const InsurancePage = ({ token, id, insuranceData }) => {
         {insuranceData.map((data, i) => {
           return (
             <section className={styles.insuranceCard} key={i}>
-              <div className='d-flex align-items-center'>
-                <Image src={barCode} alt='barcode' height={580} width={150} />
+              {data?.isRedeem === '0' && (
+                <div className='d-flex align-items-center'>
+                  <Image src={barCode} alt='barcode' height={580} width={150} />
 
-                <div className='p-3'>
-                  <h3 className='text-center'>{data?.brandName}</h3>
-                  <div className='my-4'>
-                    <ul>
-                      <li className='my-4'>
-                        <span>
-                          <AiFillCheckCircle className='me-2' />
-                        </span>
-                        Extends your warranty of your Mobile Phone for
-                        additional one year
-                      </li>
-                      <li className='my-4'>
-                        <span>
-                          <AiFillCheckCircle className='me-2' />
-                        </span>
-                        Covers Malfunctions & Breakdowns
-                      </li>
-                      <li className='my-4'>
-                        <span>
-                          <AiFillCheckCircle className='me-2' />
-                        </span>
-                        Easy process, hassle-free
-                      </li>
-                      <li className='my-4'>
-                        <span>
-                          <AiFillCheckCircle className='me-2' />
-                        </span>
-                        Free Pick & Drop
-                      </li>
-                    </ul>
+                  <div className='p-3'>
+                    <h3 className='text-center'>{data?.brandName}</h3>
+                    <div className='my-4'>
+                      <ul>
+                        <li className='my-4'>
+                          <span>
+                            <AiFillCheckCircle className='me-2' />
+                          </span>
+                          Extends your warranty of your Mobile Phone for
+                          additional one year
+                        </li>
+                        <li className='my-4'>
+                          <span>
+                            <AiFillCheckCircle className='me-2' />
+                          </span>
+                          Covers Malfunctions & Breakdowns
+                        </li>
+                        <li className='my-4'>
+                          <span>
+                            <AiFillCheckCircle className='me-2' />
+                          </span>
+                          Easy process, hassle-free
+                        </li>
+                        <li className='my-4'>
+                          <span>
+                            <AiFillCheckCircle className='me-2' />
+                          </span>
+                          Free Pick & Drop
+                        </li>
+                      </ul>
+                    </div>
+                    <p className='text-center'>Validity:1 year</p>
+                    <div className='d-flex justify-content-center'>
+                      <button onClick={() => setModalShow(true)}>CLAIM</button>
+                    </div>
                   </div>
-                  <p className='text-center'>Validity:1 year</p>
-                  <div className='d-flex justify-content-center'>
-                    <button onClick={() => setModalShow(true)}>CLAIM</button>
-                  </div>
+                  <Image
+                    src={warranty}
+                    alt='barcode'
+                    height={580}
+                    width={150}
+                  />
                 </div>
-
-                <Image src={warranty} alt='barcode' height={580} width={150} />
-              </div>
+              )}
             </section>
           );
         })}
@@ -177,17 +183,6 @@ const InsurancePage = ({ token, id, insuranceData }) => {
                 placeholder='Policy No'
                 className={styles2.input}
                 value={values.policyNo}
-                onChange={handleInputChange}
-                required
-              />
-            </div>
-            <div>
-              <input
-                type='number'
-                name='insurancePackId'
-                placeholder='Isurance Pack ID'
-                className={styles2.input}
-                value={values.insurancePackId}
                 onChange={handleInputChange}
                 required
               />
