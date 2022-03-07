@@ -12,6 +12,7 @@ const Tracker = ({ token, id }) => {
   const { query } = useRouter();
 
   const trackId = query.trackingID;
+  const callType = query.callType;
 
   const [number, setNumber] = useState('');
 
@@ -25,7 +26,7 @@ const Tracker = ({ token, id }) => {
     e.preventDefault();
 
     const trackingRes = await fetch(
-      `${API_URL}/getTrackingDetails.php?trackingCode=${number}&callType=2`,
+      `${API_URL}/getTrackingDetails.php?trackingCode=${number}&callType=${callType}`,
       {
         headers: {
           Authorization: `${token}`,
@@ -59,7 +60,7 @@ const Tracker = ({ token, id }) => {
           <button>Track</button>
         </form>
 
-        {data?.length > 1 && (
+        {data?.length > 1 ? (
           <section className='root'>
             <div className='order-track'>
               {data?.map((item, i) => {
@@ -86,6 +87,8 @@ const Tracker = ({ token, id }) => {
               })}
             </div>
           </section>
+        ) : (
+          <h2>No data to show</h2>
         )}
       </Col>
     </Row>

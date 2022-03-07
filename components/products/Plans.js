@@ -2,94 +2,13 @@ import styles from '@/styles/products/Plans.module.css';
 import { Col, Row } from 'react-bootstrap';
 import { useContext, useState } from 'react';
 import { API_URL } from 'config';
-import { useRouter } from 'next/router';
 import moment from 'moment';
 import Link from 'next/link';
 import { StateContext } from 'context/StateProvider';
 
-const Plans = ({ brandList, short, title, points, profileData, token, id }) => {
-  const router = useRouter();
-
+const Plans = ({ brandList, short, title, points }) => {
   const { isLoggedIn } = useContext(StateContext);
 
-  const initializeRazorpay = () => {
-    return new Promise((resolve) => {
-      const script = document.createElement('script');
-      script.src = 'https://checkout.razorpay.com/v1/checkout.js';
-      script.onload = () => {
-        resolve(true);
-      };
-      script.onerror = () => {
-        resolve(false);
-      };
-      document.body.appendChild(script);
-    });
-  };
-  const makePayment = async (amt) => {
-    // console.log('here...');
-    const res = await initializeRazorpay();
-
-    if (!res) {
-      alert('Razorpay SDK Failed to load');
-      return;
-    }
-
-    // Make API call to the serverless API
-    const data = await fetch('/api/razorpay', {
-      method: 'POST',
-      body: JSON.stringify({ amount: amt }),
-    }).then((t) => t.json());
-    // console.log(data);
-    var options = {
-      key: process.env.RAZORPAY_KEY, // Enter the Key ID generated from the Dashboard
-      name: 'Reego',
-      currency: data.currency,
-      amount: data.amount,
-      order_id: data.id,
-      description: 'Reego Description',
-      image:
-        'https://kaudible.kodagu.today/assets/ff06665a-af2c-4f10-b5d5-111af6832d13',
-      handler: async function (response) {
-        // var ss = JSON.stringify({
-        //   "name": profileData[0].custName,
-        //   "email": profileData[0].custEmail,
-        //   "brand": "1",
-        //   "model": "1",
-        //   "imeiNo": "mum",
-        //   "packType": "1",
-        //   "gadgetId": "1",
-        //   "paymentId": response.razorpay_payment_id.toString(),
-        //   "paymentRequest": JSON.stringify(options),
-        //   "paymentResponse": JSON.stringify(response),
-        //   "paymentStatus": "success",
-        //   "purchaseDate": values.date.toString(),
-        //   "imgInvoice": "",
-        // });
-        // const res22 = await fetch(`${API_URL}/postPurchasePacks.php`, {
-        //   headers: {
-        //     Accept: 'application/json',
-        //     'Content-Type': 'application/json',
-        //     Authorization: `${token}`,
-        //     'API-KEY': `${id}`,
-        //   },
-        //   method: 'POST',
-        //   body: ss,
-        // });
-        // const data22 = await res22.json();
-        // console.log(data22);
-        // if (data22.status) {
-        router.push('/success');
-        // } else {
-        //   router.push('/fail');
-        // }
-      },
-    };
-    var paymentObject = new window.Razorpay(options);
-    paymentObject.on('payment.failed', function (response) {
-      router.push('/fail');
-    });
-    paymentObject.open();
-  };
   const [values, setValues] = useState({
     price: '',
     date: '',
@@ -118,6 +37,15 @@ const Plans = ({ brandList, short, title, points, profileData, token, id }) => {
 
     if (res.ok) {
       setDetailsData(data?.data[0]?.spackPrice);
+      typeof window !== 'undefined' &&
+        localStorage.setItem(
+          'checkoutDet',
+          JSON.stringify({
+            price: data?.data[0]?.spackPrice,
+            title,
+            desc: points,
+          })
+        );
     }
   };
 
@@ -150,6 +78,7 @@ const Plans = ({ brandList, short, title, points, profileData, token, id }) => {
                 value={values.brand}
                 onChange={handleModelSelection}
                 className={styles.select}
+                required
               >
                 <option value='' disabled>
                   Select Brand
@@ -188,6 +117,7 @@ const Plans = ({ brandList, short, title, points, profileData, token, id }) => {
                   className={styles.input}
                   value={values.date}
                   onChange={handleInputChange}
+                  required
                 />
               </div>
               <div>
@@ -198,6 +128,7 @@ const Plans = ({ brandList, short, title, points, profileData, token, id }) => {
                   className={styles.input}
                   value={values.price}
                   onChange={handleInputChange}
+                  required
                 />
               </div>
               <div className='d-grid gap-2'>
@@ -221,17 +152,12 @@ const Plans = ({ brandList, short, title, points, profileData, token, id }) => {
           </div>
           <div className='text-center my-4'>
             {isLoggedIn ? (
-              <button
-                className='button'
-                onClick={() => {
-                  makePayment(parseInt(detailsData));
-                }}
-              >
-                Buy Now
-              </button>
+              <Link href='/checkout'>
+                <a className='button text-white'>Checkout</a>
+              </Link>
             ) : (
-              <Link href='/account/login'>
-                <a className='button text-white'>Log in</a>
+              <Link href='/account/login?redirect=checkout'>
+                <a className='button text-white'>Log in to checkout</a>
               </Link>
             )}
           </div>

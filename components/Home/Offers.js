@@ -1,75 +1,14 @@
 import { Row, Col } from 'react-bootstrap';
 import styles from '@/styles/home/Offers.module.css';
 import { useRouter } from 'next/dist/client/router';
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 import { StateContext } from 'context/StateProvider';
 import Link from 'next/link';
 
 const Offers = ({ profileData }) => {
   const router = useRouter();
   const { isLoggedIn } = useContext(StateContext);
-  const initializeRazorpay = () => {
-    return new Promise((resolve) => {
-      const script = document.createElement('script');
-      script.src = 'https://checkout.razorpay.com/v1/checkout.js';
-      script.onload = () => {
-        resolve(true);
-      };
-      script.onerror = () => {
-        resolve(false);
-      };
-      document.body.appendChild(script);
-    });
-  };
-  const makePayment = async (amt) => {
-    // console.log('here...');
-    const res = await initializeRazorpay();
 
-    if (!res) {
-      alert('Razorpay SDK Failed to load');
-      return;
-    }
-
-    // Make API call to the serverless API
-    const data = await fetch('/api/razorpay', {
-      method: 'POST',
-      body: JSON.stringify({ amount: amt }),
-    }).then((t) => t.json());
-    // console.log(data);
-    var options = {
-      key: process.env.RAZORPAY_KEY, // Enter the Key ID generated from the Dashboard
-      name: 'Reego',
-      currency: data.currency,
-      amount: data.amount,
-      order_id: data.id,
-      description: 'Reego Description',
-      image:
-        'https://kaudible.kodagu.today/assets/ff06665a-af2c-4f10-b5d5-111af6832d13',
-      handler: function (response) {
-        router.push('/success');
-        // alert(response.razorpay_payment_id);
-        // alert(response.razorpay_order_id);
-        // alert(response.razorpay_signature);
-      },
-      prefill: {
-        name: 'Weframe Tech',
-        email: 'weframe@gmail.com',
-        contact: '9999999999',
-      },
-    };
-    var paymentObject = new window.Razorpay(options);
-    paymentObject.on('payment.failed', function (response) {
-      router.push('/fail');
-      // alert(response.error.code);
-      // alert(response.error.description);
-      // alert(response.error.source);
-      // alert(response.error.step);
-      // alert(response.error.reason);
-      // alert(response.error.metadata.order_id);
-      // alert(response.error.metadata.payment_id);
-    });
-    paymentObject.open();
-  };
   return (
     <section>
       <h1 className='color text-center'>Offers</h1>
@@ -90,17 +29,12 @@ const Offers = ({ profileData }) => {
             <h3 className='text-center'>₹99</h3>
             <div className='d-flex justify-content-center'>
               {isLoggedIn ? (
-                <button
-                  className='button text-white'
-                  onClick={() => {
-                    makePayment(99);
-                  }}
-                >
-                  BUY NOW
-                </button>
+                <Link href='/checkout'>
+                  <a className='button text-white'>Checkout</a>
+                </Link>
               ) : (
-                <Link href='/account/login?redirect=offers'>
-                  <a className='button text-white'>Log in</a>
+                <Link href='/account/login?redirect=checkout'>
+                  <a className='button text-white'>Log in to checkout</a>
                 </Link>
               )}
             </div>
@@ -119,17 +53,12 @@ const Offers = ({ profileData }) => {
             <h3 className='text-center'>₹450</h3>
             <div className='d-flex justify-content-center'>
               {isLoggedIn ? (
-                <button
-                  className='button text-white'
-                  onClick={() => {
-                    makePayment(450);
-                  }}
-                >
-                  BUY NOW
-                </button>
+                <Link href='/checkout'>
+                  <a className='button text-white'>Checkout</a>
+                </Link>
               ) : (
-                <Link href='/account/login?redirect=offers'>
-                  <a className='button text-white'>Log in</a>
+                <Link href='/account/login?redirect=checkout'>
+                  <a className='button text-white'>Log in to checkout</a>
                 </Link>
               )}
             </div>
@@ -149,17 +78,12 @@ const Offers = ({ profileData }) => {
             <h3 className='text-center'>₹99</h3>
             <div className='d-flex justify-content-center'>
               {isLoggedIn ? (
-                <button
-                  className='button text-white'
-                  onClick={() => {
-                    makePayment(99);
-                  }}
-                >
-                  BUY NOW
-                </button>
+                <Link href='/checkout'>
+                  <a className='button text-white'>Checkout</a>
+                </Link>
               ) : (
-                <Link href='/account/login?redirect=offers'>
-                  <a className='button text-white'>Log in</a>
+                <Link href='/account/login?redirect=checkout'>
+                  <a className='button text-white'>Log in to checkout</a>
                 </Link>
               )}
             </div>

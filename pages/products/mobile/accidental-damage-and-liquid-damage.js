@@ -8,7 +8,13 @@ import { API_URL } from 'config';
 import { parseCookies } from 'helpers';
 import { Container } from 'react-bootstrap';
 
-const AccidentalPage = ({ brandList, profileData, token, id }) => {
+const AccidentalPage = ({
+  brandList,
+  profileData,
+  token,
+  id,
+  testimonials,
+}) => {
   return (
     <>
       <Seo title='Accidental Damage and Liquid Damage' />
@@ -28,7 +34,7 @@ const AccidentalPage = ({ brandList, profileData, token, id }) => {
         />
         <TableInfo />
         <Faqs />
-        <Testimonials />
+        <Testimonials testimonials={testimonials} />
         <DownloadApp />
       </Container>
     </>
@@ -52,12 +58,17 @@ export const getServerSideProps = async ({ req }) => {
   const brandRes = await fetch(`${API_URL}/getBrandList.php`);
   const brandData = await brandRes.json();
 
+  // TESTIMONIALS!
+  const testimonailsRes = await fetch(`${API_URL}/getTestimonials.php`);
+  const testimonailsData = await testimonailsRes.json();
+
   return {
     props: {
       brandList: brandData.data,
+      testimonials: testimonailsData.data,
       profileData: data.data ? data.data : [],
       token: token,
-      id: id
+      id: id,
     },
   };
 };

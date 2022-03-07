@@ -1,5 +1,5 @@
 import { NEXT_URL } from 'config';
-import { useRouter } from 'next/dist/client/router';
+import { useRouter } from 'next/router';
 import React, { createContext, useEffect, useReducer } from 'react';
 import { initialState, reducer } from './reducer';
 
@@ -29,17 +29,17 @@ const StateProvider = ({ children }) => {
       });
       const data = await res.json();
       if (!res.ok) {
-        dispatch({ type: 'ERROR', payload: data.message });
+        dispatch({ type: 'REG_ERROR', payload: data.message });
       } else {
         dispatch({ type: 'LOGIN_VIA_PASSWORD', payload: data });
-        if (query.redirect) {
-          router.push('/');
+        if (query.redirect.includes('checkout')) {
+          router.push('/checkout');
         } else {
-          router.push('/account/dashboard');
+          router.push('/');
         }
       }
     } catch (err) {
-      dispatch({ type: 'ERROR', payload: err.message });
+      dispatch({ type: 'REG_ERROR', payload: err.message });
     }
   };
 
@@ -61,8 +61,8 @@ const StateProvider = ({ children }) => {
         dispatch({ type: 'ERROR', payload: data.message });
       } else {
         dispatch({ type: 'LOGIN_VIA_PASSWORD', payload: data });
-        if (query.redirect) {
-          router.push('/');
+        if (query?.redirect?.includes('checkout')) {
+          router.push('/checkout');
         } else {
           router.push('/');
         }
@@ -118,9 +118,13 @@ const StateProvider = ({ children }) => {
     }
   };
 
+  const backToNumber = () => {
+    dispatch({ type: 'BACK_TO_NUMBER' });
+  };
+
   return (
     <StateContext.Provider
-      value={{ ...state, register, login, generateOTP, logout }}
+      value={{ ...state, register, login, generateOTP, backToNumber, logout }}
     >
       {children}
     </StateContext.Provider>

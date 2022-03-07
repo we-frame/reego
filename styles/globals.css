@@ -89,7 +89,8 @@ iframe {
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
-  background-image: url('../public/images/arrow-left.png') !important;
+  /* background-image: url('../public/images/arrow-left.png') ; */
+  background-image: url('https://res.cloudinary.com/da7rahr7h/image/upload/v1646421534/arrow_left_2aa55db7d2.png');
 }
 
 .swiper-button-next,
@@ -101,7 +102,8 @@ iframe {
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
-  background-image: url('../public/images/arrow-right.png') !important;
+  /* background-image: url('../public/images/arrow-right.png'); */
+  background-image: url('https://res.cloudinary.com/da7rahr7h/image/upload/v1646421517/arrow_right_7c2c162bcb.png');
 }
 
 .swiper-button-next:after,
@@ -226,6 +228,12 @@ iframe {
 /* BOLDNESS! */
 .my-bold {
   font-weight: normal;
+}
+
+/* PLACEHOLDER COLOR CHANGE! */
+
+.ph-color::placeholder {
+  color: gray !important;
 }
 
 @media (max-width: 600px) {

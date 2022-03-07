@@ -23,6 +23,13 @@
   font-size: 18px;
 }
 
+.textArea {
+  display: block;
+  width: 100%;
+  padding: 5px;
+  font-size: 18px;
+}
+
 .auth input[type='submit'] {
   margin-top: 20px;
   width: 100%;

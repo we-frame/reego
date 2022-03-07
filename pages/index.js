@@ -18,6 +18,7 @@ const HomePage = ({
   gadgetList,
   profileData,
   banner,
+  testimonials,
 }) => {
   return (
     <>
@@ -35,7 +36,7 @@ const HomePage = ({
         <DevicePlans />
         <Offers profileData={profileData} />
         <Ads />
-        <Testimonials />
+        <Testimonials testimonials={testimonials} />
         <DownloadApp />
       </Container>
     </>
@@ -71,6 +72,10 @@ export const getServerSideProps = async ({ req }) => {
   const bannerRes = await fetch(`${API_URL}/getSliderImages.php`);
   const bannerData = await bannerRes.json();
 
+  // TESTIMONIALS!
+  const testimonailsRes = await fetch(`${API_URL}/getTestimonials.php`);
+  const testimonailsData = await testimonailsRes.json();
+
   return {
     props: {
       profileData: data.data ? data.data : [],
@@ -78,6 +83,7 @@ export const getServerSideProps = async ({ req }) => {
       gadgetList: gadgetData.data,
       problems: problemData.data,
       banner: bannerData.data,
+      testimonials: testimonailsData.data,
       token: token ? token : null,
       id: id ? id : null,
     },

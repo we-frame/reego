@@ -75,8 +75,8 @@ const RequestForm = ({
           paymentResponse: JSON.stringify(response),
           paymentStatus: 'success',
           isRedirect: 0,
-          dropType: dropPoint.toString(),
-          dropPointId: dropPoint.toString(),
+          dropType: dropType.toString(),
+          dropPointId: dropPointId.toString(),
           transactionCode: response.razorpay_signature.toString(),
         });
         const res22 = await fetch(`${API_URL}/postRaiseRequest.php`, {
@@ -119,54 +119,21 @@ const RequestForm = ({
   const [modalShow, setModalShow] = useState(false);
 
   // Add to values object at submit!
-  const [plan, setPlan] = useState(
-    JSON.parse(
-      typeof window !== 'undefined' && localStorage.getItem('requestform')
-    )?.plan || 0
-  );
-  const [dropPoint, setDropPoint] = useState(0);
+  const [plan, setPlan] = useState(1);
+  const [dropType, setDropType] = useState(1);
+  const [dropPointId, setDropPointId] = useState(0);
 
   const [values, setValues] = useState({
-    name:
-      JSON.parse(
-        typeof window !== 'undefined' && localStorage.getItem('requestform')
-      )?.name || '',
-    mobile:
-      JSON.parse(
-        typeof window !== 'undefined' && localStorage.getItem('requestform')
-      )?.mobile || '',
-    email:
-      JSON.parse(
-        typeof window !== 'undefined' && localStorage.getItem('requestform')
-      )?.email || '',
-    gadget:
-      JSON.parse(
-        typeof window !== 'undefined' && localStorage.getItem('requestform')
-      )?.gadget || '',
-    brand:
-      JSON.parse(
-        typeof window !== 'undefined' && localStorage.getItem('requestform')
-      )?.brand || '',
-    model:
-      JSON.parse(
-        typeof window !== 'undefined' && localStorage.getItem('requestform')
-      )?.model || '',
-    deviceIssues:
-      JSON.parse(
-        typeof window !== 'undefined' && localStorage.getItem('requestform')
-      )?.deviceIssues || '',
-    comments:
-      JSON.parse(
-        typeof window !== 'undefined' && localStorage.getItem('requestform')
-      )?.comments || '',
-    pincode:
-      JSON.parse(
-        typeof window !== 'undefined' && localStorage.getItem('requestform')
-      )?.pincode || '',
-    address:
-      JSON.parse(
-        typeof window !== 'undefined' && localStorage.getItem('requestform')
-      )?.address || '',
+    name: '',
+    mobile: '',
+    email: '',
+    gadget: '',
+    brand: '',
+    model: '',
+    deviceIssues: '',
+    comments: '',
+    pincode: '',
+    address: '',
   });
 
   // EMAIL VALIDATION!
@@ -225,7 +192,6 @@ const RequestForm = ({
     if (res.ok) {
       !hasEmptyFields && regex.test(values.email) && setIndex(3);
       setDropAddress(data?.data);
-      // localStorage.setItem('requestform', JSON.stringify({ ...values, plan }));
     }
   };
 
@@ -289,7 +255,7 @@ const RequestForm = ({
                     })}
                   </select>
                 </div>
-                <div className='d-flex justify-content-around'>
+                <div className='d-flex justify-content-between'>
                   <select
                     name='brand'
                     value={values.brand}
@@ -371,7 +337,9 @@ const RequestForm = ({
                 </div>
                 <div>
                   <input
-                    type='number'
+                    pattern='^[1-9]{6}'
+                    maxLength='6'
+                    type='text'
                     name='pincode'
                     placeholder='Pincode'
                     className={styles.input}
@@ -405,16 +373,16 @@ const RequestForm = ({
             {index === 2 && (
               <>
                 <div
-                  className={`${styles.card} ${plan === 0 && styles.border}`}
-                  onClick={() => setPlan(0)}
+                  className={`${styles.card} ${plan === 1 && styles.border}`}
+                  onClick={() => setPlan(1)}
                 >
                   <h1>99₹</h1>
                   <h4>Free Pick-Drop</h4>
                   <p>Lorem Ipsum is simply dummy text of the printing and </p>
                 </div>
                 <div
-                  className={`${styles.card} ${plan === 1 && styles.border}`}
-                  onClick={() => setPlan(1)}
+                  className={`${styles.card} ${plan === 2 && styles.border}`}
+                  onClick={() => setPlan(2)}
                 >
                   <h1>395₹</h1>
                   <h4>Repair and Diagnose</h4>
@@ -435,25 +403,32 @@ const RequestForm = ({
               <>
                 {dropAddress ? (
                   <>
+                    {dropAddress?.map((item, i) => {
+                      return (
+                        <div
+                          key={i}
+                          className={`${styles.card} ${
+                            dropType === 2 && styles.border
+                          }`}
+                          onClick={() => {
+                            setDropType(2);
+                            setDropPointId(item?.dropPointId);
+                          }}
+                        >
+                          <GoLocation color='#f53855' fontSize='2rem' />
+                          <h1>Pincode : {values.pincode}</h1>
+                          <h4>Drop your device at</h4>
+                          <p>
+                            {item?.dropPointName} {item?.dropPointAddress}
+                          </p>
+                        </div>
+                      );
+                    })}
                     <div
                       className={`${styles.card} ${
-                        dropPoint === 0 && styles.border
+                        dropType === 1 && styles.border
                       }`}
-                      onClick={() => setDropPoint(0)}
-                    >
-                      <GoLocation color='#f53855' fontSize='2rem' />
-                      <h1>Pincode : {values.pincode}</h1>
-                      <h4>Drop your device at</h4>
-                      <p>
-                        {dropAddress[0]?.dropPointName}{' '}
-                        {dropAddress[0]?.dropPointAddress}
-                      </p>
-                    </div>
-                    <div
-                      className={`${styles.card} ${
-                        dropPoint === 1 && styles.border
-                      }`}
-                      onClick={() => setDropPoint(1)}
+                      onClick={() => setDropType(1)}
                     >
                       <AiFillHome color='#f53855' fontSize='2rem' />
 
@@ -465,24 +440,33 @@ const RequestForm = ({
                         onClick={() => setIndex(1)}
                         className={styles.back}
                       />
-                      <button
-                        className='button'
-                        type='submit'
-                        onClick={() => {
-                          plan === 0 ? makePayment(99) : makePayment(395);
-                        }}
-                      >
-                        Procced to Payment
-                      </button>
+                      {isLoggedIn ? (
+                        <button
+                          className='button'
+                          type='submit'
+                          onClick={() => {
+                            plan === 1 ? makePayment(99) : makePayment(395);
+                          }}
+                        >
+                          Procced to Payment
+                        </button>
+                      ) : (
+                        <button
+                          onClick={() => setModalShow(true)}
+                          className='button text-white'
+                        >
+                          Log in
+                        </button>
+                      )}
                     </div>
                   </>
                 ) : (
                   <>
                     <div
                       className={`${styles.card} ${
-                        dropPoint === 1 && styles.border
+                        dropType === 1 && styles.border
                       }`}
-                      onClick={() => setDropPoint(1)}
+                      onClick={() => setDropType(1)}
                     >
                       <AiFillHome color='#f53855' fontSize='2rem' />
                       <h4>Doorstep</h4>
@@ -498,7 +482,7 @@ const RequestForm = ({
                           className='button'
                           type='submit'
                           onClick={() => {
-                            plan === 0 ? makePayment(99) : makePayment(395);
+                            plan === 1 ? makePayment(99) : makePayment(395);
                           }}
                         >
                           Procced to Payment

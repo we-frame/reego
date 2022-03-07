@@ -1,10 +1,23 @@
+import ReedemForm from '@/components/Home/ReedemForm';
 import Layout2 from '@/components/Utils/Layout2';
 import Seo from '@/components/Utils/Seo';
 import styles from '@/styles/account/Reedem.module.css';
 import { API_URL } from 'config';
 import { parseCookies } from 'helpers';
+import { useState } from 'react';
 
-const RedeemPage = ({ myData }) => {
+const RedeemPage = ({
+  myData,
+  problems,
+  profileData,
+  gadgetList,
+  token,
+  id,
+}) => {
+  const [modalShow, setModalShow] = useState(false);
+
+  const [redeemId, setRedeemId] = useState('');
+
   return (
     <Layout2>
       <Seo title='Redeem' />
@@ -16,7 +29,15 @@ const RedeemPage = ({ myData }) => {
               <p>Device : {item?.brandName}</p>
               <p>Validity : 1 Year</p>
               {item?.isRedeem === '0' ? (
-                <button className='button'>Redeem</button>
+                <button
+                  className='button'
+                  onClick={() => {
+                    setModalShow(true);
+                    setRedeemId(item?.transactionNo);
+                  }}
+                >
+                  Redeem
+                </button>
               ) : (
                 <button className='button'>Redeemed</button>
               )}
@@ -24,6 +45,19 @@ const RedeemPage = ({ myData }) => {
           );
         })}
       </section>
+      {modalShow && (
+        <ReedemForm
+          redeemId={redeemId}
+          reedemDet={myData}
+          profileData={profileData}
+          modalShow={modalShow}
+          setModalShow={setModalShow}
+          problems={problems}
+          gadgetList={gadgetList}
+          token={token}
+          id={id}
+        />
+      )}
     </Layout2>
   );
 };
@@ -40,6 +74,23 @@ export const getServerSideProps = async ({ req }) => {
   });
   const data = await res.json();
 
+  // USER DATA
+  const userRes = await fetch(`${API_URL}/getUserDetails.php`, {
+    headers: {
+      Authorization: `${token}`,
+      'API-KEY': `${id}`,
+    },
+  });
+  const userData = await userRes.json();
+
+  // PROBLEM LIST
+  const problemRes = await fetch(`${API_URL}/getDeviceProblemList.php`);
+  const problemData = await problemRes.json();
+
+  // GADGET LIST
+  const gadgetRes = await fetch(`${API_URL}/getGadgetList.php`);
+  const gadgetData = await gadgetRes.json();
+
   if (!token) {
     return {
       redirect: {
@@ -51,7 +102,10 @@ export const getServerSideProps = async ({ req }) => {
 
   return {
     props: {
+      profileData: userData.data ? userData.data : [],
+      problems: problemData.data,
       myData: data?.data ? data?.data : [],
+      gadgetList: gadgetData.data,
       token,
       id,
     },

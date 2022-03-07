@@ -5,9 +5,12 @@ import { Container } from 'react-bootstrap';
 import { StateContext } from 'context/StateProvider';
 import Error from '@/components/Utils/Error';
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
+import { BiArrowBack } from 'react-icons/bi';
+import { useRouter } from 'next/router';
+import Link from 'next/link';
 
 const LoginPage = () => {
-  const { login, generateOTP, OTPgen, error, errorOTP, loading } =
+  const { login, generateOTP, OTPgen, error, errorOTP, loading, backToNumber } =
     useContext(StateContext);
 
   const [passwordShown, setPasswordShown] = useState(false);
@@ -17,18 +20,44 @@ const LoginPage = () => {
   const [number, setNumber] = useState('');
   const [OTP, setOTP] = useState('');
   const [loginVia, setLoginVia] = useState(1);
+  const [timer, setTimer] = useState(false);
+  const [timingNumber, setTimingNumber] = useState(40);
+
+  const { query } = useRouter();
+
+  const redirect = query?.redirect?.includes('checkout');
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    loginVia === 1
-      ? login({ userName: name, password, loginVia })
-      : generateOTP({ userName: number });
+
+    if (loginVia === 1) {
+      login({ userName: name, password, loginVia });
+    } else {
+      generateOTP({ userName: number });
+      setTimer(true);
+      typeof window !== 'undefined' && localStorage.setItem('number', number);
+    }
   };
 
   const handleSubmitOTP = (e) => {
     e.preventDefault();
     login({ userName: number, password: OTP, loginVia });
   };
+
+  useEffect(() => {
+    if (timer) {
+      const x = setInterval(() => {
+        setTimingNumber(timingNumber - 1);
+      }, 1000);
+
+      if (timingNumber <= 0) {
+        setTimer(false);
+        setTimingNumber(40);
+      }
+
+      return () => clearInterval(x);
+    }
+  }, [timer, timingNumber]);
 
   return (
     <>
@@ -37,11 +66,11 @@ const LoginPage = () => {
         {OTPgen ? (
           <>
             <div className={styles.auth}>
+              <BiArrowBack fontSize='1.3rem' onClick={backToNumber} />
               <h2 className='my-3 fw-bold text-center'>Enter OTP</h2>
-
               <form onSubmit={handleSubmitOTP}>
                 <div>
-                  <label htmlFor='email'>OTP</label>
+                  <label htmlFor='email'>Enter OTP</label>
                   <input
                     type='number'
                     id='number'
@@ -51,6 +80,24 @@ const LoginPage = () => {
                     required
                   />
                 </div>
+                {timer ? (
+                  <p>Resend OTP in : {timingNumber}</p>
+                ) : (
+                  <p
+                    style={{ color: '#f53838', cursor: 'pointer' }}
+                    onClick={() => {
+                      generateOTP({
+                        userName: JSON.parse(
+                          typeof window !== 'undefined' &&
+                            localStorage.getItem('number')
+                        ),
+                      });
+                      setTimer(true);
+                    }}
+                  >
+                    Resend OTP
+                  </p>
+                )}
 
                 {loading ? (
                   <button className='button w-100 opacity-50' disabled>
@@ -125,7 +172,7 @@ const LoginPage = () => {
                       required
                     />
                   </div>
-                  {errorOTP ? <Error error={error} /> : ''}
+                  {errorOTP ? <Error error={errorOTP} /> : ''}
                   {loading ? (
                     <button className='button w-100 opacity-50' disabled>
                       Loading...
@@ -157,6 +204,21 @@ const LoginPage = () => {
                   Password
                 </span>{' '}
               </p>
+            )}
+            {redirect ? (
+              <span>
+                New Customer?{' '}
+                <Link href='/account/register?redirect=checkout'>
+                  <a className='text-decoration-underline'>Register</a>
+                </Link>
+              </span>
+            ) : (
+              <span>
+                New Customer?{' '}
+                <Link href='/account/register'>
+                  <a className='text-decoration-underline'>Register</a>
+                </Link>
+              </span>
             )}
           </div>
         )}

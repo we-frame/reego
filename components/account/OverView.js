@@ -18,7 +18,8 @@ const OverView = ({ data }) => {
 
   const handleLogOut = () => {
     logout();
-    localStorage.removeItem('requestform');
+    localStorage.removeItem('checkoutDet');
+    localStorage.removeItem('number');
     router.push('/');
   };
 
@@ -70,14 +71,7 @@ const OverView = ({ data }) => {
         </Link>
       </div>
       <div className='mt-5 text-center'>
-        <button
-          className='button'
-          onClick={() => {
-            typeof window !== 'undefined' &&
-              localStorage.removeItem('requestform');
-            handleLogOut();
-          }}
-        >
+        <button className='button' onClick={handleLogOut}>
           Logout
         </button>
       </div>

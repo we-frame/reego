@@ -36,26 +36,26 @@ const Footer = () => {
             <a className='text-white'>About</a>
           </Link> */}
         </div>
-        <div className='me-lg-4 my-2 my-lg-0'>
+        {/* <div className='me-lg-4 my-2 my-lg-0'>
           <a className='text-white' href='#'>
             Careers
           </a>
-        </div>
-        <div className='me-lg-4 my-2 my-lg-0'>
+        </div> */}
+        {/* <div className='me-lg-4 my-2 my-lg-0'>
           <a className='text-white' href='#'>
             Help
           </a>
-        </div>
+        </div> */}
         <div className='me-lg-4 my-2 my-lg-0'>
-          <a className='text-white' href='#'>
-            Privacy Policy
+          <a className='text-white' href='https://reego.in/terms_condn.html'>
+            Terms & Conditions
           </a>
         </div>
-        <div className='me-lg-4 my-2 my-lg-0'>
+        {/* <div className='me-lg-4 my-2 my-lg-0'>
           <a className='text-white' href='#'>
             License
           </a>
-        </div>
+        </div> */}
       </div>
       <p className='text-white'>Get the App</p>
       <a href='https://play.google.com/store/apps/details?id=com.reego.consumer'>

@@ -115,13 +115,14 @@ const EditPage = ({ token, id, userData }) => {
         <div>
           <label htmlFor='pincode'>Pin code</label>
           <input
-            type='number'
+            pattern='^[1-9]{6}'
+            maxLength='6'
+            type='text'
             name='pincode'
             className={styles.input}
             value={values.pincode}
             onChange={handleInputChange}
-            pattern='[1-6]{1}[0-6]{6}'
-            maxLength='6'
+            inputMode='numeric'
           />
         </div>
         <div>
@@ -139,7 +140,8 @@ const EditPage = ({ token, id, userData }) => {
           <input
             type='password'
             name='password'
-            className={styles.input}
+            placeholder='Enter your new Password'
+            className={`ph-color ${styles.input}`}
             value={values.password}
             onChange={handleInputChange}
           />
@@ -176,7 +178,7 @@ export const getServerSideProps = async ({ req }) => {
 
   return {
     props: {
-      userData,
+      userData: userData ? userData : [],
       token,
       id,
     },

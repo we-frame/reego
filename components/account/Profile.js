@@ -34,8 +34,8 @@ const Profile = ({ profile }) => {
         <div className={styles.profile}>
           <p className='my-bold'>Location</p>
           <p>
-            {profile[0]?.custAddress}, {profile[0]?.custCity},{' '}
-            {profile[0]?.custState}
+            {profile[0]?.custAddress}, {profile[0]?.custCity}-{' '}
+            {profile[0]?.custPincode}, {profile[0]?.custState}
           </p>
         </div>
         {/* <div className={styles.profile}>

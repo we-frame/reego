@@ -4,6 +4,7 @@ export const initialState = {
   OTPgen: false,
   loading: false,
   error: null,
+  reg_error: null,
   errorOTP: null,
 };
 
@@ -13,6 +14,7 @@ export const reducer = (state, action) => {
       return {
         ...state,
         error: null,
+        errorOTP: null,
         isLoggedIn: true,
         loading: false,
       };
@@ -50,12 +52,24 @@ export const reducer = (state, action) => {
         OTPgen: false,
         loading: false,
       };
+    case 'REG_ERROR':
+      return {
+        ...state,
+        reg_error: action.payload,
+        OTPgen: false,
+        loading: false,
+      };
     case 'ERROR_OTP':
       return {
         ...state,
         errorOTP: action.payload,
         OTPgen: false,
         loading: false,
+      };
+    case 'BACK_TO_NUMBER':
+      return {
+        ...state,
+        OTPgen: false,
       };
   }
 };

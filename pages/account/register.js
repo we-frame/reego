@@ -1,5 +1,6 @@
-import Seo from '@/components/Utils/Seo';
 import React, { useState } from 'react';
+import Seo from '@/components/Utils/Seo';
+import Error from '@/components/Utils/Error';
 import styles from '@/styles/account/AuthForm.module.css';
 import { Container } from 'react-bootstrap';
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
@@ -10,7 +11,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import moment from 'moment';
 
 const SignupPage = () => {
-  const { register } = useContext(StateContext);
+  const { register, reg_error, loading } = useContext(StateContext);
 
   const [values, setValues] = useState({
     name: '',
@@ -124,13 +125,13 @@ const SignupPage = () => {
             </div>
             <div>
               <label htmlFor='address'>Address</label>
-              <input
-                type='text'
+              <textarea
+                className={styles.textArea}
                 name='address'
                 value={values.address}
                 onChange={handleInputChange}
                 required
-              />
+              ></textarea>
             </div>
             <div>
               <label htmlFor='city'>City</label>
@@ -185,7 +186,14 @@ const SignupPage = () => {
                 />
               )}
             </div>
-            <input type='submit' value='Sign up' className='button' />
+            {reg_error && <Error error={reg_error} />}
+            {loading ? (
+              <button className='button w-100 opacity-50' disabled>
+                Loading...
+              </button>
+            ) : (
+              <input type='submit' value='Sign up' className='button' />
+            )}
           </form>
         </div>
       </Container>

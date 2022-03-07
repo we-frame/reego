@@ -1,17 +1,31 @@
 import Link from 'next/link';
+import Seo from '@/components/Utils/Seo';
+import Lottie from 'react-lottie-player';
+import lottieJson from '../public/payment-successful.json';
 
-const success = () => {
-    return (
-        <>
-            <div className="jumbotron text-center height: 100%;">
-                <h1 className="display-3">Thank You!</h1>
-                <p className="lead"><strong>Please check orders</strong> for to track your orders.</p>
-                <p className="lead">
-                    <Link className="btn btn-primary btn-sm bg-success text-light btn-outline-success" href="/account/orders" role="button" >Continue to Orders</Link>
-                </p>
-            </div>
-        </>
-    );
-}
+const SuccessPage = () => {
+  return (
+    <>
+      <Seo title='Payment Successful' />
+      <div className='jumbotron text-center height: 100%;'>
+        <div className='d-flex justify-content-center'>
+          <Lottie
+            // loop={false}
+            animationData={lottieJson}
+            play
+            style={{ width: 500, height: 500 }}
+          />
+        </div>
+        <h1 className='display-4'>Thank You!</h1>
+        <p className='lead'>Your payment was successfully completed</p>
+        <p>
+          <Link href='/account/dashboard'>
+            <a className='button text-white'>Continue to Account</a>
+          </Link>
+        </p>
+      </div>
+    </>
+  );
+};
 
-export default success;
+export default SuccessPage;

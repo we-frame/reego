@@ -71,7 +71,9 @@ const Orders = ({ token, id, orders }) => {
                   </h3>
                   <div
                     onClick={() =>
-                      router.push(`/?trackingID=${order?.trackingCode}`)
+                      router.push(
+                        `/?trackingID=${order?.trackingCode}&callType=${order?.callType}`
+                      )
                     }
                   >
                     <AiOutlineRight
