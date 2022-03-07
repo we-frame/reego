@@ -60,36 +60,32 @@ const Tracker = ({ token, id }) => {
           <button>Track</button>
         </form>
 
-        {data?.length > 1 ? (
-          <section className='root'>
-            <div className='order-track'>
-              {data?.map((item, i) => {
-                return (
-                  <div className='order-track-step' key={i}>
-                    <div className='order-track-status'>
-                      <span
-                        className={`order-track-status-dot ${
-                          item.isDone === 0 ? 'dot-faded' : ''
-                        }`}
-                      >
-                        {item.stepDate && <BsCheck2 className='check-icon' />}
-                      </span>
-                      <span className='order-track-status-line'></span>
-                    </div>
-                    <div className='order-track-text'>
-                      <p className='order-track-text-stat'>{item.stepName}</p>
-                      <span className='order-track-text-sub'>
-                        {item.stepDate}
-                      </span>
-                    </div>
+        <section className='root'>
+          <div className='order-track'>
+            {data?.map((item, i) => {
+              return (
+                <div className='order-track-step' key={i}>
+                  <div className='order-track-status'>
+                    <span
+                      className={`order-track-status-dot ${
+                        item.isDone === 0 ? 'dot-faded' : ''
+                      }`}
+                    >
+                      {item.stepDate && <BsCheck2 className='check-icon' />}
+                    </span>
+                    <span className='order-track-status-line'></span>
                   </div>
-                );
-              })}
-            </div>
-          </section>
-        ) : (
-          <h2>No data to show</h2>
-        )}
+                  <div className='order-track-text'>
+                    <p className='order-track-text-stat'>{item.stepName}</p>
+                    <span className='order-track-text-sub'>
+                      {item.stepDate}
+                    </span>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </section>
       </Col>
     </Row>
   );
