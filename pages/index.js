@@ -19,6 +19,7 @@ const HomePage = ({
   profileData,
   banner,
   testimonials,
+  offerData,
 }) => {
   return (
     <>
@@ -34,7 +35,7 @@ const HomePage = ({
           profileData={profileData}
         />
         <DevicePlans />
-        <Offers profileData={profileData} />
+        <Offers offerData={offerData} />
         <Ads />
         <Testimonials testimonials={testimonials} />
         <DownloadApp />
@@ -76,6 +77,10 @@ export const getServerSideProps = async ({ req }) => {
   const testimonailsRes = await fetch(`${API_URL}/getTestimonials.php`);
   const testimonailsData = await testimonailsRes.json();
 
+  // OFFERS!
+  const offerRes = await fetch(`${API_URL}/getOfferLists.php`);
+  const offerData = await offerRes.json();
+
   return {
     props: {
       profileData: data.data ? data.data : [],
@@ -84,6 +89,7 @@ export const getServerSideProps = async ({ req }) => {
       problems: problemData.data,
       banner: bannerData.data,
       testimonials: testimonailsData.data,
+      offerData: offerData.data,
       token: token ? token : null,
       id: id ? id : null,
     },

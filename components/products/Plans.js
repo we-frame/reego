@@ -43,7 +43,7 @@ const Plans = ({ brandList, short, title, points }) => {
           JSON.stringify({
             price: data?.data[0]?.spackPrice,
             title,
-            desc: points,
+            points,
           })
         );
     }

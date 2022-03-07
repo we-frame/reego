@@ -9,6 +9,7 @@ import moment from 'moment';
 import { FiPlusCircle } from 'react-icons/fi';
 import { AiFillDelete } from 'react-icons/ai';
 import { parseCookies } from 'helpers';
+import ReactMarkdown from 'react-markdown';
 
 const CheckOutPage = ({ gadgetList, profileData, token, id }) => {
   const [mobileModel, setMobileModel] = useState([]);
@@ -155,21 +156,32 @@ const CheckOutPage = ({ gadgetList, profileData, token, id }) => {
       <Container>
         <Row className='my-3 justify-content-center align-items-center my-5'>
           <Col lg={6} className='order-2 order-lg-1'>
-            <div className={styles.card}>
-              <h4 className='text-center my-5'>Free Pick & Drop At Rs 99</h4>
-              <ul className='mb-5'>
-                <li className={styles.li}>Doorstep pick & drop</li>
-                <li className={styles.li}>Hassle free</li>
-                <li className={styles.li}>Get free estimation</li>
-                <li className={styles.li}>
-                  At No extra cost of reaching to you
-                </li>
-              </ul>
+            <div className={`${styles.card} offer-card`}>
+              <h4 className='text-center my-5'>
+                {JSON.parse(localStorage.checkoutDet).title}
+              </h4>
+              {JSON.parse(localStorage.checkoutDet).points ? (
+                <ul className='mb-5'>
+                  {JSON.parse(localStorage.checkoutDet).points?.map((item) => {
+                    return (
+                      <li className={styles.li} key={item.id}>
+                        {item.point}
+                      </li>
+                    );
+                  })}
+                </ul>
+              ) : (
+                <ReactMarkdown>
+                  {JSON.parse(localStorage.checkoutDet).desc}
+                </ReactMarkdown>
+              )}
             </div>
           </Col>
           <Col lg={6} className='text-center order-1 order-lg-2'>
             <h3>You have selected the </h3>
-            <h2 className='text-center'>₹99 Pack</h2>
+            <h2 className='text-center'>
+              ₹ {JSON.parse(localStorage.checkoutDet).price} Pack
+            </h2>
           </Col>
         </Row>
         <div className='my-5'>
@@ -296,7 +308,9 @@ const CheckOutPage = ({ gadgetList, profileData, token, id }) => {
               <button
                 type='submit'
                 className='button'
-                onClick={() => makePayment(99)}
+                onClick={() =>
+                  makePayment(JSON.parse(localStorage.checkoutDet).price)
+                }
               >
                 Procced to Payment
               </button>

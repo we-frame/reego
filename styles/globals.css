@@ -236,6 +236,12 @@ iframe {
   color: gray !important;
 }
 
+.offer-card li {
+  list-style: none;
+  list-style-image: url('../public/images/tick1.png') !important;
+  margin: 1.5rem 1rem;
+}
+
 @media (max-width: 600px) {
   .nav-links {
     height: 0;
