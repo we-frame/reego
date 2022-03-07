@@ -115,8 +115,8 @@ const EditPage = ({ token, id, userData }) => {
         <div>
           <label htmlFor='pincode'>Pin code</label>
           <input
-            pattern='^[1-9]{6}'
-            maxLength='6'
+            // pattern='^[1-9]{6}'
+            // maxLength='6'
             type='text'
             name='pincode'
             className={styles.input}
