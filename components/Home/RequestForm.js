@@ -13,14 +13,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer, toast } from 'react-toastify';
 import ModalLogin from './ModalLogin';
 
-const RequestForm = ({
-  brandList,
-  gadgetList,
-  problems,
-  token,
-  id,
-  profileData,
-}) => {
+const RequestForm = ({ gadgetList, problems, token, id }) => {
   const router = useRouter();
   const initializeRazorpay = () => {
     return new Promise((resolve) => {

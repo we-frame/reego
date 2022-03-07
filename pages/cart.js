@@ -5,7 +5,6 @@ import styles from '@/styles/account/Cart.module.css';
 import styles2 from '@/styles/home/RequestForm.module.css';
 import phone from '/public/images/phone.png';
 import { GiCancel } from 'react-icons/gi';
-import { useState } from 'react';
 
 const CartPage = () => {
   const [values, setValues] = useState({

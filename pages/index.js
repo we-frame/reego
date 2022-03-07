@@ -16,7 +16,6 @@ const HomePage = ({
   token,
   id,
   gadgetList,
-  profileData,
   banner,
   testimonials,
   offerData,
@@ -32,7 +31,6 @@ const HomePage = ({
           token={token}
           id={id}
           gadgetList={gadgetList}
-          profileData={profileData}
         />
         <DevicePlans />
         <Offers offerData={offerData} />
@@ -47,15 +45,6 @@ const HomePage = ({
 export const getServerSideProps = async ({ req }) => {
   const { token } = parseCookies(req);
   const { id } = parseCookies(req);
-
-  // USER DATA
-  const res = await fetch(`${API_URL}/getUserDetails.php`, {
-    headers: {
-      Authorization: `${token}`,
-      'API-KEY': `${id}`,
-    },
-  });
-  const data = await res.json();
 
   // BRAND LIST
   const brandRes = await fetch(`${API_URL}/getBrandList.php`);
@@ -83,7 +72,6 @@ export const getServerSideProps = async ({ req }) => {
 
   return {
     props: {
-      profileData: data.data ? data.data : [],
       brandList: brandData.data,
       gadgetList: gadgetData.data,
       problems: problemData.data,

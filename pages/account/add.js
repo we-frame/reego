@@ -12,7 +12,7 @@ import { API_URL } from 'config';
 import { parseCookies } from 'helpers';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer, toast } from 'react-toastify';
-import { useRouter } from 'next/dist/client/router';
+import { useRouter } from 'next/router';
 import moment from 'moment';
 
 const AddPage = ({ token, id, brandList, famData }) => {

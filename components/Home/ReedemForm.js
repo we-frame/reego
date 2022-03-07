@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { Modal } from 'react-bootstrap';
 import styles from '@/styles/home/RequestForm.module.css';
-import { IoIosArrowBack } from 'react-icons/io';
 import { API_URL } from '../../config';
+import { useRouter } from 'next/router';
+import { IoIosArrowBack } from 'react-icons/io';
 import { AiFillHome } from 'react-icons/ai';
 import { GoLocation } from 'react-icons/go';
 import 'react-toastify/dist/ReactToastify.css';
@@ -22,6 +23,8 @@ const ReedemForm = ({
     (item) => item.transactionNo === redeemId
   );
 
+  const router = useRouter();
+
   const [index, setIndex] = useState(0);
   const [dropAddress, setDropAddress] = useState(null);
 
@@ -34,7 +37,7 @@ const ReedemForm = ({
   const [values, setValues] = useState({
     name: profileData[0]?.custName,
     email: profileData[0]?.custEmail,
-    mobile: '',
+    mobile: '', // !profileData[0]?.custNumber
     brand: findSpecificDet?.brandId,
     model: '',
     address: `${profileData[0]?.custAddress}, ${profileData[0]?.custCity}, ${profileData[0]?.custState}`,
@@ -111,7 +114,8 @@ const ReedemForm = ({
       const data = await res.json();
 
       if (res.ok) {
-        toast.success(data?.message);
+        router.reload();
+        toast.success('Redeemed Successfullu');
         setModalShow(false);
       } else {
         toast.error('Something went wrong');

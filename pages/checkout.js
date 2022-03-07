@@ -30,6 +30,7 @@ const CheckOutPage = ({ gadgetList, profileData, token, id }) => {
   });
 
   const router = useRouter();
+
   const initializeRazorpay = () => {
     return new Promise((resolve) => {
       const script = document.createElement('script');
@@ -92,7 +93,7 @@ const CheckOutPage = ({ gadgetList, profileData, token, id }) => {
       prefill: {
         name: values.name,
         email: values.email,
-        contact: 9731565529,
+        contact: 9731565529, // !change to profileData[0]?.custNumber (also add to the redeem form!)
       },
     };
     var paymentObject = new window.Razorpay(options);
@@ -158,21 +159,25 @@ const CheckOutPage = ({ gadgetList, profileData, token, id }) => {
           <Col lg={6} className='order-2 order-lg-1'>
             <div className={`${styles.card} offer-card`}>
               <h4 className='text-center my-5'>
-                {JSON.parse(localStorage.checkoutDet).title}
+                {typeof window !== 'undefined' &&
+                  JSON.parse(localStorage.checkoutDet).title}
               </h4>
-              {JSON.parse(localStorage.checkoutDet).points ? (
+              {typeof window !== 'undefined' &&
+              JSON.parse(localStorage.checkoutDet).points ? (
                 <ul className='mb-5'>
-                  {JSON.parse(localStorage.checkoutDet).points?.map((item) => {
-                    return (
-                      <li className={styles.li} key={item.id}>
-                        {item.point}
-                      </li>
-                    );
-                  })}
+                  {typeof window !== 'undefined' &&
+                    JSON.parse(localStorage.checkoutDet).points?.map((item) => {
+                      return (
+                        <li className={styles.li} key={item.id}>
+                          {item.point}
+                        </li>
+                      );
+                    })}
                 </ul>
               ) : (
                 <ReactMarkdown>
-                  {JSON.parse(localStorage.checkoutDet).desc}
+                  {typeof window !== 'undefined' &&
+                    JSON.parse(localStorage.checkoutDet).desc}
                 </ReactMarkdown>
               )}
             </div>
@@ -180,7 +185,10 @@ const CheckOutPage = ({ gadgetList, profileData, token, id }) => {
           <Col lg={6} className='text-center order-1 order-lg-2'>
             <h3>You have selected the </h3>
             <h2 className='text-center'>
-              ₹ {JSON.parse(localStorage.checkoutDet).price} Pack
+              ₹{' '}
+              {typeof window !== 'undefined' &&
+                JSON.parse(localStorage.checkoutDet).price}{' '}
+              Pack
             </h2>
           </Col>
         </Row>
@@ -309,7 +317,10 @@ const CheckOutPage = ({ gadgetList, profileData, token, id }) => {
                 type='submit'
                 className='button'
                 onClick={() =>
-                  makePayment(JSON.parse(localStorage.checkoutDet).price)
+                  makePayment(
+                    typeof window !== 'undefined' &&
+                      JSON.parse(localStorage.checkoutDet).price
+                  )
                 }
               >
                 Procced to Payment

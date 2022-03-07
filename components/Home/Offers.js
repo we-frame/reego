@@ -2,7 +2,6 @@ import { Row, Col } from 'react-bootstrap';
 import styles from '@/styles/home/Offers.module.css';
 import { useContext } from 'react';
 import { StateContext } from 'context/StateProvider';
-import Link from 'next/link';
 import ReactMarkdown from 'react-markdown';
 import { useRouter } from 'next/router';
 
@@ -12,14 +11,15 @@ const Offers = ({ offerData }) => {
   const router = useRouter();
 
   const handleCheckout = (title, price, about) => {
-    localStorage.setItem(
-      'checkoutDet',
-      JSON.stringify({
-        price,
-        title,
-        desc: about,
-      })
-    );
+    typeof window !== 'undefined' &&
+      localStorage.setItem(
+        'checkoutDet',
+        JSON.stringify({
+          price,
+          title,
+          desc: about,
+        })
+      );
     isLoggedIn
       ? router.push('/checkout')
       : router.push('/account/login?redirect=checkout');
