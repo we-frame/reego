@@ -140,6 +140,9 @@ const RequestForm = ({
 
   let regex = new RegExp('[a-z0-9]+@[a-z]+.[a-z]{2,3}');
 
+  // PINCODE VALIDATION (INDIAN)!
+  let regex2 = new RegExp('[1-9]{1}[0-9]{5}|[1-9]{1}[0-9]{3}\\s[0-9]{3}');
+
   // HANDLING ALL INPUTS
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -189,8 +192,16 @@ const RequestForm = ({
     if (!regex.test(values.email)) {
       toast.error('Invalid email address');
     }
+
+    if (!regex2.test(values.pincode)) {
+      toast.error('Invalid pincode');
+    }
+
     if (res.ok) {
-      !hasEmptyFields && regex.test(values.email) && setIndex(3);
+      !hasEmptyFields &&
+        regex.test(values.email) &&
+        regex2.test(parseInt(values.pincode)) &&
+        setIndex(3);
       setDropAddress(data?.data);
     }
   };
@@ -337,9 +348,7 @@ const RequestForm = ({
                 </div>
                 <div>
                   <input
-                    pattern='^[1-9]{6}'
-                    maxLength='6'
-                    type='text'
+                    type='number'
                     name='pincode'
                     placeholder='Pincode'
                     className={styles.input}

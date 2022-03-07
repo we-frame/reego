@@ -47,6 +47,12 @@ const ReedemForm = ({
     transactionCode: findSpecificDet?.transactionNo,
   });
 
+  // EMAIL VALIDATION!
+  let regex = new RegExp('[a-z0-9]+@[a-z]+.[a-z]{2,3}');
+
+  // PINCODE VALIDATION (INDIAN)!
+  let regex2 = new RegExp('[1-9]{1}[0-9]{5}|[1-9]{1}[0-9]{3}\\s[0-9]{3}');
+
   // HANDLING ALL INPUTS
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -59,7 +65,13 @@ const ReedemForm = ({
       (element) => element === ''
     );
 
-    console.log(values);
+    if (!regex.test(values.email)) {
+      toast.error('Invalid email address');
+    }
+
+    if (!regex2.test(values.pincode)) {
+      toast.error('Invalid pincode');
+    }
 
     if (hasEmptyFields) {
       toast.error('Please fill in all fields');
@@ -70,7 +82,10 @@ const ReedemForm = ({
       const data = await res.json();
 
       if (res.ok) {
-        !hasEmptyFields && setIndex(2);
+        !hasEmptyFields &&
+          regex.test(values.email) &&
+          regex2.test(parseInt(values.pincode)) &&
+          setIndex(2);
         setDropAddress(data?.data);
       }
     }

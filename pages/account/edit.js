@@ -32,27 +32,31 @@ const EditPage = ({ token, id, userData }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    try {
-      const res = await fetch(`${API_URL}/putUserDetails.php`, {
-        method: 'PUT',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-          Authorization: `${token}`,
-          'API-KEY': `${id}`,
-        },
-        body: JSON.stringify(values),
-      });
-      const data = await res.json();
+    if (values.pincode.split('').length !== 6) {
+      toast.error(`Invalid pincode`);
+    } else {
+      try {
+        const res = await fetch(`${API_URL}/putUserDetails.php`, {
+          method: 'PUT',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `${token}`,
+            'API-KEY': `${id}`,
+          },
+          body: JSON.stringify(values),
+        });
+        const data = await res.json();
 
-      if (res.ok) {
-        router.push('/account/profile');
-        toast.success('Profile updated successfully');
-      } else {
+        if (res.ok) {
+          router.push('/account/profile');
+          toast.success('Profile updated successfully');
+        } else {
+          toast.error('Something went wrong');
+        }
+      } catch (err) {
         toast.error('Something went wrong');
       }
-    } catch (err) {
-      toast.error('Something went wrong');
     }
   };
 
