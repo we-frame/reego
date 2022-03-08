@@ -35,6 +35,11 @@ const InsurancePage = ({ token, id, insuranceData }) => {
 
   const [loading, setLoading] = useState(false);
 
+  // SORT
+  const sortedInsuranceData = insuranceData.sort(
+    (a, b) => new Date(b.purchaseDate) - new Date(a.purchaseDate)
+  );
+
   // HANDLING ALL INPUTS
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -83,8 +88,8 @@ const InsurancePage = ({ token, id, insuranceData }) => {
     <Layout2>
       <Seo title='Insurance' />
       <div className='d-flex flex-column justify-content-center align-items-center'>
-        {insuranceData.length === 0 && <h4>No data to show</h4>}
-        {insuranceData.map((data, i) => {
+        {sortedInsuranceData.length === 0 && <h4>No data to show</h4>}
+        {sortedInsuranceData.map((data, i) => {
           return (
             <section className={styles.insuranceCard} key={i}>
               <div className='d-flex align-items-center'>

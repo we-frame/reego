@@ -20,6 +20,11 @@ const Orders = ({ token, id, orders }) => {
 
   const router = useRouter();
 
+  // SORT
+  const sortedOrders = orders.sort(
+    (a, b) => new Date(b.purchaseDate) - new Date(a.purchaseDate)
+  );
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -58,8 +63,8 @@ const Orders = ({ token, id, orders }) => {
       <h4>My Orders</h4>
       <hr />
       <div>
-        {orders.length === 0 && <h4>No orders to show</h4>}
-        {orders?.map((order, i) => {
+        {sortedOrders.length === 0 && <h4>No orders to show</h4>}
+        {sortedOrders?.map((order, i) => {
           return (
             <div className={styles.ordersComp} key={i}>
               <h5>{order?.status}</h5>
@@ -90,18 +95,20 @@ const Orders = ({ token, id, orders }) => {
                     <Rating rating={order?.custRatings} />
                   </div>
 
-                  <button
-                    className='button'
-                    onClick={() => {
-                      setModalShow(true);
-                      setInfos({
-                        callType: order?.callType,
-                        callId: order?.callId,
-                      });
-                    }}
-                  >
-                    Write a review
-                  </button>
+                  {order?.custRatings === '0' && order?.status !== 'Delivered' && (
+                    <button
+                      className='button'
+                      onClick={() => {
+                        setModalShow(true);
+                        setInfos({
+                          callType: order?.callType,
+                          callId: order?.callId,
+                        });
+                      }}
+                    >
+                      Write a review
+                    </button>
+                  )}
                 </div>
               </div>
             </div>

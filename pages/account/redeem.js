@@ -18,12 +18,17 @@ const RedeemPage = ({
 
   const [redeemId, setRedeemId] = useState('');
 
+  // SORT
+  const sortedMyData = myData.sort(
+    (a, b) => new Date(b.purchaseDate) - new Date(a.purchaseDate)
+  );
+
   return (
     <Layout2>
       <Seo title='Redeem' />
       <section>
-        {myData.length === 0 && <h4>No data to show</h4>}
-        {myData?.map((item, i) => {
+        {sortedMyData.length === 0 && <h4>No data to show</h4>}
+        {sortedMyData?.map((item, i) => {
           return (
             <div className={styles.redeemCard} key={i}>
               <p>Device : {item?.brandName}</p>
@@ -50,7 +55,7 @@ const RedeemPage = ({
       {modalShow && (
         <ReedemForm
           redeemId={redeemId}
-          reedemDet={myData}
+          reedemDet={sortedMyData}
           profileData={profileData}
           modalShow={modalShow}
           setModalShow={setModalShow}

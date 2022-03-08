@@ -32,8 +32,6 @@ const ReedemForm = ({
   const [dropType, setDropType] = useState(1);
   const [dropPointId, setDropPointId] = useState(0);
 
-  console.log(dropPointId);
-
   const [values, setValues] = useState({
     name: profileData[0]?.custName,
     email: profileData[0]?.custEmail,
