@@ -25,12 +25,14 @@ const InsurancePage = ({ token, id, insuranceData }) => {
 
   const [values, setValues] = useState({
     name: user && user[0]?.custName ? user[0]?.custName : '',
-    mobile: '',
+    mobile: '', // !profileData[0]?.custNumber
     email: user && user[0]?.custEmail ? user[0]?.custName : '',
     policyNo: '',
     insurancePackId: 1, // HARDCODED AS PER THE DUMMY DATA!
     problem: '',
   });
+
+  const [loading, setLoading] = useState(false);
 
   // HANDLING ALL INPUTS
   const handleInputChange = (e) => {
@@ -40,6 +42,7 @@ const InsurancePage = ({ token, id, insuranceData }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
     try {
       const res = await fetch(`${API_URL}/postInsuranceClaim.php`, {
@@ -55,13 +58,19 @@ const InsurancePage = ({ token, id, insuranceData }) => {
       const data = await res.json();
 
       if (res.ok) {
+        setLoading(false);
+
         setModalShow(false);
         router.reload();
         toast.success(data.message);
       } else {
+        setLoading(false);
+
         toast.error('Something went wrong');
       }
     } catch (err) {
+      setLoading(false);
+
       toast.error('Something went wrong');
     }
   };
@@ -198,7 +207,11 @@ const InsurancePage = ({ token, id, insuranceData }) => {
                 required
               />
             </div>
-            <button className='button'>SUBMIT</button>
+            {loading ? (
+              <button className='button opacity-50'>Loading...</button>
+            ) : (
+              <button className='button'>SUBMIT</button>
+            )}
           </form>
         </Modal.Body>
       </Modal>

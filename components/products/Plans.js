@@ -18,6 +18,8 @@ const Plans = ({ brandList, short, title, points }) => {
 
   const [detailsData, setDetailsData] = useState(null);
 
+  const [loading, setLoading] = useState(false);
+
   const handleModelSelection = async (e) => {
     setValues({ ...values, brand: e.target.value });
   };
@@ -29,15 +31,16 @@ const Plans = ({ brandList, short, title, points }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
+    try {
+      const res = await fetch(
+        `${API_URL}/getDevicePlanList.php?devicePrice=${values.price}&devicePurchase=${values.date}&brandId=${values.brand}&gadgetId=1`
+      );
+      const data = await res.json();
 
-    const res = await fetch(
-      `${API_URL}/getDevicePlanList.php?devicePrice=${values.price}&devicePurchase=${values.date}&brandId=${values.brand}&gadgetId=1`
-    );
-    const data = await res.json();
-
-    if (res.ok) {
-      setDetailsData(data?.data[0]?.spackPrice);
-      typeof window !== 'undefined' &&
+      if (res.ok) {
+        setDetailsData(data?.data[0]?.spackPrice);
+        setLoading(false);
         localStorage.setItem(
           'checkoutDet',
           JSON.stringify({
@@ -46,6 +49,10 @@ const Plans = ({ brandList, short, title, points }) => {
             points,
           })
         );
+      }
+    } catch (error) {
+      alert(error);
+      setLoading(false);
     }
   };
 
@@ -109,6 +116,16 @@ const Plans = ({ brandList, short, title, points }) => {
                 })}
               </select> */}
               <div>
+                <label
+                  htmlFor='date'
+                  style={{
+                    color: '#f53838',
+                    position: 'relative',
+                    left: '0.5rem',
+                  }}
+                >
+                  Purchased Date
+                </label>
                 <input
                   max={moment().format('YYYY-MM-DD')}
                   type='date'
@@ -131,9 +148,15 @@ const Plans = ({ brandList, short, title, points }) => {
                   required
                 />
               </div>
-              <div className='d-grid gap-2'>
-                <button className='button'>View Plans</button>
-              </div>
+              {loading ? (
+                <div className='d-grid gap-2'>
+                  <button className='button opacity-50'>Loading...</button>
+                </div>
+              ) : (
+                <div className='d-grid gap-2'>
+                  <button className='button'>View Plans</button>
+                </div>
+              )}
             </form>
           </>
         </Col>

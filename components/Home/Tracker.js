@@ -21,9 +21,11 @@ const Tracker = ({ token, id }) => {
   }, [trackId]);
 
   const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const handleTracking = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
     const trackingRes = await fetch(
       `${API_URL}/getTrackingDetails.php?trackingCode=${number}&callType=${callType}`,
@@ -38,8 +40,10 @@ const Tracker = ({ token, id }) => {
 
     if (trackingRes.ok) {
       setData(trackingData.data);
+      setLoading(false);
     } else {
       alert('something went wrong!');
+      setLoading(false);
     }
   };
 
@@ -57,35 +61,41 @@ const Tracker = ({ token, id }) => {
             value={number}
             onChange={(e) => setNumber(e.target.value)}
           />
-          <button>Track</button>
+          {loading ? (
+            <button className='opacity-50'>Tracking...</button>
+          ) : (
+            <button>Track</button>
+          )}
         </form>
 
-        <section className='root'>
-          <div className='order-track'>
-            {data?.map((item, i) => {
-              return (
-                <div className='order-track-step' key={i}>
-                  <div className='order-track-status'>
-                    <span
-                      className={`order-track-status-dot ${
-                        item.isDone === 0 ? 'dot-faded' : ''
-                      }`}
-                    >
-                      {item.stepDate && <BsCheck2 className='check-icon' />}
-                    </span>
-                    <span className='order-track-status-line'></span>
+        {data.length > 1 && (
+          <section className='root'>
+            <div className='order-track'>
+              {data?.map((item, i) => {
+                return (
+                  <div className='order-track-step' key={i}>
+                    <div className='order-track-status'>
+                      <span
+                        className={`order-track-status-dot ${
+                          item.isDone === 0 ? 'dot-faded' : ''
+                        }`}
+                      >
+                        {item.stepDate && <BsCheck2 className='check-icon' />}
+                      </span>
+                      <span className='order-track-status-line'></span>
+                    </div>
+                    <div className='order-track-text'>
+                      <p className='order-track-text-stat'>{item.stepName}</p>
+                      <span className='order-track-text-sub'>
+                        {item.stepDate}
+                      </span>
+                    </div>
                   </div>
-                  <div className='order-track-text'>
-                    <p className='order-track-text-stat'>{item.stepName}</p>
-                    <span className='order-track-text-sub'>
-                      {item.stepDate}
-                    </span>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </section>
+                );
+              })}
+            </div>
+          </section>
+        )}
       </Col>
     </Row>
   );

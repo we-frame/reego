@@ -255,6 +255,16 @@ const CheckOutPage = ({ gadgetList, profileData, token, id }) => {
               </select>
             </div>
             <div>
+              <label
+                htmlFor='purchaseDate'
+                style={{
+                  color: '#f53838',
+                  position: 'relative',
+                  left: '0.5rem',
+                }}
+              >
+                Purchased Date
+              </label>
               <input
                 max={moment().format('YYYY-MM-DD')}
                 type='date'

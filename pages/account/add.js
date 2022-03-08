@@ -32,6 +32,8 @@ const AddPage = ({ token, id, brandList, famData }) => {
     model: '',
   });
 
+  const [loading, setLoading] = useState(false);
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setValues({ ...values, [name]: value });
@@ -49,6 +51,7 @@ const AddPage = ({ token, id, brandList, famData }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
     try {
       const res = await fetch(`${API_URL}/postAddFamilyDevice.php`, {
@@ -64,6 +67,7 @@ const AddPage = ({ token, id, brandList, famData }) => {
       const data = await res.json();
 
       if (res.ok) {
+        setLoading(false);
         setModalShow(false);
         router.reload();
         // setFamilyDetails([data.data, ...familyDetails]);
@@ -72,6 +76,7 @@ const AddPage = ({ token, id, brandList, famData }) => {
         toast.error('Something went wrong');
       }
     } catch (err) {
+      setLoading(false);
       toast.error('Something went wrong');
     }
   };
@@ -194,6 +199,16 @@ const AddPage = ({ token, id, brandList, famData }) => {
               </select>
             </div>
             <div>
+              <label
+                htmlFor='dop'
+                style={{
+                  color: '#f53838',
+                  position: 'relative',
+                  left: '0.5rem',
+                }}
+              >
+                DOB
+              </label>
               <input
                 type='date'
                 max={moment().format('YYYY-MM-DD')}
@@ -216,9 +231,15 @@ const AddPage = ({ token, id, brandList, famData }) => {
                 required
               />
             </div>
-            <div className='text-center'>
-              <button className='button'>Add</button>
-            </div>
+            {loading ? (
+              <div className='text-center'>
+                <button className='button opacity-50'>Adding...</button>
+              </div>
+            ) : (
+              <div className='text-center'>
+                <button className='button'>Add</button>
+              </div>
+            )}
           </form>
         </Modal.Body>
       </Modal>

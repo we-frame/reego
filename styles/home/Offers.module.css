@@ -16,7 +16,7 @@
 
 .li {
   list-style: none;
-  list-style-image: url('../../public/images/tick1.png') !important;
+  list-style-image: url('https://res.cloudinary.com/da7rahr7h/image/upload/v1646733266/tick1_b7b3f8d2ee.png') !important;
   margin: 1.5rem 1rem;
 }
 

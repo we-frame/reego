@@ -22,6 +22,8 @@ const EditPage = ({ token, id, userData }) => {
     password: '',
   });
 
+  const [loading, setLoading] = useState(false);
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setValues({ ...values, [name]: value });
@@ -31,6 +33,7 @@ const EditPage = ({ token, id, userData }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
     if (values.pincode.split('').length !== 6) {
       toast.error(`Invalid pincode`);
@@ -49,12 +52,16 @@ const EditPage = ({ token, id, userData }) => {
         const data = await res.json();
 
         if (res.ok) {
+          setLoading(false);
+
           router.push('/account/profile');
           toast.success('Profile updated successfully');
         } else {
           toast.error('Something went wrong');
         }
       } catch (err) {
+        setLoading(false);
+
         toast.error('Something went wrong');
       }
     }
@@ -150,9 +157,15 @@ const EditPage = ({ token, id, userData }) => {
             onChange={handleInputChange}
           />
         </div>
-        <div className='text-center'>
-          <button className='button'>Save Details</button>
-        </div>
+        {loading ? (
+          <div className='text-center'>
+            <button className='button opacity-50'>Saving...</button>
+          </div>
+        ) : (
+          <div className='text-center'>
+            <button className='button'>Save Details</button>
+          </div>
+        )}
       </form>
       <ToastContainer />
     </Layout2>
