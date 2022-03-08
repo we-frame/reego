@@ -19,8 +19,8 @@ const contact = () => {
           Horizon Flora, Office 1, Ghodbunder Rd, Bhayandarpada, Thane West,
           Thane, Maharashtra 400615
         </p>
-        <p className='text-secondary'>Tel.+9710123457</p>
-        <p className='text-secondary'>Mob.+9710123457</p>
+        <p className='text-secondary'>Mob.8298229829</p>
+        {/* <p className='text-secondary'>Mob.+9710123457</p> */}
         <div style={{ borderBottom: '1px solid #B8B8B8' }}></div>
         <DownloadApp />
       </Container>

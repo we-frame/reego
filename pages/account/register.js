@@ -33,12 +33,22 @@ const SignupPage = () => {
     setValues({ ...values, [name]: value });
   };
 
+  // PINCODE VALIDATION (INDIAN)!
+  let regex2 = new RegExp('^([0-9]{4}|[0-9]{6})$');
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (values) {
-      register(values);
-    } else {
+
+    if (!regex2.test(values.pincode)) {
+      toast.error('Invalid pincode');
+    }
+
+    if (!values) {
       toast.error('Please fill all the fields');
+    }
+
+    if (values && regex2.test(parseInt(values.pincode))) {
+      register(values);
     }
   };
 

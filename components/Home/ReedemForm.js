@@ -37,7 +37,7 @@ const ReedemForm = ({
   const [values, setValues] = useState({
     name: profileData[0]?.custName,
     email: profileData[0]?.custEmail,
-    mobile: '', // !profileData[0]?.custNumber
+    mobile: profileData[0]?.custNumber,
     brand: findSpecificDet?.brandId,
     model: '',
     address: `${profileData[0]?.custAddress}, ${profileData[0]?.custCity}, ${profileData[0]?.custState}`,
@@ -54,7 +54,7 @@ const ReedemForm = ({
   let regex = new RegExp('[a-z0-9]+@[a-z]+.[a-z]{2,3}');
 
   // PINCODE VALIDATION (INDIAN)!
-  let regex2 = new RegExp('[1-9]{1}[0-9]{5}|[1-9]{1}[0-9]{3}\\s[0-9]{3}');
+  let regex2 = new RegExp('^([0-9]{4}|[0-9]{6})$');
 
   // HANDLING ALL INPUTS
   const handleInputChange = (e) => {
@@ -234,9 +234,7 @@ const ReedemForm = ({
               </div>
               <div>
                 <input
-                  pattern='^[1-9]{6}'
-                  maxLength='6'
-                  type='text'
+                  type='number'
                   name='pincode'
                   placeholder='Pincode'
                   className={styles.input}

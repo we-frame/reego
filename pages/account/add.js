@@ -160,7 +160,7 @@ const AddPage = ({ token, id, brandList, famData }) => {
                 required
               />
             </div>
-            <div className='d-flex justify-content-around'>
+            <div className='d-flex justify-content-between'>
               <select
                 name='brandId'
                 value={values.brandId}
@@ -213,6 +213,7 @@ const AddPage = ({ token, id, brandList, famData }) => {
                 type='date'
                 max={moment().format('YYYY-MM-DD')}
                 name='dop'
+                data-date-inline-picker='true'
                 placeholder='Date Of Purchase'
                 className={styles2.input}
                 value={values.dop}

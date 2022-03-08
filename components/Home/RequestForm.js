@@ -134,7 +134,7 @@ const RequestForm = ({ gadgetList, problems, token, id }) => {
   let regex = new RegExp('[a-z0-9]+@[a-z]+.[a-z]{2,3}');
 
   // PINCODE VALIDATION (INDIAN)!
-  let regex2 = new RegExp('[1-9]{1}[0-9]{5}|[1-9]{1}[0-9]{3}\\s[0-9]{3}');
+  let regex2 = new RegExp('^([0-9]{4}|[0-9]{6})$');
 
   // HANDLING ALL INPUTS
   const handleInputChange = (e) => {

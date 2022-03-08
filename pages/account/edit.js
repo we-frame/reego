@@ -37,6 +37,7 @@ const EditPage = ({ token, id, userData }) => {
 
     if (values.pincode.split('').length !== 6) {
       toast.error(`Invalid pincode`);
+      setLoading(false);
     } else {
       try {
         const res = await fetch(`${API_URL}/putUserDetails.php`, {
@@ -126,9 +127,7 @@ const EditPage = ({ token, id, userData }) => {
         <div>
           <label htmlFor='pincode'>Pin code</label>
           <input
-            // pattern='^[1-9]{6}'
-            // maxLength='6'
-            type='text'
+            type='number'
             name='pincode'
             className={styles.input}
             value={values.pincode}

@@ -23,8 +23,8 @@ const HomePage = ({
   return (
     <>
       <Seo title='Home' />
-      <Slider bannerImgs={banner} />
       <Container className='my-4'>
+        <Slider bannerImgs={banner} />
         <Tab
           brandList={brandList}
           problems={problems}

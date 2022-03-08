@@ -20,15 +20,16 @@ const InsurancePage = ({ token, id, insuranceData }) => {
   const { user } = useContext(StateContext);
 
   const [modalShow, setModalShow] = useState(false);
+  const [transactionNo, setTransactionNo] = useState('');
+  const [spackServices, setSpackServices] = useState('');
 
   const router = useRouter();
 
   const [values, setValues] = useState({
     name: user && user[0]?.custName ? user[0]?.custName : '',
-    mobile: '', // !profileData[0]?.custNumber
-    email: user && user[0]?.custEmail ? user[0]?.custName : '',
+    mobile: user && user[0]?.custNumber ? user[0]?.custNumber : '',
+    email: user && user[0]?.custEmail ? user[0]?.custEmail : '',
     policyNo: '',
-    insurancePackId: 1, // HARDCODED AS PER THE DUMMY DATA!
     problem: '',
   });
 
@@ -53,13 +54,16 @@ const InsurancePage = ({ token, id, insuranceData }) => {
           Authorization: `${token}`,
           'API-KEY': `${id}`,
         },
-        body: JSON.stringify(values),
+        body: JSON.stringify({
+          ...values,
+          transactionNo,
+          insurancePackId: spackServices,
+        }),
       });
       const data = await res.json();
 
       if (res.ok) {
         setLoading(false);
-
         setModalShow(false);
         router.reload();
         toast.success(data.message);
@@ -83,54 +87,59 @@ const InsurancePage = ({ token, id, insuranceData }) => {
         {insuranceData.map((data, i) => {
           return (
             <section className={styles.insuranceCard} key={i}>
-              {data?.isRedeem === '0' && (
-                <div className='d-flex align-items-center'>
-                  <Image src={barCode} alt='barcode' height={580} width={150} />
+              <div className='d-flex align-items-center'>
+                <Image src={barCode} alt='barcode' height={580} width={150} />
 
-                  <div className='p-3'>
-                    <h3 className='text-center'>{data?.brandName}</h3>
-                    <div className='my-4'>
-                      <ul>
-                        <li className='my-4'>
-                          <span>
-                            <AiFillCheckCircle className='me-2' />
-                          </span>
-                          Extends your warranty of your Mobile Phone for
-                          additional one year
-                        </li>
-                        <li className='my-4'>
-                          <span>
-                            <AiFillCheckCircle className='me-2' />
-                          </span>
-                          Covers Malfunctions & Breakdowns
-                        </li>
-                        <li className='my-4'>
-                          <span>
-                            <AiFillCheckCircle className='me-2' />
-                          </span>
-                          Easy process, hassle-free
-                        </li>
-                        <li className='my-4'>
-                          <span>
-                            <AiFillCheckCircle className='me-2' />
-                          </span>
-                          Free Pick & Drop
-                        </li>
-                      </ul>
-                    </div>
-                    <p className='text-center'>Validity:1 year</p>
-                    <div className='d-flex justify-content-center'>
-                      <button onClick={() => setModalShow(true)}>CLAIM</button>
-                    </div>
+                <div className='p-3'>
+                  <h3 className='text-center'>{data?.brandName}</h3>
+                  <div className='my-4'>
+                    <ul>
+                      <li className='my-4'>
+                        <span>
+                          <AiFillCheckCircle className='me-2' />
+                        </span>
+                        Extends your warranty of your Mobile Phone for
+                        additional one year
+                      </li>
+                      <li className='my-4'>
+                        <span>
+                          <AiFillCheckCircle className='me-2' />
+                        </span>
+                        Covers Malfunctions & Breakdowns
+                      </li>
+                      <li className='my-4'>
+                        <span>
+                          <AiFillCheckCircle className='me-2' />
+                        </span>
+                        Easy process, hassle-free
+                      </li>
+                      <li className='my-4'>
+                        <span>
+                          <AiFillCheckCircle className='me-2' />
+                        </span>
+                        Free Pick & Drop
+                      </li>
+                    </ul>
                   </div>
-                  <Image
-                    src={warranty}
-                    alt='barcode'
-                    height={580}
-                    width={150}
-                  />
+                  <p className='text-center'>Validity:1 year</p>
+                  <div className='d-flex justify-content-center'>
+                    {data?.isRedeem === '0' ? (
+                      <button
+                        onClick={() => {
+                          setTransactionNo(data?.transactionNo);
+                          setSpackServices(data?.spackServices);
+                          setModalShow(true);
+                        }}
+                      >
+                        CLAIM
+                      </button>
+                    ) : (
+                      <button style={{ cursor: 'initial' }}>CLAIMED</button>
+                    )}
+                  </div>
                 </div>
-              )}
+                <Image src={warranty} alt='barcode' height={580} width={150} />
+              </div>
             </section>
           );
         })}

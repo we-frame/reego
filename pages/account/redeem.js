@@ -39,7 +39,9 @@ const RedeemPage = ({
                   Redeem
                 </button>
               ) : (
-                <button className='button'>Redeemed</button>
+                <button className='button' style={{ cursor: 'initial' }}>
+                  Redeemed
+                </button>
               )}
             </div>
           );

@@ -10,6 +10,8 @@ import { FiPlusCircle } from 'react-icons/fi';
 import { AiFillDelete } from 'react-icons/ai';
 import { parseCookies } from 'helpers';
 import ReactMarkdown from 'react-markdown';
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from 'react-toastify';
 
 const CheckOutPage = ({ gadgetList, profileData, token, id }) => {
   const [mobileModel, setMobileModel] = useState([]);
@@ -28,6 +30,11 @@ const CheckOutPage = ({ gadgetList, profileData, token, id }) => {
     purchaseDate: '',
     packType: '1',
   });
+
+  // Validation
+  const hasEmptyFields = Object.values(values).some(
+    (element) => element === ''
+  );
 
   const router = useRouter();
 
@@ -93,7 +100,7 @@ const CheckOutPage = ({ gadgetList, profileData, token, id }) => {
       prefill: {
         name: values.name,
         email: values.email,
-        contact: 9731565529, // !change to profileData[0]?.custNumber (also add to the redeem form!)
+        contact: profileData[0]?.custNumber,
       },
     };
     var paymentObject = new window.Razorpay(options);
@@ -148,7 +155,6 @@ const CheckOutPage = ({ gadgetList, profileData, token, id }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log({ ...values, imgInvoice });
   };
 
   return (
@@ -311,7 +317,6 @@ const CheckOutPage = ({ gadgetList, profileData, token, id }) => {
                       onChange={handleFileChange}
                       id='imgInvoice'
                       hidden
-                      required
                     />
                     <FiPlusCircle
                       size='2rem'
@@ -327,10 +332,13 @@ const CheckOutPage = ({ gadgetList, profileData, token, id }) => {
                 type='submit'
                 className='button'
                 onClick={() =>
-                  makePayment(
-                    typeof window !== 'undefined' &&
-                      JSON.parse(localStorage.checkoutDet).price
-                  )
+                  imgInvoice === null
+                    ? toast.error('Please upload the invoice')
+                    : !hasEmptyFields &&
+                      makePayment(
+                        typeof window !== 'undefined' &&
+                          JSON.parse(localStorage.checkoutDet).price
+                      )
                 }
               >
                 Procced to Payment
@@ -338,6 +346,7 @@ const CheckOutPage = ({ gadgetList, profileData, token, id }) => {
             </div>
           </form>
         </div>
+        <ToastContainer />
       </Container>
     </>
   );

@@ -5,9 +5,14 @@ import { API_URL } from 'config';
 import moment from 'moment';
 import Link from 'next/link';
 import { StateContext } from 'context/StateProvider';
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from 'react-toastify';
+import { useRouter } from 'next/router';
 
 const Plans = ({ brandList, short, title, points }) => {
   const { isLoggedIn } = useContext(StateContext);
+
+  const router = useRouter();
 
   const [values, setValues] = useState({
     price: '',
@@ -32,28 +37,37 @@ const Plans = ({ brandList, short, title, points }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    try {
-      const res = await fetch(
-        `${API_URL}/getDevicePlanList.php?devicePrice=${values.price}&devicePurchase=${values.date}&brandId=${values.brand}&gadgetId=1`
-      );
-      const data = await res.json();
 
-      if (res.ok) {
-        setDetailsData(data?.data[0]?.spackPrice);
+    const res = await fetch(
+      `${API_URL}/getDevicePlanList.php?devicePrice=${values.price}&devicePurchase=${values.date}&brandId=${values.brand}&gadgetId=1`
+    );
+    const data = await res.json();
+
+    if (res.ok) {
+      if (data?.data) {
+        setDetailsData(data?.data);
         setLoading(false);
-        localStorage.setItem(
-          'checkoutDet',
-          JSON.stringify({
-            price: data?.data[0]?.spackPrice,
-            title,
-            points,
-          })
-        );
+        window.location.href = '#plans';
+      } else {
+        setLoading(false);
+        toast.error('Could not find plans based on your price!');
       }
-    } catch (error) {
-      alert(error);
-      setLoading(false);
     }
+  };
+
+  const handleCheckout = (price) => {
+    typeof window !== 'undefined' &&
+      localStorage.setItem(
+        'checkoutDet',
+        JSON.stringify({
+          price,
+          title,
+          points,
+        })
+      );
+    isLoggedIn
+      ? router.push('/checkout')
+      : router.push('/account/login?redirect=checkout');
   };
 
   return (
@@ -161,31 +175,43 @@ const Plans = ({ brandList, short, title, points }) => {
           </>
         </Col>
       </Row>
-      {detailsData && (
-        <>
-          <h2 className='my-5 text-center fw-bold'>Plans for your device</h2>
-          <div className={styles.card2}>
-            <h3>Device Price</h3>
-            <h4>₹{detailsData}</h4>
-            <div className={styles.highlight}>₹1,000/year</div>
-            <p>
-              Note: These plans only covers Mobile Phones that have been
-              purchased on 12th November 2021.
-            </p>
-          </div>
-          <div className='text-center my-4'>
-            {isLoggedIn ? (
-              <Link href='/checkout'>
-                <a className='button text-white'>Checkout</a>
-              </Link>
-            ) : (
-              <Link href='/account/login?redirect=checkout'>
-                <a className='button text-white'>Log in to checkout</a>
-              </Link>
-            )}
-          </div>
-        </>
-      )}
+      <section id='plans'>
+        <h2 className='my-5 text-center fw-bold'>Plans for your device</h2>
+        {detailsData &&
+          detailsData?.map((item) => {
+            return (
+              <>
+                <div className={styles.card2}>
+                  <h3>Device Price</h3>
+                  <h4>₹{item?.spackPrice}</h4>
+                  <div className={styles.highlight}>₹1,000/year</div>
+                  <p>
+                    Note: These plans only covers Mobile Phones that have been
+                    purchased on 12th November 2021.
+                  </p>
+                </div>
+                <div className='text-center my-4'>
+                  {isLoggedIn ? (
+                    <button
+                      className='button'
+                      onClick={() => handleCheckout(item?.spackPrice)}
+                    >
+                      Checkout
+                    </button>
+                  ) : (
+                    <button
+                      className='button'
+                      onClick={() => handleCheckout(item?.spackPrice)}
+                    >
+                      Login to checkout
+                    </button>
+                  )}
+                </div>
+                <ToastContainer />
+              </>
+            );
+          })}
+      </section>
     </section>
   );
 };

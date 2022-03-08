@@ -7,6 +7,8 @@ import { API_URL } from 'config';
 import { useState } from 'react';
 import { useRouter } from 'next/dist/client/router';
 import { useEffect } from 'react';
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from 'react-toastify';
 
 const Tracker = ({ token, id }) => {
   const { query } = useRouter();
@@ -39,10 +41,15 @@ const Tracker = ({ token, id }) => {
     const trackingData = await trackingRes.json();
 
     if (trackingRes.ok) {
-      setData(trackingData.data);
-      setLoading(false);
+      if (trackingData.status) {
+        setData(trackingData.data);
+        setLoading(false);
+      } else {
+        setLoading(false);
+        toast.error('Could not find details ');
+      }
     } else {
-      alert('something went wrong!');
+      toast.error('Could not find details ');
       setLoading(false);
     }
   };
@@ -97,6 +104,7 @@ const Tracker = ({ token, id }) => {
           </section>
         )}
       </Col>
+      <ToastContainer />
     </Row>
   );
 };

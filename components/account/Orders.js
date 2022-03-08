@@ -72,7 +72,7 @@ const Orders = ({ token, id, orders }) => {
                   <div
                     onClick={() =>
                       router.push(
-                        `/?trackingID=${order?.trackingCode}&callType=${order?.callType}`
+                        `/?trackingID=${order?.trackingCode}&callType=${order?.callType}#tracker`
                       )
                     }
                   >

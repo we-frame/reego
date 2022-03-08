@@ -4,14 +4,19 @@ import { Row, Col } from 'react-bootstrap';
 import RequestForm from '@/components/Home/RequestForm';
 import Tracker from './Tracker';
 import { StateContext } from 'context/StateProvider';
+import { useRouter } from 'next/router';
 
 const Tab = ({ brandList, gadgetList, problems, token, id }) => {
-  const [index, setIndex] = useState(0);
+  const { query } = useRouter();
+
+  const [index, setIndex] = useState(
+    query?.trackingID && query?.callType ? 1 : 0
+  );
 
   const { isLoggedIn } = useContext(StateContext);
 
   return (
-    <section className={styles.tab}>
+    <section className={styles.tab} id='tracker'>
       <Row className={`g-0 ${styles.tabBtnGroup}`}>
         {isLoggedIn ? (
           <>
