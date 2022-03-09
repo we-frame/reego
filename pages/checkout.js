@@ -102,6 +102,10 @@ const CheckOutPage = ({ gadgetList, profileData, token, id }) => {
         email: values.email,
         contact: profileData[0]?.custNumber,
       },
+      retry: {
+        enabled: true,
+        max_count: 3,
+      },
     };
     var paymentObject = new window.Razorpay(options);
     paymentObject.on('payment.failed', function (response) {

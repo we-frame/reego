@@ -94,6 +94,10 @@ const RequestForm = ({ gadgetList, problems, token, id }) => {
         email: values.email,
         contact: values.mobile,
       },
+      retry: {
+        enabled: true,
+        max_count: 3,
+      },
     };
     var paymentObject = new window.Razorpay(options);
     paymentObject.on('payment.failed', function (response) {
