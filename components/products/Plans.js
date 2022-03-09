@@ -3,7 +3,6 @@ import { Col, Row } from 'react-bootstrap';
 import { useContext, useState } from 'react';
 import { API_URL } from 'config';
 import moment from 'moment';
-import Link from 'next/link';
 import { StateContext } from 'context/StateProvider';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer, toast } from 'react-toastify';
@@ -44,11 +43,12 @@ const Plans = ({ brandList, short, title, points }) => {
     const data = await res.json();
 
     if (res.ok) {
-      if (data?.data) {
+      if (data?.data !== undefined) {
         setDetailsData(data?.data);
         setLoading(false);
         window.location.href = '#plans';
       } else {
+        console.log('error!');
         setLoading(false);
         toast.error('Could not find plans based on your price!');
       }
@@ -71,48 +71,51 @@ const Plans = ({ brandList, short, title, points }) => {
   };
 
   return (
-    <section className='my-5'>
-      <Row className='align-items-center'>
-        <Col lg={5}>
-          <div className={styles.card}>
-            <div className='text-center'>
-              <button className='button-rounded'>{short}</button>
-            </div>
-            <h3 className='text-center my-5'>{title}</h3>
-            <ul className='mb-5'>
-              {points.map((item) => {
-                return (
-                  <li className={styles.li} key={item.id}>
-                    {item.point}
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
-        </Col>
-        <Col lg={7}>
-          <>
-            <h4 className='my-4 text-center'>Explore Plans for your device</h4>
-            <form className={styles.form} onSubmit={handleSubmit}>
-              <select
-                name='brand'
-                value={values.brand}
-                onChange={handleModelSelection}
-                className={styles.select}
-                required
-              >
-                <option value='' disabled>
-                  Select Brand
-                </option>
-                {brandList?.map((brand) => {
+    <>
+      <section className='my-5'>
+        <Row className='align-items-center'>
+          <Col lg={5}>
+            <div className={styles.card}>
+              <div className='text-center'>
+                <button className='button-rounded'>{short}</button>
+              </div>
+              <h3 className='text-center my-5'>{title}</h3>
+              <ul className='mb-5'>
+                {points.map((item) => {
                   return (
-                    <option value={brand.brand_id} key={brand.brand_id}>
-                      {brand.brand_name}
-                    </option>
+                    <li className={styles.li} key={item.id}>
+                      {item.point}
+                    </li>
                   );
                 })}
-              </select>
-              {/* <select
+              </ul>
+            </div>
+          </Col>
+          <Col lg={7}>
+            <>
+              <h4 className='my-4 text-center'>
+                Explore Plans for your device
+              </h4>
+              <form className={styles.form} onSubmit={handleSubmit}>
+                <select
+                  name='brand'
+                  value={values.brand}
+                  onChange={handleModelSelection}
+                  className={styles.select}
+                  required
+                >
+                  <option value='' disabled>
+                    Select Brand
+                  </option>
+                  {brandList?.map((brand) => {
+                    return (
+                      <option value={brand.brand_id} key={brand.brand_id}>
+                        {brand.brand_name}
+                      </option>
+                    );
+                  })}
+                </select>
+                {/* <select
                 name='model'
                 value={values.model}
                 onChange={handleInputChange}
@@ -129,90 +132,91 @@ const Plans = ({ brandList, short, title, points }) => {
                   );
                 })}
               </select> */}
-              <div>
-                <label
-                  htmlFor='date'
-                  style={{
-                    color: '#f53838',
-                    position: 'relative',
-                    left: '0.5rem',
-                  }}
-                >
-                  Purchased Date
-                </label>
-                <input
-                  max={moment().format('YYYY-MM-DD')}
-                  type='date'
-                  name='date'
-                  placeholder='2022-02-01'
-                  className={styles.input}
-                  value={values.date}
-                  onChange={handleInputChange}
-                  required
-                />
-              </div>
-              <div>
-                <input
-                  type='number'
-                  name='price'
-                  placeholder='Device Price'
-                  className={styles.input}
-                  value={values.price}
-                  onChange={handleInputChange}
-                  required
-                />
-              </div>
-              {loading ? (
-                <div className='d-grid gap-2'>
-                  <button className='button opacity-50'>Loading...</button>
+                <div>
+                  <label
+                    htmlFor='date'
+                    style={{
+                      color: '#f53838',
+                      position: 'relative',
+                      left: '0.5rem',
+                    }}
+                  >
+                    Purchased Date
+                  </label>
+                  <input
+                    max={moment().format('YYYY-MM-DD')}
+                    type='date'
+                    name='date'
+                    placeholder='2022-02-01'
+                    className={styles.input}
+                    value={values.date}
+                    onChange={handleInputChange}
+                    required
+                  />
                 </div>
-              ) : (
-                <div className='d-grid gap-2'>
-                  <button className='button'>View Plans</button>
+                <div>
+                  <input
+                    type='number'
+                    name='price'
+                    placeholder='Device Price'
+                    className={styles.input}
+                    value={values.price}
+                    onChange={handleInputChange}
+                    required
+                  />
                 </div>
-              )}
-            </form>
-          </>
-        </Col>
-      </Row>
-      <section id='plans'>
-        <h2 className='my-5 text-center fw-bold'>Plans for your device</h2>
-        {detailsData &&
-          detailsData?.map((item) => {
-            return (
-              <>
-                <div className={styles.card2}>
-                  <h3>Device Price</h3>
-                  <h4>₹{item?.spackPrice}</h4>
-                  <div className={styles.highlight}>₹1,000/year</div>
-                  <p>
-                    Note: These plans only covers Mobile Phones that have been
-                    purchased on 12th November 2021.
-                  </p>
+                {loading ? (
+                  <div className='d-grid gap-2'>
+                    <button className='button opacity-50'>Loading...</button>
+                  </div>
+                ) : (
+                  <div className='d-grid gap-2'>
+                    <button className='button'>View Plans</button>
+                  </div>
+                )}
+              </form>
+            </>
+          </Col>
+        </Row>
+        <section id='plans'>
+          <h2 className='my-5 text-center fw-bold'>Plans for your device</h2>
+          {detailsData &&
+            detailsData?.map((item, i) => {
+              return (
+                <div key={i}>
+                  <div className={styles.card2}>
+                    <h3>Device Price</h3>
+                    <h4>₹{item?.spackPrice}</h4>
+                    <div className={styles.highlight}>₹1,000/year</div>
+                    <p>
+                      Note: These plans only covers Mobile Phones that have been
+                      purchased on 12th November 2021.
+                    </p>
+                  </div>
+                  <div className='text-center my-4'>
+                    {isLoggedIn ? (
+                      <button
+                        className='button'
+                        onClick={() => handleCheckout(item?.spackPrice)}
+                      >
+                        Checkout
+                      </button>
+                    ) : (
+                      <button
+                        className='button'
+                        onClick={() => handleCheckout(item?.spackPrice)}
+                      >
+                        Login to checkout
+                      </button>
+                    )}
+                  </div>
                 </div>
-                <div className='text-center my-4'>
-                  {isLoggedIn ? (
-                    <button
-                      className='button'
-                      onClick={() => handleCheckout(item?.spackPrice)}
-                    >
-                      Checkout
-                    </button>
-                  ) : (
-                    <button
-                      className='button'
-                      onClick={() => handleCheckout(item?.spackPrice)}
-                    >
-                      Login to checkout
-                    </button>
-                  )}
-                </div>
-                <ToastContainer />
-              </>
-            );
-          })}
+              );
+            })}
+        </section>
       </section>
-    </section>
+      <ToastContainer />
+    </>
   );
 };
 
