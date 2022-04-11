@@ -4,7 +4,7 @@ import { Carousel } from 'react-responsive-carousel';
 import banner from '/public/images/banner.png';
 
 const Slider = ({ bannerImgs }) => {
-  // console.log(bannerImgs);
+  console.log(bannerImgs[1]?.image_path);
 
   return (
     <Carousel showArrows={false} showStatus={false} showThumbs={false}>

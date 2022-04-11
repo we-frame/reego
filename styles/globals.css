@@ -259,6 +259,10 @@ input[type='date']::-webkit-calendar-picker-indicator {
   width: auto;
 }
 
+.t-color{
+  color:#007bff !important;
+}
+
 @media (max-width: 600px) {
   .nav-links {
     height: 0;

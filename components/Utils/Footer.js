@@ -47,9 +47,9 @@ const Footer = () => {
           </a>
         </div> */}
         <div className='me-lg-4 my-2 my-lg-0'>
-          <a className='text-white' href='https://reego.in/terms_condn.html'>
-            Terms & Conditions
-          </a>
+          <Link href='/terms-and-conditions'>
+            <a className='text-white'>Terms & Conditions</a>
+          </Link>
         </div>
         {/* <div className='me-lg-4 my-2 my-lg-0'>
           <a className='text-white' href='#'>

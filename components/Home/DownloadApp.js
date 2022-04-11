@@ -10,13 +10,13 @@ const DownloadApp = () => {
         <Col lg={6}>
           <h1 className='color'>Download the App</h1>
           <p>
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industrys standard dummy text
-            ever since the 1500s, when an unknown printer took a galley of type
-            and scrambled it to make a type specimen book.
+            Reego offers a unique solution based on the values of honesty,
+            transparency and efficiency. Hence delivering the promise to our
+            customers of upmost quality service in the quickest time using only
+            the genuine parts, if required.
           </p>
           <p className='my-3'>Get the App</p>
-       <a
+          <a
             href='https://play.google.com/store/apps/details?id=com.reego.consumer'
             style={{ cursor: 'pointer' }}
           >

@@ -19,23 +19,17 @@ const Ads = () => {
         <Col lg={6}>
           <h1 className='color'>Why Reego?</h1>
           <p>
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industrys standard dummy text
-            ever since the 1500s, when an unknown printer took a galley of type
-            and scrambled it to make a type specimen book.
+            Reego offers a unique solution based on the values of honesty,
+            transparency and efficiency. Hence delivering the promise to our
+            customers of upmost quality service in the quickest time using only
+            the genuine parts, if required.
           </p>
         </Col>
       </Row>
       <Row className='justify-content-center align-items-center'>
         <Col lg={6} className='order-2 order-lg-1'>
           <h1 className='color'>How To Reach us?</h1>
-          <p>
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industrys standard dummy text
-            ever since the 1500s, when an unknown printer took a galley of type
-            and scrambled it to make a type specimen book. It has survived not
-            only five centuries, but also the leap into electronic typesetting,
-          </p>
+          <p>Your can reach us via (website, Email, Customer care number)</p>
         </Col>
         <Col
           lg={6}
