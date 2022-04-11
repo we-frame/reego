@@ -5,34 +5,35 @@ const Seo = ({ title, description }) => {
     <Head>
       <title>{title} | Reego</title>
       <meta name='description' content={description} />
-      {/* <meta property='og:type' content='website' />
-      <meta property='og:url' content='https://www.kodagunow.com/' />
-      <meta property='og:title' content='Kodagu Now' />
+      <meta property='og:type' content='website' />
+      <meta property='og:url' content='https://www.reego.in/' />
+      <meta property='og:title' content='Reego' />
       <meta
         property='og:description'
-        content='An all-in-one hyperlocal app that brings latest update on news,prices,resorts & homestays accompanied by an E-commerce marketplace for the conusmers of Kodagu.'
+        content='Reego offers a unique solution based on the values of honesty, transparency and efficiency. Hence delivering the promise to our customers of upmost quality service in the quickest time using only the genuine parts, if required.'
       />
       <meta
         property='og:image'
-        content='https://www.kodagunow.com/images/twitter-img.png'
+        content='https://www.reego.in/images/twitter-img.png'
       />
       <meta name='twitter:card' content='summary_large_image' />
-      <meta name='twitter:creator' content='@kodagunow' />
-      <meta name='twitter:title' content='Kodagu Now' />
+      <meta name='twitter:creator' content='@reego' />
+      <meta name='twitter:title' content='Reego' />
       <meta
         name='twitter:description'
-        content='An all-in-one hyperlocal app that brings latest update on news,prices,resorts & homestays accompanied by an E-commerce marketplace for the conusmers of Kodagu.'
+        content='Reego offers a unique solution based on the values of honesty, transparency and efficiency. Hence delivering the promise to our customers of upmost quality service in the quickest time using only the genuine parts, if required.'
       />
       <meta
         name='twitter:image'
-        content='https://www.kodagunow.com/images/twitter-img.png'
-      /> */}
+        content='https://www.reego.in/images/twitter-img.png'
+      />
     </Head>
   );
 };
 
 Seo.defaultProps = {
-  description: 'description comes here!!',
+  description:
+    'Reego offers a unique solution based on the values of honesty, transparency and efficiency. Hence delivering the promise to our customers of upmost quality service in the quickest time using only the genuine parts, if required.',
 };
 
 export default Seo;
