@@ -16,27 +16,32 @@ const Faqs = () => {
           </h4>
           <Accordion defaultActiveKey='0'>
             <Accordion.Item eventKey='0'>
-              <Accordion.Header>Accordion Item #1</Accordion.Header>
+              <Accordion.Header>
+                What is Reego Extended Warranty?
+              </Accordion.Header>
               <Accordion.Body>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-                in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-                nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-                sunt in culpa qui officia deserunt mollit anim id est laborum.
+                Reego Extended Warranty for a period of up to additional
+                one-year beyond what the manufacturer provides. Extended
+                Warranty is applicable for up to additional one year after the
+                expiry of the manufacturer’s warranty. You can buy Extended
+                Warranty till up to 6 months.
               </Accordion.Body>
             </Accordion.Item>
             <Accordion.Item eventKey='1'>
-              <Accordion.Header>Accordion Item #2</Accordion.Header>
+              <Accordion.Header>What does it cover?</Accordion.Header>
               <Accordion.Body>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-                in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-                nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-                sunt in culpa qui officia deserunt mollit anim id est laborum.
+                The plan covers all malfunctions and manufacturing defects in
+                the device, smartphone.
+              </Accordion.Body>
+            </Accordion.Item>
+            <Accordion.Item eventKey='2'>
+              <Accordion.Header>
+                How should one raise a request?
+              </Accordion.Header>
+              <Accordion.Body>
+                Call us @ +91 829 8229 829, Register on Website. Explain the
+                issue and we will register your request and process the further
+                steps.
               </Accordion.Body>
             </Accordion.Item>
           </Accordion>

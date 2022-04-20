@@ -29,8 +29,7 @@ const Offers = ({ offerData }) => {
     <section>
       <h1 className='color text-center'>Offers</h1>
       <p className={styles.myWidth}>
-        typesetting industry. Lorem Ipsum has been the industrys standard dummy
-        text ever since the 1500s, when an unknown
+        Buy Now, Redeem Later. Valid Up-to 1 year of purchase
       </p>
       <Row className='my-3'>
         {offerData.map((data, i) => {

@@ -15,17 +15,17 @@ const Footer = () => {
       </div>
       <div className='d-flex my-3'>
         <div className='me-4'>
-          <a href='#'>
+          <a href='https://www.instagram.com/officialreego/'>
             <Image src={insta} alt='instagram' width={50} height={50} />
           </a>
         </div>
         <div className='me-4'>
-          <a href='#'>
+          <a href='https://twitter.com/officialreego'>
             <Image src={twitter} alt='twitter' width={50} height={50} />
           </a>
         </div>
         <div className='me-0 lg:me-4'>
-          <a href='#'>
+          <a href='https://www.facebook.com/Reego-109960351479696'>
             <Image src={fb} alt='fb' width={50} height={50} />
           </a>
         </div>
